@@ -487,9 +487,11 @@ consistent with what people have been saying.
 - The most favourable outcomes result when you use the stack but move
   a random hospital first (i.e. choose whatever your favourite
   hospital is, but keep the stack)
-- It is also consistent with observations that "the last 4 are the
-  most important" because proportionally, under the stack, more people
-  get the last 4
+- It is also consistent with the following observations:
+  - "The last 4 are the most important" because proportionally,
+    under the stack, more people get the last 4.
+  - "Stacking hurts your chances of getting to preferences 1-6" - this
+    is true if everyone uses the same stack.
 - If this is indeed HETI's algorithm, satisfaction is maximised when
   all applicants preference entirely randomly
 - There are a lot of deviations between this simulations and the
@@ -504,7 +506,9 @@ consistent with what people have been saying.
 - [ ] Fix the algorithm so it's more consistent with the real data
 - [ ] Implement more scenarios e.g. some people stack, some people
   random
-- [ ] More data is needed to make this more accurate
+- [ ] More data is needed to make this more accurate e.g. how many
+  people preference each hospital in what order every year?
+- [ ] Analyse any strategic advantage of stacking vs random selection
 * Sources
 - I based my data on the AMSA Internship Guide[fn:1] and HETI's Annual Report[fn:2]
 
