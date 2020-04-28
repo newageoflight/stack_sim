@@ -31,9 +31,13 @@ for category in categories:
   3. Everybody has exact same stack
   4. Everyone who applies accepts the first job offer they get.
   5. There are no other entry schemes apart from the normal random-allocation route.
-* TODO Results
+  6. Category 1 applicants are basically guaranteed a job (corollary
+     of assumption 5).
+* Results
 Now you can see there are some obvious problems with the results which
-I intend to fix
+I intend to fix. First of all there are no allocations to ANYONE in
+any category below 2, which makes no sense. But otherwise it seems
+consistent with what people have been saying.
 ** Everyone is random
 1539 [916, 202, 158, 148, 101, 14]
 *** Total
@@ -491,7 +495,16 @@ I intend to fix
 - There are a lot of deviations between this simulations and the
   actual data produced by HETI. Not only do I not have all the
   information to make this simulation completely accurate, I did not
-  factor in for all the other entry pathways and schemes.
+  factor in for all the other entry pathways and schemes. That's why
+  the simulation output is so hilariously bad when it comes to anyone
+  below category 1.
+* TODO Future directions
+- [ ] Move the results to matplotlib/pandas instead of the normal
+  method
+- [ ] Fix the algorithm so it's more consistent with the real data
+- [ ] Implement more scenarios e.g. some people stack, some people
+  random
+- [ ] More data is needed to make this more accurate
 * Sources
 - I based my data on the AMSA Internship Guide[fn:1] and HETI's Annual Report[fn:2]
 
