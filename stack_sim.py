@@ -108,15 +108,18 @@ class Simulation(object):
 			print("Total applicants who got their {ord} preference: {count} ({percent:.2%})".format(ord=ordinal(rank+1), count=len(satisfied), 
 				percent=len(list(satisfied))/sum(self.category_counts)))
 		print("Total applicants who received any placement: {count}".format(count=len(list(filter(lambda a: a.allocation!=None, self.applicants)))))
-		print("Total applicants who missed out on any placement: {count}".format(count=len(list(filter(lambda a: a.allocation==None, self.applicants)))))
+		print("Total applicants who did not get any placement: {count}".format(count=len(list(filter(lambda a: a.allocation==None, self.applicants)))))
+		print("Total applicants: {count}".format(count=sum(self.category_counts))
 		for category in range(len(self.category_counts)):
-			print(category_counts[category])
 			for rank in range(len(self.hospitals)):
 				satisfied = list(filter(lambda a: a.preference_number == rank and a.category == category, self.applicants))
 				print("Total Category {cat} applicants who got their {ord} preference: {count} ({percent:.2%})".format(ord=ordinal(rank+1), count=len(satisfied), 
 					percent=len(satisfied)/category_counts[category], cat=category+1))
 			print("Total Category {cat} applicants who received any placement: {count}".format(cat=category+1, count=len(list(filter(lambda a: a.allocation!=None and a.category==category, self.applicants)))))
-			print("Total Category {cat} applicants who missed out on any placement: {count}".format(cat=category+1, count=len(list(filter(lambda a: a.allocation==None and a.category==category, self.applicants)))))
+			print("Total Category {cat} applicants who did not get any placement: {count}".format(cat=category+1, count=len(list(filter(lambda a: a.allocation==None and a.category==category, self.applicants)))))
+			print("Total Category {cat} applicants: {count}".format(cat=category+1, count=self.category_counts[category]))
+
+# bug: sims will not run separately, all 3 instances affect the same "hospitals" list
 
 # print("""
 # If all applicants select completely randomly:
