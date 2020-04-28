@@ -37,7 +37,8 @@ for category in categories:
 Now you can see there are some obvious problems with the results which
 I intend to fix. First of all there are no allocations to ANYONE in
 any category below 2, which makes no sense. But otherwise it seems
-consistent with what people have been saying.
+consistent with what people have been saying. Basically only category
+1 and 2 can really be looked at as of now.
 ** Everyone is random
 1539 [916, 202, 158, 148, 101, 14]
 *** Total
@@ -352,7 +353,7 @@ consistent with what people have been saying.
 | Total Category 6 applicants | 14 |
 ** Everyone stacks but moves a random to first
 *** Total
-[[./All stack with random top Satisfied applicants.png']]
+[[./All stack with random top Satisfied applicants.png]]
 | Total                                          | Count (%)    |
 |------------------------------------------------+--------------|
 | Total applicants who got their 1st preference | 739 (48.02%) |
@@ -514,9 +515,9 @@ consistent with what people have been saying.
     and 3, a proportionally larger number of people are being shafted
     to the bottom.
   - "Stacking hurts your chances of getting to preferences 1-6"
-    (HETI, 2020) - true in simulation 2 but not 3.
-- If this is indeed HETI's algorithm, satisfaction is maximised when
-  all applicants preference entirely randomly
+    (HETI, 2020) - true wherever stacking is used.
+- If this is indeed HETI's algorithm, satisfaction appears to be
+  maximised under strategy 3
 - There are a lot of deviations between this simulation and the
   actual data produced by HETI.
   - Not only do I not have all the information to make this simulation
@@ -526,9 +527,9 @@ consistent with what people have been saying.
 * What should you do?
 - Depends on what you want lmao
 - There is not enough data to draw any definitive conclusions yet
+- My code could be wrong, feel free to fork me/submit a pull request
+  if you have something to add
 * TODO Future directions
-- [ ] Move the results to matplotlib/pandas instead of the normal
-  method
 - [ ] Significance analysis of results
 - [ ] Fix the algorithm so it's more consistent with the real data
 - [ ] Implement more scenarios e.g. some people stack, some people
