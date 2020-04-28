@@ -41,468 +41,495 @@ consistent with what people have been saying.
 ** Everyone is random
 1539 [916, 202, 158, 148, 101, 14]
 *** Total
+[[./All random Satisfied applicants.png]]
 | Total                                          | Count (%)    |
 |------------------------------------------------+--------------|
-| Total 1st preference                           | 662 (43.01%) |
-| Total 2nd preference                           | 147 (9.55%)  |
-| Total 3rd preference                           | 45 (2.92%)   |
-| Total 4th preference                           | 41 (2.66%)   |
-| Total 5th preference                           | 32 (2.08%)   |
-| Total 6th preference                           | 29 (1.88%)   |
-| Total 7th preference                           | 21 (1.36%)   |
-| Total 8th preference                           | 7 (0.45%)    |
-| Total 9th preference                           | 14 (0.91%)   |
-| Total 10th preference                          | 4 (0.26%)    |
-| Total 11st preference                          | 7 (0.45%)    |
-| Total 12nd preference                          | 9 (0.58%)    |
-| Total 13rd preference                          | 2 (0.13%)    |
-| Total 14th preference                          | 7 (0.45%)    |
-| Total 15th preference                          | 0 (0.00%)    |
-| Total applicants who received any placement    | 1027         |
-| Total applicants who did not get any placement | 512          |
-| Total applicants                               | 1539         |
+| Total applicants who got their 1st preference | 718 (46.65%) |
+| Total applicants who got their 2nd preference | 104 (6.76%) |
+| Total applicants who got their 3rd preference | 58 (3.77%) |
+| Total applicants who got their 4th preference | 40 (2.60%) |
+| Total applicants who got their 5th preference | 27 (1.75%) |
+| Total applicants who got their 6th preference | 33 (2.14%) |
+| Total applicants who got their 7th preference | 5 (0.32%) |
+| Total applicants who got their 8th preference | 6 (0.39%) |
+| Total applicants who got their 9th preference | 7 (0.45%) |
+| Total applicants who got their 10th preference | 10 (0.65%) |
+| Total applicants who got their 11st preference | 8 (0.52%) |
+| Total applicants who got their 12nd preference | 2 (0.13%) |
+| Total applicants who got their 13rd preference | 3 (0.19%) |
+| Total applicants who got their 14th preference | 6 (0.39%) |
+| Total applicants who got their 15th preference | 0 (0.00%) |
+| Total applicants who received any placement | 1027 (66.73%) |
+| Total applicants who did not get any placement | 512 (33.27%) |
+| Total applicants | 1539 |
 *** Category 1
+[[./All random Satisfied applicants (category 1).png]]
 | Category 1                                                | Count (%)    |
 |-----------------------------------------------------------+--------------|
-| Total Category 1 1st preference                           | 644 (70.31%) |
-| Total Category 1 2nd preference                           | 114 (12.45%) |
-| Total Category 1 3rd preference                           | 24 (2.62%)   |
-| Total Category 1 4th preference                           | 19 (2.07%)   |
-| Total Category 1 5th preference                           | 21 (2.29%)   |
-| Total Category 1 6th preference                           | 23 (2.51%)   |
-| Total Category 1 7th preference                           | 21 (2.29%)   |
-| Total Category 1 8th preference                           | 7 (0.76%)    |
-| Total Category 1 9th preference                           | 14 (1.53%)   |
-| Total Category 1 10th preference                          | 4 (0.44%)    |
-| Total Category 1 11st preference                          | 7 (0.76%)    |
-| Total Category 1 12nd preference                          | 9 (0.98%)    |
-| Total Category 1 13rd preference                          | 2 (0.22%)    |
-| Total Category 1 14th preference                          | 7 (0.76%)    |
-| Total Category 1 15th preference                          | 0 (0.00%)    |
-| Total Category 1 applicants who received any placement    | 916          |
-| Total Category 1 applicants who did not get any placement | 0            |
-| Total Category 1 applicants                               | 916          |
+| Total Category 1 applicants who got their 1st preference | 694 (75.76%) |
+| Total Category 1 applicants who got their 2nd preference | 79 (8.62%) |
+| Total Category 1 applicants who got their 3rd preference | 21 (2.29%) |
+| Total Category 1 applicants who got their 4th preference | 23 (2.51%) |
+| Total Category 1 applicants who got their 5th preference | 19 (2.07%) |
+| Total Category 1 applicants who got their 6th preference | 33 (3.60%) |
+| Total Category 1 applicants who got their 7th preference | 5 (0.55%) |
+| Total Category 1 applicants who got their 8th preference | 6 (0.66%) |
+| Total Category 1 applicants who got their 9th preference | 7 (0.76%) |
+| Total Category 1 applicants who got their 10th preference | 10 (1.09%) |
+| Total Category 1 applicants who got their 11st preference | 8 (0.87%) |
+| Total Category 1 applicants who got their 12nd preference | 2 (0.22%) |
+| Total Category 1 applicants who got their 13rd preference | 3 (0.33%) |
+| Total Category 1 applicants who got their 14th preference | 6 (0.66%) |
+| Total Category 1 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 1 applicants who received any placement | 1027 (112.12%) |
+| Total Category 1 applicants who did not get any placement | 512 (55.90%) |
+| Total Category 1 applicants | 916 |
 *** Category 2
+[[./All random Satisfied applicants (category 2).png]]
 | Category 2                                                | Count (%)   |
 |-----------------------------------------------------------+-------------|
-| Total Category 2 1st preference                           | 18 (8.91%)  |
-| Total Category 2 2nd preference                           | 33 (16.34%) |
-| Total Category 2 3rd preference                           | 21 (10.40%) |
-| Total Category 2 4th preference                           | 22 (10.89%) |
-| Total Category 2 5th preference                           | 11 (5.45%)  |
-| Total Category 2 6th preference                           | 6 (2.97%)   |
-| Total Category 2 7th preference                           | 0 (0.00%)   |
-| Total Category 2 8th preference                           | 0 (0.00%)   |
-| Total Category 2 9th preference                           | 0 (0.00%)   |
-| Total Category 2 10th preference                          | 0 (0.00%)   |
-| Total Category 2 11st preference                          | 0 (0.00%)   |
-| Total Category 2 12nd preference                          | 0 (0.00%)   |
-| Total Category 2 13rd preference                          | 0 (0.00%)   |
-| Total Category 2 14th preference                          | 0 (0.00%)   |
-| Total Category 2 15th preference                          | 0 (0.00%)   |
-| Total Category 2 applicants who received any placement    | 111         |
-| Total Category 2 applicants who did not get any placement | 91          |
-| Total Category 2 applicants                               | 202         |
+| Total Category 2 applicants who got their 1st preference | 24 (11.88%) |
+| Total Category 2 applicants who got their 2nd preference | 25 (12.38%) |
+| Total Category 2 applicants who got their 3rd preference | 37 (18.32%) |
+| Total Category 2 applicants who got their 4th preference | 17 (8.42%) |
+| Total Category 2 applicants who got their 5th preference | 8 (3.96%) |
+| Total Category 2 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 14th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 2 applicants who received any placement | 111 (54.95%) |
+| Total Category 2 applicants who did not get any placement | 91 (45.05%) |
+| Total Category 2 applicants | 202 |
 *** Category 3
+[[./All random Satisfied applicants (category 3).png]]
 | Category 3                                                | Count (%) |
 |-----------------------------------------------------------+-----------|
-| Total Category 3 1st preference                           | 0 (0.00%) |
-| Total Category 3 2nd preference                           | 0 (0.00%) |
-| Total Category 3 3rd preference                           | 0 (0.00%) |
-| Total Category 3 4th preference                           | 0 (0.00%) |
-| Total Category 3 5th preference                           | 0 (0.00%) |
-| Total Category 3 6th preference                           | 0 (0.00%) |
-| Total Category 3 7th preference                           | 0 (0.00%) |
-| Total Category 3 8th preference                           | 0 (0.00%) |
-| Total Category 3 9th preference                           | 0 (0.00%) |
-| Total Category 3 10th preference                          | 0 (0.00%) |
-| Total Category 3 11st preference                          | 0 (0.00%) |
-| Total Category 3 12nd preference                          | 0 (0.00%) |
-| Total Category 3 13rd preference                          | 0 (0.00%) |
-| Total Category 3 14th preference                          | 0 (0.00%) |
-| Total Category 3 15th preference                          | 0 (0.00%) |
-| Total Category 3 applicants who received any placement    | 0         |
-| Total Category 3 applicants who did not get any placement | 158       |
-| Total Category 3 applicants                               | 158       |
-*** Category 4
-| Category 4                                                | Count (%) |
-|-----------------------------------------------------------+-----------|
-| Total Category 4 1st preference                           | 0 (0.00%) |
-| Total Category 4 2nd preference                           | 0 (0.00%) |
-| Total Category 4 3rd preference                           | 0 (0.00%) |
-| Total Category 4 4th preference                           | 0 (0.00%) |
-| Total Category 4 5th preference                           | 0 (0.00%) |
-| Total Category 4 6th preference                           | 0 (0.00%) |
-| Total Category 4 7th preference                           | 0 (0.00%) |
-| Total Category 4 8th preference                           | 0 (0.00%) |
-| Total Category 4 9th preference                           | 0 (0.00%) |
-| Total Category 4 10th preference                          | 0 (0.00%) |
-| Total Category 4 11st preference                          | 0 (0.00%) |
-| Total Category 4 12nd preference                          | 0 (0.00%) |
-| Total Category 4 13rd preference                          | 0 (0.00%) |
-| Total Category 4 14th preference                          | 0 (0.00%) |
-| Total Category 4 15th preference                          | 0 (0.00%) |
-| Total Category 4 applicants who received any placement    | 0         |
-| Total Category 4 applicants who did not get any placement | 148       |
-| Total Category 4 applicants                               | 148       |
-*** Category 5
-| Category 5                                                | Count (%) |
-|-----------------------------------------------------------+-----------|
-| Total Category 5 1st preference                           | 0 (0.00%) |
-| Total Category 5 2nd preference                           | 0 (0.00%) |
-| Total Category 5 3rd preference                           | 0 (0.00%) |
-| Total Category 5 4th preference                           | 0 (0.00%) |
-| Total Category 5 5th preference                           | 0 (0.00%) |
-| Total Category 5 6th preference                           | 0 (0.00%) |
-| Total Category 5 7th preference                           | 0 (0.00%) |
-| Total Category 5 8th preference                           | 0 (0.00%) |
-| Total Category 5 9th preference                           | 0 (0.00%) |
-| Total Category 5 10th preference                          | 0 (0.00%) |
-| Total Category 5 11st preference                          | 0 (0.00%) |
-| Total Category 5 12nd preference                          | 0 (0.00%) |
-| Total Category 5 13rd preference                          | 0 (0.00%) |
-| Total Category 5 14th preference                          | 0 (0.00%) |
-| Total Category 5 15th preference                          | 0 (0.00%) |
-| Total Category 5 applicants who received any placement    | 0         |
-| Total Category 5 applicants who did not get any placement | 101       |
-| Total Category 5 applicants                               | 101       |
-*** Category 6
-| Category 6                                                | Count (%) |
-|-----------------------------------------------------------+-----------|
-| Total Category 6 1st preference                           | 0 (0.00%) |
-| Total Category 6 2nd preference                           | 0 (0.00%) |
-| Total Category 6 3rd preference                           | 0 (0.00%) |
-| Total Category 6 4th preference                           | 0 (0.00%) |
-| Total Category 6 5th preference                           | 0 (0.00%) |
-| Total Category 6 6th preference                           | 0 (0.00%) |
-| Total Category 6 7th preference                           | 0 (0.00%) |
-| Total Category 6 8th preference                           | 0 (0.00%) |
-| Total Category 6 9th preference                           | 0 (0.00%) |
-| Total Category 6 10th preference                          | 0 (0.00%) |
-| Total Category 6 11st preference                          | 0 (0.00%) |
-| Total Category 6 12nd preference                          | 0 (0.00%) |
-| Total Category 6 13rd preference                          | 0 (0.00%) |
-| Total Category 6 14th preference                          | 0 (0.00%) |
-| Total Category 6 15th preference                          | 0 (0.00%) |
-| Total Category 6 applicants who received any placement    | 0         |
-| Total Category 6 applicants who did not get any placement | 14        |
-| Total Category 6 applicants                               | 14        |
-** Everyone stacks
-*** Total
-| Total                                          | n (%)       |
-|------------------------------------------------+-------------|
-| Total 1st preference                           | 64 (4.16%)  |
-| Total 2nd preference                           | 71 (4.61%)  |
-| Total 3rd preference                           | 51 (3.31%)  |
-| Total 4th preference                           | 54 (3.51%)  |
-| Total 5th preference                           | 49 (3.18%)  |
-| Total 6th preference                           | 76 (4.94%)  |
-| Total 7th preference                           | 121 (7.86%) |
-| Total 8th preference                           | 40 (2.60%)  |
-| Total 9th preference                           | 125 (8.12%) |
-| Total 10th preference                          | 74 (4.81%)  |
-| Total 11st preference                          | 51 (3.31%)  |
-| Total 12nd preference                          | 68 (4.42%)  |
-| Total 13rd preference                          | 66 (4.29%)  |
-| Total 14th preference                          | 63 (4.09%)  |
-| Total 15th preference                          | 54 (3.51%)  |
-| Total applicants who received any placement    | 1027        |
-| Total applicants who did not get any placement | 512         |
-| Total applicants                               | 1539        |
-*** Category 1
-| Total                                                     | n (%)        |
-|-----------------------------------------------------------+--------------|
-| Total Category 1 1st preference                           | 64 (6.99%)   |
-| Total Category 1 2nd preference                           | 71 (7.75%)   |
-| Total Category 1 3rd preference                           | 51 (5.57%)   |
-| Total Category 1 4th preference                           | 54 (5.90%)   |
-| Total Category 1 5th preference                           | 49 (5.35%)   |
-| Total Category 1 6th preference                           | 76 (8.30%)   |
-| Total Category 1 7th preference                           | 121 (13.21%) |
-| Total Category 1 8th preference                           | 40 (4.37%)   |
-| Total Category 1 9th preference                           | 125 (13.65%) |
-| Total Category 1 10th preference                          | 74 (8.08%)   |
-| Total Category 1 11st preference                          | 51 (5.57%)   |
-| Total Category 1 12nd preference                          | 68 (7.42%)   |
-| Total Category 1 13rd preference                          | 66 (7.21%)   |
-| Total Category 1 14th preference                          | 6 (0.66%)    |
-| Total Category 1 15th preference                          | 0 (0.00%)    |
-| Total Category 1 applicants who received any placement    | 916          |
-| Total Category 1 applicants who did not get any placement | 0            |
-| Total Category 1 applicants                               | 916          |
-*** Category 2
-| Total                                                     | n (%)       |
-|-----------------------------------------------------------+-------------|
-| Total Category 2 1st preference                           | 0 (0.00%)   |
-| Total Category 2 2nd preference                           | 0 (0.00%)   |
-| Total Category 2 3rd preference                           | 0 (0.00%)   |
-| Total Category 2 4th preference                           | 0 (0.00%)   |
-| Total Category 2 5th preference                           | 0 (0.00%)   |
-| Total Category 2 6th preference                           | 0 (0.00%)   |
-| Total Category 2 7th preference                           | 0 (0.00%)   |
-| Total Category 2 8th preference                           | 0 (0.00%)   |
-| Total Category 2 9th preference                           | 0 (0.00%)   |
-| Total Category 2 10th preference                          | 0 (0.00%)   |
-| Total Category 2 11st preference                          | 0 (0.00%)   |
-| Total Category 2 12nd preference                          | 0 (0.00%)   |
-| Total Category 2 13rd preference                          | 0 (0.00%)   |
-| Total Category 2 14th preference                          | 57 (28.22%) |
-| Total Category 2 15th preference                          | 54 (26.73%) |
-| Total Category 2 applicants who received any placement    | 111         |
-| Total Category 2 applicants who did not get any placement | 91          |
-| Total Category 2 applicants                               | 202         |
-*** Category 3
-| Total                                                     | n (%)     |
-|-----------------------------------------------------------+-----------|
-| Total Category 3 1st preference                           | 0 (0.00%) |
-| Total Category 3 2nd preference                           | 0 (0.00%) |
-| Total Category 3 3rd preference                           | 0 (0.00%) |
-| Total Category 3 4th preference                           | 0 (0.00%) |
-| Total Category 3 5th preference                           | 0 (0.00%) |
-| Total Category 3 6th preference                           | 0 (0.00%) |
-| Total Category 3 7th preference                           | 0 (0.00%) |
-| Total Category 3 8th preference                           | 0 (0.00%) |
-| Total Category 3 9th preference                           | 0 (0.00%) |
-| Total Category 3 10th preference                          | 0 (0.00%) |
-| Total Category 3 11st preference                          | 0 (0.00%) |
-| Total Category 3 12nd preference                          | 0 (0.00%) |
-| Total Category 3 13rd preference                          | 0 (0.00%) |
-| Total Category 3 14th preference                          | 0 (0.00%) |
-| Total Category 3 15th preference                          | 0 (0.00%) |
-| Total Category 3 applicants who received any placement    | 0         |
-| Total Category 3 applicants who did not get any placement | 158       |
-| Total Category 3 applicants                               | 158       |
-*** Category 4
-| Total                                                     | n (%)     |
-|-----------------------------------------------------------+-----------|
-| Total Category 4 1st preference                           | 0 (0.00%) |
-| Total Category 4 2nd preference                           | 0 (0.00%) |
-| Total Category 4 3rd preference                           | 0 (0.00%) |
-| Total Category 4 4th preference                           | 0 (0.00%) |
-| Total Category 4 5th preference                           | 0 (0.00%) |
-| Total Category 4 6th preference                           | 0 (0.00%) |
-| Total Category 4 7th preference                           | 0 (0.00%) |
-| Total Category 4 8th preference                           | 0 (0.00%) |
-| Total Category 4 9th preference                           | 0 (0.00%) |
-| Total Category 4 10th preference                          | 0 (0.00%) |
-| Total Category 4 11st preference                          | 0 (0.00%) |
-| Total Category 4 12nd preference                          | 0 (0.00%) |
-| Total Category 4 13rd preference                          | 0 (0.00%) |
-| Total Category 4 14th preference                          | 0 (0.00%) |
-| Total Category 4 15th preference                          | 0 (0.00%) |
-| Total Category 4 applicants who received any placement    | 0         |
-| Total Category 4 applicants who did not get any placement | 148       |
-| Total Category 4 applicants                               | 148       |
-*** Category 5
-| Total                                                     | n (%)     |
-|-----------------------------------------------------------+-----------|
-| Total Category 5 1st preference                           | 0 (0.00%) |
-| Total Category 5 2nd preference                           | 0 (0.00%) |
-| Total Category 5 3rd preference                           | 0 (0.00%) |
-| Total Category 5 4th preference                           | 0 (0.00%) |
-| Total Category 5 5th preference                           | 0 (0.00%) |
-| Total Category 5 6th preference                           | 0 (0.00%) |
-| Total Category 5 7th preference                           | 0 (0.00%) |
-| Total Category 5 8th preference                           | 0 (0.00%) |
-| Total Category 5 9th preference                           | 0 (0.00%) |
-| Total Category 5 10th preference                          | 0 (0.00%) |
-| Total Category 5 11st preference                          | 0 (0.00%) |
-| Total Category 5 12nd preference                          | 0 (0.00%) |
-| Total Category 5 13rd preference                          | 0 (0.00%) |
-| Total Category 5 14th preference                          | 0 (0.00%) |
-| Total Category 5 15th preference                          | 0 (0.00%) |
-| Total Category 5 applicants who received any placement    | 0         |
-| Total Category 5 applicants who did not get any placement | 101       |
-| Total Category 5 applicants                               | 101       |
-*** Category 6
-| Total                                                     | n (%)     |
-|-----------------------------------------------------------+-----------|
-| Total Category 6 1st preference                           | 0 (0.00%) |
-| Total Category 6 2nd preference                           | 0 (0.00%) |
-| Total Category 6 3rd preference                           | 0 (0.00%) |
-| Total Category 6 4th preference                           | 0 (0.00%) |
-| Total Category 6 5th preference                           | 0 (0.00%) |
-| Total Category 6 6th preference                           | 0 (0.00%) |
-| Total Category 6 7th preference                           | 0 (0.00%) |
-| Total Category 6 8th preference                           | 0 (0.00%) |
-| Total Category 6 9th preference                           | 0 (0.00%) |
-| Total Category 6 10th preference                          | 0 (0.00%) |
-| Total Category 6 11st preference                          | 0 (0.00%) |
-| Total Category 6 12nd preference                          | 0 (0.00%) |
-| Total Category 6 13rd preference                          | 0 (0.00%) |
-| Total Category 6 14th preference                          | 0 (0.00%) |
-| Total Category 6 15th preference                          | 0 (0.00%) |
-| Total Category 6 applicants who received any placement    | 0         |
-| Total Category 6 applicants who did not get any placement | 14        |
-| Total Category 6 applicants                               | 14        |
-** Everyone stacks but moves a random to first
-*** Total
-| Total                                          | Count (%)    |
-|------------------------------------------------+--------------|
-| Total applicants who got their 1st preference  | 744 (48.34%) |
-| Total applicants who got their 2nd preference  | 1 (0.06%)    |
-| Total applicants who got their 3rd preference  | 0 (0.00%)    |
-| Total applicants who got their 4th preference  | 6 (0.39%)    |
-| Total applicants who got their 5th preference  | 4 (0.26%)    |
-| Total applicants who got their 6th preference  | 5 (0.32%)    |
-| Total applicants who got their 7th preference  | 12 (0.78%)   |
-| Total applicants who got their 8th preference  | 1 (0.06%)    |
-| Total applicants who got their 9th preference  | 15 (0.97%)   |
-| Total applicants who got their 10th preference | 0 (0.00%)    |
-| Total applicants who got their 11st preference | 4 (0.26%)    |
-| Total applicants who got their 12nd preference | 9 (0.58%)    |
-| Total applicants who got their 13rd preference | 56 (3.64%)   |
-| Total applicants who got their 14th preference | 126 (8.19%)  |
-| Total applicants who got their 15th preference | 44 (2.86%)   |
-| Total applicants who received any placement    | 1027         |
-| Total applicants who did not get any placement | 512          |
-| Total applicants                               | 1539         |
-*** Category 1
-| Category 1                                                | Count (%)    |
-|-----------------------------------------------------------+--------------|
-| Total Category 1 applicants who got their 1st preference  | 721 (78.71%) |
-| Total Category 1 applicants who got their 2nd preference  | 1 (0.11%)    |
-| Total Category 1 applicants who got their 3rd preference  | 0 (0.00%)    |
-| Total Category 1 applicants who got their 4th preference  | 6 (0.66%)    |
-| Total Category 1 applicants who got their 5th preference  | 4 (0.44%)    |
-| Total Category 1 applicants who got their 6th preference  | 5 (0.55%)    |
-| Total Category 1 applicants who got their 7th preference  | 12 (1.31%)   |
-| Total Category 1 applicants who got their 8th preference  | 1 (0.11%)    |
-| Total Category 1 applicants who got their 9th preference  | 15 (1.64%)   |
-| Total Category 1 applicants who got their 10th preference | 0 (0.00%)    |
-| Total Category 1 applicants who got their 11st preference | 4 (0.44%)    |
-| Total Category 1 applicants who got their 12nd preference | 9 (0.98%)    |
-| Total Category 1 applicants who got their 13rd preference | 56 (6.11%)   |
-| Total Category 1 applicants who got their 14th preference | 79 (8.62%)   |
-| Total Category 1 applicants who got their 15th preference | 3 (0.33%)    |
-| Total Category 1 applicants who received any placement    | 916          |
-| Total Category 1 applicants who did not get any placement | 0            |
-| Total Category 1 applicants                               | 916          |
-*** Category 2
-| Category 2                                                | Count (%)   |
-|-----------------------------------------------------------+-------------|
-| Total Category 2 applicants who got their 1st preference  | 23 (11.39%) |
-| Total Category 2 applicants who got their 2nd preference  | 0 (0.00%)   |
-| Total Category 2 applicants who got their 3rd preference  | 0 (0.00%)   |
-| Total Category 2 applicants who got their 4th preference  | 0 (0.00%)   |
-| Total Category 2 applicants who got their 5th preference  | 0 (0.00%)   |
-| Total Category 2 applicants who got their 6th preference  | 0 (0.00%)   |
-| Total Category 2 applicants who got their 7th preference  | 0 (0.00%)   |
-| Total Category 2 applicants who got their 8th preference  | 0 (0.00%)   |
-| Total Category 2 applicants who got their 9th preference  | 0 (0.00%)   |
-| Total Category 2 applicants who got their 10th preference | 0 (0.00%)   |
-| Total Category 2 applicants who got their 11st preference | 0 (0.00%)   |
-| Total Category 2 applicants who got their 12nd preference | 0 (0.00%)   |
-| Total Category 2 applicants who got their 13rd preference | 0 (0.00%)   |
-| Total Category 2 applicants who got their 14th preference | 47 (23.27%) |
-| Total Category 2 applicants who got their 15th preference | 41 (20.30%) |
-| Total Category 2 applicants who received any placement    | 111         |
-| Total Category 2 applicants who did not get any placement | 91          |
-| Total Category 2 applicants                               | 202         |
-*** Category 3
-| Category 3                                                | Count (%) |
-|-----------------------------------------------------------+-----------|
-| Total Category 3 applicants who got their 1st preference  | 0 (0.00%) |
-| Total Category 3 applicants who got their 2nd preference  | 0 (0.00%) |
-| Total Category 3 applicants who got their 3rd preference  | 0 (0.00%) |
-| Total Category 3 applicants who got their 4th preference  | 0 (0.00%) |
-| Total Category 3 applicants who got their 5th preference  | 0 (0.00%) |
-| Total Category 3 applicants who got their 6th preference  | 0 (0.00%) |
-| Total Category 3 applicants who got their 7th preference  | 0 (0.00%) |
-| Total Category 3 applicants who got their 8th preference  | 0 (0.00%) |
-| Total Category 3 applicants who got their 9th preference  | 0 (0.00%) |
+| Total Category 3 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 9th preference | 0 (0.00%) |
 | Total Category 3 applicants who got their 10th preference | 0 (0.00%) |
 | Total Category 3 applicants who got their 11st preference | 0 (0.00%) |
 | Total Category 3 applicants who got their 12nd preference | 0 (0.00%) |
 | Total Category 3 applicants who got their 13rd preference | 0 (0.00%) |
 | Total Category 3 applicants who got their 14th preference | 0 (0.00%) |
 | Total Category 3 applicants who got their 15th preference | 0 (0.00%) |
-| Total Category 3 applicants who received any placement    | 0         |
-| Total Category 3 applicants who did not get any placement | 158       |
-| Total Category 3 applicants                               | 158       |
+| Total Category 3 applicants who received any placement | 0 (0.00%) |
+| Total Category 3 applicants who did not get any placement | 158 (100.00%) |
+| Total Category 3 applicants | 158 |
 *** Category 4
+[[./All random Satisfied applicants (category 4).png]]
 | Category 4                                                | Count (%) |
 |-----------------------------------------------------------+-----------|
-| Total Category 4 applicants who got their 1st preference  | 0 (0.00%) |
-| Total Category 4 applicants who got their 2nd preference  | 0 (0.00%) |
-| Total Category 4 applicants who got their 3rd preference  | 0 (0.00%) |
-| Total Category 4 applicants who got their 4th preference  | 0 (0.00%) |
-| Total Category 4 applicants who got their 5th preference  | 0 (0.00%) |
-| Total Category 4 applicants who got their 6th preference  | 0 (0.00%) |
-| Total Category 4 applicants who got their 7th preference  | 0 (0.00%) |
-| Total Category 4 applicants who got their 8th preference  | 0 (0.00%) |
-| Total Category 4 applicants who got their 9th preference  | 0 (0.00%) |
+| Total Category 4 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 9th preference | 0 (0.00%) |
 | Total Category 4 applicants who got their 10th preference | 0 (0.00%) |
 | Total Category 4 applicants who got their 11st preference | 0 (0.00%) |
 | Total Category 4 applicants who got their 12nd preference | 0 (0.00%) |
 | Total Category 4 applicants who got their 13rd preference | 0 (0.00%) |
 | Total Category 4 applicants who got their 14th preference | 0 (0.00%) |
 | Total Category 4 applicants who got their 15th preference | 0 (0.00%) |
-| Total Category 4 applicants who received any placement    | 0         |
-| Total Category 4 applicants who did not get any placement | 148       |
-| Total Category 4 applicants                               | 148       |
+| Total Category 4 applicants who received any placement | 0 (0.00%) |
+| Total Category 4 applicants who did not get any placement | 148 (100.00%) |
+| Total Category 4 applicants | 148 |
 *** Category 5
+[[./All random Satisfied applicants (category 5).png]]
 | Category 5                                                | Count (%) |
 |-----------------------------------------------------------+-----------|
-| Total Category 5 applicants who got their 1st preference  | 0 (0.00%) |
-| Total Category 5 applicants who got their 2nd preference  | 0 (0.00%) |
-| Total Category 5 applicants who got their 3rd preference  | 0 (0.00%) |
-| Total Category 5 applicants who got their 4th preference  | 0 (0.00%) |
-| Total Category 5 applicants who got their 5th preference  | 0 (0.00%) |
-| Total Category 5 applicants who got their 6th preference  | 0 (0.00%) |
-| Total Category 5 applicants who got their 7th preference  | 0 (0.00%) |
-| Total Category 5 applicants who got their 8th preference  | 0 (0.00%) |
-| Total Category 5 applicants who got their 9th preference  | 0 (0.00%) |
+| Total Category 5 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 9th preference | 0 (0.00%) |
 | Total Category 5 applicants who got their 10th preference | 0 (0.00%) |
 | Total Category 5 applicants who got their 11st preference | 0 (0.00%) |
 | Total Category 5 applicants who got their 12nd preference | 0 (0.00%) |
 | Total Category 5 applicants who got their 13rd preference | 0 (0.00%) |
 | Total Category 5 applicants who got their 14th preference | 0 (0.00%) |
 | Total Category 5 applicants who got their 15th preference | 0 (0.00%) |
-| Total Category 5 applicants who received any placement    | 0         |
-| Total Category 5 applicants who did not get any placement | 101       |
-| Total Category 5 applicants                               | 101       |
+| Total Category 5 applicants who received any placement | 0 (0.00%) |
+| Total Category 5 applicants who did not get any placement | 101 (100.00%) |
+| Total Category 5 applicants | 101 |
 *** Category 6
+[[./All random Satisfied applicants (category 6).png]]
 | Category 6                                                | Count (%) |
 |-----------------------------------------------------------+-----------|
-| Total Category 6 applicants who got their 1st preference  | 0 (0.00%) |
-| Total Category 6 applicants who got their 2nd preference  | 0 (0.00%) |
-| Total Category 6 applicants who got their 3rd preference  | 0 (0.00%) |
-| Total Category 6 applicants who got their 4th preference  | 0 (0.00%) |
-| Total Category 6 applicants who got their 5th preference  | 0 (0.00%) |
-| Total Category 6 applicants who got their 6th preference  | 0 (0.00%) |
-| Total Category 6 applicants who got their 7th preference  | 0 (0.00%) |
-| Total Category 6 applicants who got their 8th preference  | 0 (0.00%) |
-| Total Category 6 applicants who got their 9th preference  | 0 (0.00%) |
+| Total Category 6 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 9th preference | 0 (0.00%) |
 | Total Category 6 applicants who got their 10th preference | 0 (0.00%) |
 | Total Category 6 applicants who got their 11st preference | 0 (0.00%) |
 | Total Category 6 applicants who got their 12nd preference | 0 (0.00%) |
 | Total Category 6 applicants who got their 13rd preference | 0 (0.00%) |
 | Total Category 6 applicants who got their 14th preference | 0 (0.00%) |
 | Total Category 6 applicants who got their 15th preference | 0 (0.00%) |
-| Total Category 6 applicants who received any placement    | 0         |
-| Total Category 6 applicants who did not get any placement | 14        |
-| Total Category 6 applicants                               | 14        |
+| Total Category 6 applicants who received any placement | 0 (0.00%) |
+| Total Category 6 applicants who did not get any placement | 14 (100.00%) |
+| Total Category 6 applicants | 14 |
+** Everyone stacks
+*** Total
+[[./All stack Satisfied applicants.png]]
+| Total                                          | n (%)       |
+|------------------------------------------------+-------------|
+| Total applicants who got their 1st preference | 64 (4.16%) |
+| Total applicants who got their 2nd preference | 71 (4.61%) |
+| Total applicants who got their 3rd preference | 51 (3.31%) |
+| Total applicants who got their 4th preference | 54 (3.51%) |
+| Total applicants who got their 5th preference | 49 (3.18%) |
+| Total applicants who got their 6th preference | 76 (4.94%) |
+| Total applicants who got their 7th preference | 121 (7.86%) |
+| Total applicants who got their 8th preference | 40 (2.60%) |
+| Total applicants who got their 9th preference | 125 (8.12%) |
+| Total applicants who got their 10th preference | 74 (4.81%) |
+| Total applicants who got their 11st preference | 51 (3.31%) |
+| Total applicants who got their 12nd preference | 68 (4.42%) |
+| Total applicants who got their 13rd preference | 66 (4.29%) |
+| Total applicants who got their 14th preference | 63 (4.09%) |
+| Total applicants who got their 15th preference | 54 (3.51%) |
+| Total applicants who received any placement | 1027 (66.73%) |
+| Total applicants who did not get any placement | 512 (33.27%) |
+| Total applicants | 1539 |
+*** Category 1
+[[./All stack Satisfied applicants (category 1).png]]
+| Total                                                     | n (%)        |
+|-----------------------------------------------------------+--------------|
+| Total Category 1 applicants who got their 1st preference | 64 (6.99%) |
+| Total Category 1 applicants who got their 2nd preference | 71 (7.75%) |
+| Total Category 1 applicants who got their 3rd preference | 51 (5.57%) |
+| Total Category 1 applicants who got their 4th preference | 54 (5.90%) |
+| Total Category 1 applicants who got their 5th preference | 49 (5.35%) |
+| Total Category 1 applicants who got their 6th preference | 76 (8.30%) |
+| Total Category 1 applicants who got their 7th preference | 121 (13.21%) |
+| Total Category 1 applicants who got their 8th preference | 40 (4.37%) |
+| Total Category 1 applicants who got their 9th preference | 125 (13.65%) |
+| Total Category 1 applicants who got their 10th preference | 74 (8.08%) |
+| Total Category 1 applicants who got their 11st preference | 51 (5.57%) |
+| Total Category 1 applicants who got their 12nd preference | 68 (7.42%) |
+| Total Category 1 applicants who got their 13rd preference | 66 (7.21%) |
+| Total Category 1 applicants who got their 14th preference | 6 (0.66%) |
+| Total Category 1 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 1 applicants who received any placement | 1027 (112.12%) |
+| Total Category 1 applicants who did not get any placement | 512 (55.90%) |
+| Total Category 1 applicants | 916 |
+*** Category 2
+[[./All stack Satisfied applicants (category 2).png]]
+| Total                                                     | n (%)       |
+|-----------------------------------------------------------+-------------|
+| Total Category 2 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 14th preference | 57 (28.22%) |
+| Total Category 2 applicants who got their 15th preference | 54 (26.73%) |
+| Total Category 2 applicants who received any placement | 111 (54.95%) |
+| Total Category 2 applicants who did not get any placement | 91 (45.05%) |
+| Total Category 2 applicants | 202 |
+*** Category 3
+[[./All stack Satisfied applicants (category 3).png]]
+| Total                                                     | n (%)     |
+|-----------------------------------------------------------+-----------|
+| Total Category 3 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 14th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 3 applicants who received any placement | 0 (0.00%) |
+| Total Category 3 applicants who did not get any placement | 158 (100.00%) |
+| Total Category 3 applicants | 158 |
+*** Category 4
+[[./All stack Satisfied applicants (category 4).png]]
+| Total                                                     | n (%)     |
+|-----------------------------------------------------------+-----------|
+| Total Category 4 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 14th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 4 applicants who received any placement | 0 (0.00%) |
+| Total Category 4 applicants who did not get any placement | 148 (100.00%) |
+| Total Category 4 applicants | 148 |
+
+*** Category 5
+[[./All stack Satisfied applicants (category 5).png]]
+| Total                                                     | n (%)     |
+|-----------------------------------------------------------+-----------|
+| Total Category 5 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 14th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 5 applicants who received any placement | 0 (0.00%) |
+| Total Category 5 applicants who did not get any placement | 101 (100.00%) |
+| Total Category 5 applicants | 101 |
+*** Category 6
+[[./All stack Satisfied applicants (category 6).png]]
+| Total                                                     | n (%)     |
+|-----------------------------------------------------------+-----------|
+| Total Category 6 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 14th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 6 applicants who received any placement | 0 (0.00%) |
+| Total Category 6 applicants who did not get any placement | 14 (100.00%) |
+| Total Category 6 applicants | 14 |
+** Everyone stacks but moves a random to first
+*** Total
+[[./All stack with random top Satisfied applicants.png']]
+| Total                                          | Count (%)    |
+|------------------------------------------------+--------------|
+| Total applicants who got their 1st preference | 739 (48.02%) |
+| Total applicants who got their 2nd preference | 0 (0.00%) |
+| Total applicants who got their 3rd preference | 0 (0.00%) |
+| Total applicants who got their 4th preference | 2 (0.13%) |
+| Total applicants who got their 5th preference | 9 (0.58%) |
+| Total applicants who got their 6th preference | 13 (0.84%) |
+| Total applicants who got their 7th preference | 0 (0.00%) |
+| Total applicants who got their 8th preference | 14 (0.91%) |
+| Total applicants who got their 9th preference | 0 (0.00%) |
+| Total applicants who got their 10th preference | 0 (0.00%) |
+| Total applicants who got their 11st preference | 11 (0.71%) |
+| Total applicants who got their 12nd preference | 12 (0.78%) |
+| Total applicants who got their 13rd preference | 62 (4.03%) |
+| Total applicants who got their 14th preference | 125 (8.12%) |
+| Total applicants who got their 15th preference | 40 (2.60%) |
+| Total applicants who received any placement | 1027 (66.73%) |
+| Total applicants who did not get any placement | 512 (33.27%) |
+| Total applicants | 1539 |
+*** Category 1
+[[./All stack with random top Satisfied applicants (category 1).png]]
+| Category 1                                                | Count (%)    |
+|-----------------------------------------------------------+--------------|
+| Total Category 1 applicants who got their 1st preference | 712 (77.73%) |
+| Total Category 1 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 1 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 1 applicants who got their 4th preference | 2 (0.22%) |
+| Total Category 1 applicants who got their 5th preference | 9 (0.98%) |
+| Total Category 1 applicants who got their 6th preference | 13 (1.42%) |
+| Total Category 1 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 1 applicants who got their 8th preference | 14 (1.53%) |
+| Total Category 1 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 1 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 1 applicants who got their 11st preference | 11 (1.20%) |
+| Total Category 1 applicants who got their 12nd preference | 12 (1.31%) |
+| Total Category 1 applicants who got their 13rd preference | 62 (6.77%) |
+| Total Category 1 applicants who got their 14th preference | 78 (8.52%) |
+| Total Category 1 applicants who got their 15th preference | 3 (0.33%) |
+| Total Category 1 applicants who received any placement | 1027 (112.12%) |
+| Total Category 1 applicants who did not get any placement | 512 (55.90%) |
+| Total Category 1 applicants | 916 |
+*** Category 2
+[[./All stack with random top Satisfied applicants (category 2).png]]
+| Category 2                                                | Count (%)   |
+|-----------------------------------------------------------+-------------|
+| Total Category 2 applicants who got their 1st preference | 27 (13.37%) |
+| Total Category 2 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 2 applicants who got their 14th preference | 47 (23.27%) |
+| Total Category 2 applicants who got their 15th preference | 37 (18.32%) |
+| Total Category 2 applicants who received any placement | 111 (54.95%) |
+| Total Category 2 applicants who did not get any placement | 91 (45.05%) |
+| Total Category 2 applicants | 202 |
+*** Category 3
+[[./All stack with random top Satisfied applicants (category 3).png]]
+| Category 3                                                | Count (%) |
+|-----------------------------------------------------------+-----------|
+| Total Category 3 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 14th preference | 0 (0.00%) |
+| Total Category 3 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 3 applicants who received any placement | 0 (0.00%) |
+| Total Category 3 applicants who did not get any placement | 158 (100.00%) |
+| Total Category 3 applicants | 158 |
+*** Category 4
+[[./All stack with random top Satisfied applicants (category 4).png]]
+| Category 4                                                | Count (%) |
+|-----------------------------------------------------------+-----------|
+| Total Category 4 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 14th preference | 0 (0.00%) |
+| Total Category 4 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 4 applicants who received any placement | 0 (0.00%) |
+| Total Category 4 applicants who did not get any placement | 148 (100.00%) |
+| Total Category 4 applicants | 148 |
+*** Category 5
+[[./All stack with random top Satisfied applicants (category 5).png]]
+| Category 5                                                | Count (%) |
+|-----------------------------------------------------------+-----------|
+| Total Category 5 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 14th preference | 0 (0.00%) |
+| Total Category 5 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 5 applicants who received any placement | 0 (0.00%) |
+| Total Category 5 applicants who did not get any placement | 101 (100.00%) |
+| Total Category 5 applicants | 101 |
+*** Category 6
+[[./All stack with random top Satisfied applicants (category 6).png]]
+| Category 6                                                | Count (%) |
+|-----------------------------------------------------------+-----------|
+| Total Category 6 applicants who got their 1st preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 2nd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 3rd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 4th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 5th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 6th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 7th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 8th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 9th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 10th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 11st preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 12nd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 13rd preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 14th preference | 0 (0.00%) |
+| Total Category 6 applicants who got their 15th preference | 0 (0.00%) |
+| Total Category 6 applicants who received any placement | 0 (0.00%) |
+| Total Category 6 applicants who did not get any placement | 14 (100.00%) |
+| Total Category 6 applicants | 14 |
 * Brief discussion of results
 - The most favourable outcomes result when you use the stack but move
-  a random hospital first (i.e. choose whatever your favourite
-  hospital is, but keep the stack)
+  a random hospital to first (i.e. choose whatever your favourite
+  hospital is as preference 1, but keep the stack otherwise)
 - It is also consistent with the following observations:
-  - "The last 4 are the most important" because proportionally,
-    under the stack, more people get the last 4.
-  - "Stacking hurts your chances of getting to preferences 1-6" - this
-    is true if everyone uses the same stack.
+  - "The last 4 are the most important" - sort of. Under simulation 2
+    and 3, a proportionally larger number of people are being shafted
+    to the bottom.
+  - "Stacking hurts your chances of getting to preferences 1-6"
+    (HETI, 2020) - true in simulation 2 but not 3.
 - If this is indeed HETI's algorithm, satisfaction is maximised when
   all applicants preference entirely randomly
-- There are a lot of deviations between this simulations and the
-  actual data produced by HETI. Not only do I not have all the
-  information to make this simulation completely accurate, I did not
-  factor in for all the other entry pathways and schemes. That's why
-  the simulation output is so hilariously bad when it comes to anyone
-  below category 1.
+- There are a lot of deviations between this simulation and the
+  actual data produced by HETI.
+  - Not only do I not have all the information to make this simulation
+    completely accurate, I did not factor in for all the other entry
+    pathways and schemes. That's why the simulation output is so
+    hilariously bad when it comes to anyone below category 1
+* What should you do?
+- Depends on what you want lmao
+- There is not enough data to draw any definitive conclusions yet
 * TODO Future directions
 - [ ] Move the results to matplotlib/pandas instead of the normal
   method
+- [ ] Significance analysis of results
 - [ ] Fix the algorithm so it's more consistent with the real data
 - [ ] Implement more scenarios e.g. some people stack, some people
   random
