@@ -1,4 +1,5 @@
 #+TITLE: HETI Stack Simulator
+stack_sim.py
 * Introduction
 - First of all there is NO guarantee that any of this is accurate. It
   is only based on hearsay about how the stack algorithm works
@@ -11,6 +12,12 @@ for category in categories:
       preferenced_this = filter(lambda a: a.preferences[rank] == hospital and a.category == category, unallocated_applicants)
       hospital.fill(min(preferenced_this, random.select(preferenced_this, hospital.capacity)))
 #+END_SRC
+- For people who aren't nerds:
+  - The algorithm first looks at category
+  - Then allocates people to each hospital by rank
+  - It fills spots in each hospital by selecting from people who preferenced that hospital, in descending order of rank
+    - If there are more applicants who ranked that hospital than there are spots, it will randomly select from that pool so all spots are filled
+    - Otherwise it just fills all of those spots with those applicants
 * Implementation
 - 3 possible scenarios were tested:
   1. Everybody preferences hospitals entirely randomly
@@ -19,13 +26,398 @@ for category in categories:
      first place
 - Incomplete list of deviations from reality, simplifications and
   assumptions:
-  1. Assuming that everyone chooses randomly
-  2. Assuming that no hospital is more favourable than another
-     (corollary of assumption 1)
-  3. Assuming that everybody has exact same stack
+  1. Everyone chooses randomly
+  2. No hospital is more favourable than another (corollary of assumption 1)
+  3. Everybody has exact same stack
   4. Everyone who applies accepts the first job offer they get.
-  5. There are no other entry schemes apart from the normal route.
+  5. There are no other entry schemes apart from the normal random-allocation route.
 * TODO Results
+Now you can see there are some obvious problems with the results which
+I intend to fix
+** Everyone is random
+1539 [916, 202, 158, 148, 101, 14]
+
+Total applicants who got their 1st preference: 662 (43.01%)
+Total applicants who got their 2nd preference: 147 (9.55%)
+Total applicants who got their 3rd preference: 45 (2.92%)
+Total applicants who got their 4th preference: 41 (2.66%)
+Total applicants who got their 5th preference: 32 (2.08%)
+Total applicants who got their 6th preference: 29 (1.88%)
+Total applicants who got their 7th preference: 21 (1.36%)
+Total applicants who got their 8th preference: 7 (0.45%)
+Total applicants who got their 9th preference: 14 (0.91%)
+Total applicants who got their 10th preference: 4 (0.26%)
+Total applicants who got their 11st preference: 7 (0.45%)
+Total applicants who got their 12nd preference: 9 (0.58%)
+Total applicants who got their 13rd preference: 2 (0.13%)
+Total applicants who got their 14th preference: 7 (0.45%)
+Total applicants who got their 15th preference: 0 (0.00%)
+Total applicants who received any placement: 1027
+Total applicants who missed out on any placement: 512
+916
+Total Category 1 applicants who got their 1st preference: 644 (70.31%)
+Total Category 1 applicants who got their 2nd preference: 114 (12.45%)
+Total Category 1 applicants who got their 3rd preference: 24 (2.62%)
+Total Category 1 applicants who got their 4th preference: 19 (2.07%)
+Total Category 1 applicants who got their 5th preference: 21 (2.29%)
+Total Category 1 applicants who got their 6th preference: 23 (2.51%)
+Total Category 1 applicants who got their 7th preference: 21 (2.29%)
+Total Category 1 applicants who got their 8th preference: 7 (0.76%)
+Total Category 1 applicants who got their 9th preference: 14 (1.53%)
+Total Category 1 applicants who got their 10th preference: 4 (0.44%)
+Total Category 1 applicants who got their 11st preference: 7 (0.76%)
+Total Category 1 applicants who got their 12nd preference: 9 (0.98%)
+Total Category 1 applicants who got their 13rd preference: 2 (0.22%)
+Total Category 1 applicants who got their 14th preference: 7 (0.76%)
+Total Category 1 applicants who got their 15th preference: 0 (0.00%)
+Total Category 1 applicants who received any placement: 916
+Total Category 1 applicants who missed out on any placement: 0
+202
+Total Category 2 applicants who got their 1st preference: 18 (8.91%)
+Total Category 2 applicants who got their 2nd preference: 33 (16.34%)
+Total Category 2 applicants who got their 3rd preference: 21 (10.40%)
+Total Category 2 applicants who got their 4th preference: 22 (10.89%)
+Total Category 2 applicants who got their 5th preference: 11 (5.45%)
+Total Category 2 applicants who got their 6th preference: 6 (2.97%)
+Total Category 2 applicants who got their 7th preference: 0 (0.00%)
+Total Category 2 applicants who got their 8th preference: 0 (0.00%)
+Total Category 2 applicants who got their 9th preference: 0 (0.00%)
+Total Category 2 applicants who got their 10th preference: 0 (0.00%)
+Total Category 2 applicants who got their 11st preference: 0 (0.00%)
+Total Category 2 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 2 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 2 applicants who got their 14th preference: 0 (0.00%)
+Total Category 2 applicants who got their 15th preference: 0 (0.00%)
+Total Category 2 applicants who received any placement: 111
+Total Category 2 applicants who missed out on any placement: 91
+158
+Total Category 3 applicants who got their 1st preference: 0 (0.00%)
+Total Category 3 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 3 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 3 applicants who got their 4th preference: 0 (0.00%)
+Total Category 3 applicants who got their 5th preference: 0 (0.00%)
+Total Category 3 applicants who got their 6th preference: 0 (0.00%)
+Total Category 3 applicants who got their 7th preference: 0 (0.00%)
+Total Category 3 applicants who got their 8th preference: 0 (0.00%)
+Total Category 3 applicants who got their 9th preference: 0 (0.00%)
+Total Category 3 applicants who got their 10th preference: 0 (0.00%)
+Total Category 3 applicants who got their 11st preference: 0 (0.00%)
+Total Category 3 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 3 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 3 applicants who got their 14th preference: 0 (0.00%)
+Total Category 3 applicants who got their 15th preference: 0 (0.00%)
+Total Category 3 applicants who received any placement: 0
+Total Category 3 applicants who missed out on any placement: 158
+148
+Total Category 4 applicants who got their 1st preference: 0 (0.00%)
+Total Category 4 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 4 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 4 applicants who got their 4th preference: 0 (0.00%)
+Total Category 4 applicants who got their 5th preference: 0 (0.00%)
+Total Category 4 applicants who got their 6th preference: 0 (0.00%)
+Total Category 4 applicants who got their 7th preference: 0 (0.00%)
+Total Category 4 applicants who got their 8th preference: 0 (0.00%)
+Total Category 4 applicants who got their 9th preference: 0 (0.00%)
+Total Category 4 applicants who got their 10th preference: 0 (0.00%)
+Total Category 4 applicants who got their 11st preference: 0 (0.00%)
+Total Category 4 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 4 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 4 applicants who got their 14th preference: 0 (0.00%)
+Total Category 4 applicants who got their 15th preference: 0 (0.00%)
+Total Category 4 applicants who received any placement: 0
+Total Category 4 applicants who missed out on any placement: 148
+101
+Total Category 5 applicants who got their 1st preference: 0 (0.00%)
+Total Category 5 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 5 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 5 applicants who got their 4th preference: 0 (0.00%)
+Total Category 5 applicants who got their 5th preference: 0 (0.00%)
+Total Category 5 applicants who got their 6th preference: 0 (0.00%)
+Total Category 5 applicants who got their 7th preference: 0 (0.00%)
+Total Category 5 applicants who got their 8th preference: 0 (0.00%)
+Total Category 5 applicants who got their 9th preference: 0 (0.00%)
+Total Category 5 applicants who got their 10th preference: 0 (0.00%)
+Total Category 5 applicants who got their 11st preference: 0 (0.00%)
+Total Category 5 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 5 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 5 applicants who got their 14th preference: 0 (0.00%)
+Total Category 5 applicants who got their 15th preference: 0 (0.00%)
+Total Category 5 applicants who received any placement: 0
+Total Category 5 applicants who missed out on any placement: 101
+14
+Total Category 6 applicants who got their 1st preference: 0 (0.00%)
+Total Category 6 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 6 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 6 applicants who got their 4th preference: 0 (0.00%)
+Total Category 6 applicants who got their 5th preference: 0 (0.00%)
+Total Category 6 applicants who got their 6th preference: 0 (0.00%)
+Total Category 6 applicants who got their 7th preference: 0 (0.00%)
+Total Category 6 applicants who got their 8th preference: 0 (0.00%)
+Total Category 6 applicants who got their 9th preference: 0 (0.00%)
+Total Category 6 applicants who got their 10th preference: 0 (0.00%)
+Total Category 6 applicants who got their 11st preference: 0 (0.00%)
+Total Category 6 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 6 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 6 applicants who got their 14th preference: 0 (0.00%)
+Total Category 6 applicants who got their 15th preference: 0 (0.00%)
+Total Category 6 applicants who received any placement: 0
+Total Category 6 applicants who missed out on any placement: 14
+** Everyone stacks
+1539 [916, 202, 158, 148, 101, 14]
+
+Total applicants who got their 1st preference: 64 (4.16%)
+Total applicants who got their 2nd preference: 71 (4.61%)
+Total applicants who got their 3rd preference: 51 (3.31%)
+Total applicants who got their 4th preference: 54 (3.51%)
+Total applicants who got their 5th preference: 49 (3.18%)
+Total applicants who got their 6th preference: 76 (4.94%)
+Total applicants who got their 7th preference: 121 (7.86%)
+Total applicants who got their 8th preference: 40 (2.60%)
+Total applicants who got their 9th preference: 125 (8.12%)
+Total applicants who got their 10th preference: 74 (4.81%)
+Total applicants who got their 11st preference: 51 (3.31%)
+Total applicants who got their 12nd preference: 68 (4.42%)
+Total applicants who got their 13rd preference: 66 (4.29%)
+Total applicants who got their 14th preference: 63 (4.09%)
+Total applicants who got their 15th preference: 54 (3.51%)
+Total applicants who received any placement: 1027
+Total applicants who missed out on any placement: 512
+916
+Total Category 1 applicants who got their 1st preference: 64 (6.99%)
+Total Category 1 applicants who got their 2nd preference: 71 (7.75%)
+Total Category 1 applicants who got their 3rd preference: 51 (5.57%)
+Total Category 1 applicants who got their 4th preference: 54 (5.90%)
+Total Category 1 applicants who got their 5th preference: 49 (5.35%)
+Total Category 1 applicants who got their 6th preference: 76 (8.30%)
+Total Category 1 applicants who got their 7th preference: 121 (13.21%)
+Total Category 1 applicants who got their 8th preference: 40 (4.37%)
+Total Category 1 applicants who got their 9th preference: 125 (13.65%)
+Total Category 1 applicants who got their 10th preference: 74 (8.08%)
+Total Category 1 applicants who got their 11st preference: 51 (5.57%)
+Total Category 1 applicants who got their 12nd preference: 68 (7.42%)
+Total Category 1 applicants who got their 13rd preference: 66 (7.21%)
+Total Category 1 applicants who got their 14th preference: 6 (0.66%)
+Total Category 1 applicants who got their 15th preference: 0 (0.00%)
+Total Category 1 applicants who received any placement: 916
+Total Category 1 applicants who missed out on any placement: 0
+202
+Total Category 2 applicants who got their 1st preference: 0 (0.00%)
+Total Category 2 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 2 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 2 applicants who got their 4th preference: 0 (0.00%)
+Total Category 2 applicants who got their 5th preference: 0 (0.00%)
+Total Category 2 applicants who got their 6th preference: 0 (0.00%)
+Total Category 2 applicants who got their 7th preference: 0 (0.00%)
+Total Category 2 applicants who got their 8th preference: 0 (0.00%)
+Total Category 2 applicants who got their 9th preference: 0 (0.00%)
+Total Category 2 applicants who got their 10th preference: 0 (0.00%)
+Total Category 2 applicants who got their 11st preference: 0 (0.00%)
+Total Category 2 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 2 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 2 applicants who got their 14th preference: 57 (28.22%)
+Total Category 2 applicants who got their 15th preference: 54 (26.73%)
+Total Category 2 applicants who received any placement: 111
+Total Category 2 applicants who missed out on any placement: 91
+158
+Total Category 3 applicants who got their 1st preference: 0 (0.00%)
+Total Category 3 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 3 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 3 applicants who got their 4th preference: 0 (0.00%)
+Total Category 3 applicants who got their 5th preference: 0 (0.00%)
+Total Category 3 applicants who got their 6th preference: 0 (0.00%)
+Total Category 3 applicants who got their 7th preference: 0 (0.00%)
+Total Category 3 applicants who got their 8th preference: 0 (0.00%)
+Total Category 3 applicants who got their 9th preference: 0 (0.00%)
+Total Category 3 applicants who got their 10th preference: 0 (0.00%)
+Total Category 3 applicants who got their 11st preference: 0 (0.00%)
+Total Category 3 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 3 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 3 applicants who got their 14th preference: 0 (0.00%)
+Total Category 3 applicants who got their 15th preference: 0 (0.00%)
+Total Category 3 applicants who received any placement: 0
+Total Category 3 applicants who missed out on any placement: 158
+148
+Total Category 4 applicants who got their 1st preference: 0 (0.00%)
+Total Category 4 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 4 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 4 applicants who got their 4th preference: 0 (0.00%)
+Total Category 4 applicants who got their 5th preference: 0 (0.00%)
+Total Category 4 applicants who got their 6th preference: 0 (0.00%)
+Total Category 4 applicants who got their 7th preference: 0 (0.00%)
+Total Category 4 applicants who got their 8th preference: 0 (0.00%)
+Total Category 4 applicants who got their 9th preference: 0 (0.00%)
+Total Category 4 applicants who got their 10th preference: 0 (0.00%)
+Total Category 4 applicants who got their 11st preference: 0 (0.00%)
+Total Category 4 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 4 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 4 applicants who got their 14th preference: 0 (0.00%)
+Total Category 4 applicants who got their 15th preference: 0 (0.00%)
+Total Category 4 applicants who received any placement: 0
+Total Category 4 applicants who missed out on any placement: 148
+101
+Total Category 5 applicants who got their 1st preference: 0 (0.00%)
+Total Category 5 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 5 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 5 applicants who got their 4th preference: 0 (0.00%)
+Total Category 5 applicants who got their 5th preference: 0 (0.00%)
+Total Category 5 applicants who got their 6th preference: 0 (0.00%)
+Total Category 5 applicants who got their 7th preference: 0 (0.00%)
+Total Category 5 applicants who got their 8th preference: 0 (0.00%)
+Total Category 5 applicants who got their 9th preference: 0 (0.00%)
+Total Category 5 applicants who got their 10th preference: 0 (0.00%)
+Total Category 5 applicants who got their 11st preference: 0 (0.00%)
+Total Category 5 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 5 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 5 applicants who got their 14th preference: 0 (0.00%)
+Total Category 5 applicants who got their 15th preference: 0 (0.00%)
+Total Category 5 applicants who received any placement: 0
+Total Category 5 applicants who missed out on any placement: 101
+14
+Total Category 6 applicants who got their 1st preference: 0 (0.00%)
+Total Category 6 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 6 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 6 applicants who got their 4th preference: 0 (0.00%)
+Total Category 6 applicants who got their 5th preference: 0 (0.00%)
+Total Category 6 applicants who got their 6th preference: 0 (0.00%)
+Total Category 6 applicants who got their 7th preference: 0 (0.00%)
+Total Category 6 applicants who got their 8th preference: 0 (0.00%)
+Total Category 6 applicants who got their 9th preference: 0 (0.00%)
+Total Category 6 applicants who got their 10th preference: 0 (0.00%)
+Total Category 6 applicants who got their 11st preference: 0 (0.00%)
+Total Category 6 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 6 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 6 applicants who got their 14th preference: 0 (0.00%)
+Total Category 6 applicants who got their 15th preference: 0 (0.00%)
+Total Category 6 applicants who received any placement: 0
+Total Category 6 applicants who missed out on any placement: 14
+** Everyone stacks but moves a random to first
+1539 [916, 202, 158, 148, 101, 14]
+
+Total applicants who got their 1st preference: 744 (48.34%)
+Total applicants who got their 2nd preference: 1 (0.06%)
+Total applicants who got their 3rd preference: 0 (0.00%)
+Total applicants who got their 4th preference: 6 (0.39%)
+Total applicants who got their 5th preference: 4 (0.26%)
+Total applicants who got their 6th preference: 5 (0.32%)
+Total applicants who got their 7th preference: 12 (0.78%)
+Total applicants who got their 8th preference: 1 (0.06%)
+Total applicants who got their 9th preference: 15 (0.97%)
+Total applicants who got their 10th preference: 0 (0.00%)
+Total applicants who got their 11st preference: 4 (0.26%)
+Total applicants who got their 12nd preference: 9 (0.58%)
+Total applicants who got their 13rd preference: 56 (3.64%)
+Total applicants who got their 14th preference: 126 (8.19%)
+Total applicants who got their 15th preference: 44 (2.86%)
+Total applicants who received any placement: 1027
+Total applicants who missed out on any placement: 512
+
+Total Category 1 applicants who got their 1st preference: 721 (78.71%)
+Total Category 1 applicants who got their 2nd preference: 1 (0.11%)
+Total Category 1 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 1 applicants who got their 4th preference: 6 (0.66%)
+Total Category 1 applicants who got their 5th preference: 4 (0.44%)
+Total Category 1 applicants who got their 6th preference: 5 (0.55%)
+Total Category 1 applicants who got their 7th preference: 12 (1.31%)
+Total Category 1 applicants who got their 8th preference: 1 (0.11%)
+Total Category 1 applicants who got their 9th preference: 15 (1.64%)
+Total Category 1 applicants who got their 10th preference: 0 (0.00%)
+Total Category 1 applicants who got their 11st preference: 4 (0.44%)
+Total Category 1 applicants who got their 12nd preference: 9 (0.98%)
+Total Category 1 applicants who got their 13rd preference: 56 (6.11%)
+Total Category 1 applicants who got their 14th preference: 79 (8.62%)
+Total Category 1 applicants who got their 15th preference: 3 (0.33%)
+Total Category 1 applicants who received any placement: 916
+Total Category 1 applicants who missed out on any placement: 0
+202
+Total Category 2 applicants who got their 1st preference: 23 (11.39%)
+Total Category 2 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 2 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 2 applicants who got their 4th preference: 0 (0.00%)
+Total Category 2 applicants who got their 5th preference: 0 (0.00%)
+Total Category 2 applicants who got their 6th preference: 0 (0.00%)
+Total Category 2 applicants who got their 7th preference: 0 (0.00%)
+Total Category 2 applicants who got their 8th preference: 0 (0.00%)
+Total Category 2 applicants who got their 9th preference: 0 (0.00%)
+Total Category 2 applicants who got their 10th preference: 0 (0.00%)
+Total Category 2 applicants who got their 11st preference: 0 (0.00%)
+Total Category 2 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 2 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 2 applicants who got their 14th preference: 47 (23.27%)
+Total Category 2 applicants who got their 15th preference: 41 (20.30%)
+Total Category 2 applicants who received any placement: 111
+Total Category 2 applicants who missed out on any placement: 91
+158
+Total Category 3 applicants who got their 1st preference: 0 (0.00%)
+Total Category 3 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 3 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 3 applicants who got their 4th preference: 0 (0.00%)
+Total Category 3 applicants who got their 5th preference: 0 (0.00%)
+Total Category 3 applicants who got their 6th preference: 0 (0.00%)
+Total Category 3 applicants who got their 7th preference: 0 (0.00%)
+Total Category 3 applicants who got their 8th preference: 0 (0.00%)
+Total Category 3 applicants who got their 9th preference: 0 (0.00%)
+Total Category 3 applicants who got their 10th preference: 0 (0.00%)
+Total Category 3 applicants who got their 11st preference: 0 (0.00%)
+Total Category 3 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 3 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 3 applicants who got their 14th preference: 0 (0.00%)
+Total Category 3 applicants who got their 15th preference: 0 (0.00%)
+Total Category 3 applicants who received any placement: 0
+Total Category 3 applicants who missed out on any placement: 158
+148
+Total Category 4 applicants who got their 1st preference: 0 (0.00%)
+Total Category 4 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 4 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 4 applicants who got their 4th preference: 0 (0.00%)
+Total Category 4 applicants who got their 5th preference: 0 (0.00%)
+Total Category 4 applicants who got their 6th preference: 0 (0.00%)
+Total Category 4 applicants who got their 7th preference: 0 (0.00%)
+Total Category 4 applicants who got their 8th preference: 0 (0.00%)
+Total Category 4 applicants who got their 9th preference: 0 (0.00%)
+Total Category 4 applicants who got their 10th preference: 0 (0.00%)
+Total Category 4 applicants who got their 11st preference: 0 (0.00%)
+Total Category 4 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 4 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 4 applicants who got their 14th preference: 0 (0.00%)
+Total Category 4 applicants who got their 15th preference: 0 (0.00%)
+Total Category 4 applicants who received any placement: 0
+Total Category 4 applicants who missed out on any placement: 148
+101
+Total Category 5 applicants who got their 1st preference: 0 (0.00%)
+Total Category 5 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 5 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 5 applicants who got their 4th preference: 0 (0.00%)
+Total Category 5 applicants who got their 5th preference: 0 (0.00%)
+Total Category 5 applicants who got their 6th preference: 0 (0.00%)
+Total Category 5 applicants who got their 7th preference: 0 (0.00%)
+Total Category 5 applicants who got their 8th preference: 0 (0.00%)
+Total Category 5 applicants who got their 9th preference: 0 (0.00%)
+Total Category 5 applicants who got their 10th preference: 0 (0.00%)
+Total Category 5 applicants who got their 11st preference: 0 (0.00%)
+Total Category 5 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 5 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 5 applicants who got their 14th preference: 0 (0.00%)
+Total Category 5 applicants who got their 15th preference: 0 (0.00%)
+Total Category 5 applicants who received any placement: 0
+Total Category 5 applicants who missed out on any placement: 101
+14
+Total Category 6 applicants who got their 1st preference: 0 (0.00%)
+Total Category 6 applicants who got their 2nd preference: 0 (0.00%)
+Total Category 6 applicants who got their 3rd preference: 0 (0.00%)
+Total Category 6 applicants who got their 4th preference: 0 (0.00%)
+Total Category 6 applicants who got their 5th preference: 0 (0.00%)
+Total Category 6 applicants who got their 6th preference: 0 (0.00%)
+Total Category 6 applicants who got their 7th preference: 0 (0.00%)
+Total Category 6 applicants who got their 8th preference: 0 (0.00%)
+Total Category 6 applicants who got their 9th preference: 0 (0.00%)
+Total Category 6 applicants who got their 10th preference: 0 (0.00%)
+Total Category 6 applicants who got their 11st preference: 0 (0.00%)
+Total Category 6 applicants who got their 12nd preference: 0 (0.00%)
+Total Category 6 applicants who got their 13rd preference: 0 (0.00%)
+Total Category 6 applicants who got their 14th preference: 0 (0.00%)
+Total Category 6 applicants who got their 15th preference: 0 (0.00%)
+Total Category 6 applicants who received any placement: 0
+Total Category 6 applicants who missed out on any placement: 14
 * Brief discussion of results
 - The most favourable outcomes result when you use the stack but move
   a random hospital first (i.e. choose whatever your favourite
@@ -33,9 +425,8 @@ for category in categories:
 - It is also consistent with observations that "the last 4 are the
   most important" because proportionally, under the stack, more people
   get the last 4
-- If this is indeed HETI's algorithm, it would be optimal if all
-  applicants chose completely randomly (but we know that's not the
-  case because some hospitals are more liked than others)
+- If this is indeed HETI's algorithm, satisfaction is maximised when
+  all applicants preference entirely randomly
 - There are a lot of deviations between this simulations and the
   actual data produced by HETI. Not only do I not have all the
   information to make this simulation completely accurate, I did not
