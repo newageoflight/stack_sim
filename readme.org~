@@ -1,0 +1,13 @@
+#+TITLE: HETI Stack Simulator
+* Introduction
+- First of all there is NO guarantee that any of this is accurate. It
+  is only based on hearsay about how the stack algorithm works
+* Sources
+- I based my data on the AMSA Internship Guide[fn:1] and HETI's Annual Report[fn:2]
+
+* Footnotes
+
+[fn:2] https://www.heti.nsw.gov.au/__data/assets/pdf_file/0019/485002/Annual-Report-for-Medical-Graduate-Recruitment-for-the-2019-Clinical-Year.PDF 
+
+[fn:1] https://www.amsa.org.au/sites/amsa.org.au/files/Internship%20Guide%202019%20Final.pdf
+

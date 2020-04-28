@@ -1,0 +1,51 @@
+#+TITLE: HETI Stack Simulator
+* Introduction
+- First of all there is NO guarantee that any of this is accurate. It
+  is only based on hearsay about how the stack algorithm works
+* The algorithm
+Pseudocode but it's formatted as python for readability purposes
+#+BEGIN_SRC python
+for category in categories:
+  for hospital in hospitals:
+    for rank in range(length(hospitals)):
+      preferenced_this = filter(lambda a: a.preferences[rank] == hospital and a.category == category, unallocated_applicants)
+      hospital.fill(min(preferenced_this, random.select(preferenced_this, hospital.capacity)))
+#+END_SRC
+* Implementation
+- 3 possible scenarios were tested:
+  1. Everybody preferences hospitals entirely randomly
+  2. Everybody stacks
+  3. Everybody stacks but moves a random hospital of their choice to
+     first place
+- Incomplete list of deviations from reality, simplifications and
+  assumptions:
+  1. Assuming that everyone chooses randomly
+  2. Assuming that no hospital is more favourable than another
+     (corollary of assumption 1)
+  3. Assuming that everybody has exact same stack
+  4. Everyone who applies accepts the first job offer they get.
+  5. There are no other entry schemes apart from the normal route.
+* TODO Results
+* Brief discussion of results
+- The most favourable outcomes result when you use the stack but move
+  a random hospital first (i.e. choose whatever your favourite
+  hospital is, but keep the stack)
+- It is also consistent with observations that "the last 4 are the
+  most important" because proportionally, under the stack, more people
+  get the last 4
+- If this is indeed HETI's algorithm, it would be optimal if all
+  applicants chose completely randomly (but we know that's not the
+  case because some hospitals are more liked than others)
+- There are a lot of deviations between this simulations and the
+  actual data produced by HETI. Not only do I not have all the
+  information to make this simulation completely accurate, I did not
+  factor in for all the other entry pathways and schemes.
+* Sources
+- I based my data on the AMSA Internship Guide[fn:1] and HETI's Annual Report[fn:2]
+
+* Footnotes
+
+[fn:2] https://www.heti.nsw.gov.au/__data/assets/pdf_file/0019/485002/Annual-Report-for-Medical-Graduate-Recruitment-for-the-2019-Clinical-Year.PDF 
+
+[fn:1] https://www.amsa.org.au/sites/amsa.org.au/files/Internship%20Guide%202019%20Final.pdf
+
