@@ -46,6 +46,13 @@ for category in categories:
   6. Corollary from 3, 4, 5: Category 1 applicants are basically guaranteed
      a job.
   7. Corollary from 6: Anyone category 3 or below will not get a job.
+  8. [from a reader] Category 2 placements and beyond tend to be based
+     more on luck of the draw (offer timing, rounds, category 1
+     rejections).
+  9. Corollary from 5, 8: in terms of informing you as to what to do,
+     this simulation is basically worthless for anyone outside of
+     category 1
+- In short, this is basically unusable for 
 - For nerds: the actual code of this simulation is on [[https://github.com/newageoflight/stack_sim/blob/master/stack_sim.py][Github]].
 * Results
 How to read the tables:
