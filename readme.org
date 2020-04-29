@@ -30,11 +30,13 @@ for category in categories:
       hospital.fill(min(preferenced_this, random.select(preferenced_this, hospital.capacity)))
 #+END_SRC
 * Implementation
-- 3 possible scenarios were tested:
+- 3 (now 4) possible scenarios were tested:
   1. Everybody preferences hospitals entirely randomly
   2. Everybody stacks
   3. Everybody stacks but moves a random hospital of their choice to
      first place
+  4. (requested by Shaddy) Everybody stacks but moves a random
+     hospital to 1st and 14th place.
 - Incomplete list of deviations from reality, simplifications and
   assumptions:
   1. No hospital is more favourable than another
@@ -218,6 +220,14 @@ How to read the tables:
      - Proportionally, more people will be shafted to the bottom.
      - This appears to be most consistent with the strategy people use
        IRL.
+  4. All stack but put a random at 1 and 14
+     - Compared to 3, this slightly reduces your chance of getting
+       your 1st preference.
+     - Counterintuitively this also significantly reduces your chance
+       of getting your 14th preference, instead you are more likely to
+       get your 12th.
+     - It's likely that any attempt to "beat" the algorithm in this
+       manner will not work.
 - It is also consistent with the following observations:
   - "The last 4 are the most important" - sort of. In strategy 3, a
     proportionally larger number of people are being shafted
@@ -244,7 +254,8 @@ How to read the tables:
     might not lead to the same result as in the simulation.
 - Fork me, submit a pull request or an issue on [[https://github.com/newageoflight/stack_sim][Github]] to help me
   improve the simulation so future generations can know what to do
-  with greater accuracy
+  with greater accuracy. There's probably a lot of higher-level
+  math/CS knowledge that could be applied here that I don't know about.
 * TODO Future directions/todos
 - [ ] Significance analysis of results
 - [ ] Further strategic analysis
@@ -255,6 +266,9 @@ How to read the tables:
   offers so this simulation actually becomes useful for Categories 2-6
 - [ ] More data is needed to make this more accurate e.g. how many
   people preference each hospital in what order every year?
+- [ ] Is there any way to beat the algorithm beyond simply stacking
+  e.g. preferencing at 1st and 14th, 1st and 12th, etc? If so, why
+  does it work?
 * Sources
 - I based my data on the AMSA Internship Guide[fn:1] and HETI's Annual Report[fn:2]
 
