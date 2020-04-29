@@ -200,9 +200,8 @@ How to read the tables:
   - Strategy 2 is best if you don't care where you will end up, but
     given that IRL it is mostly a mix between strategies 2 and 3, this
     might not lead to the same result.
-- My code could be wrong, feel free to fork me/submit a pull request
-  on [[https://github.com/newageoflight/stack_sim][Github]] if you want to help me improve the simulation for future
-  generations to use
+- Fork me/submit a pull request on [[https://github.com/newageoflight/stack_sim][Github]] if you want to help me
+  improve the simulation for future generations to use
 * TODO Future directions/todos
 - [ ] Significance analysis of results
 - [ ] Further strategic analysis
