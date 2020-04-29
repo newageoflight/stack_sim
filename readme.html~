@@ -1,0 +1,1418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-04-29 Wed 20:37 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HETI Stack Simulator</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Christopher Chen" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">HETI Stack Simulator
+<br />
+<span class="subtitle">stack_sim.py</span>
+</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org1120cf4">1. Introduction</a></li>
+<li><a href="#orgdba948a">2. The algorithm</a></li>
+<li><a href="#orgf7c6362">3. Implementation</a></li>
+<li><a href="#orgf09fe84">4. Results</a>
+<ul>
+<li><a href="#orgf0fa805">4.1. Everyone is random</a>
+<ul>
+<li><a href="#org705f568">4.1.1. Total</a></li>
+<li><a href="#org9692828">4.1.2. Category 1</a></li>
+<li><a href="#orga7c7ec5">4.1.3. Category 2</a></li>
+<li><a href="#org38c8860">4.1.4. Category 3</a></li>
+<li><a href="#orgff11704">4.1.5. Category 4</a></li>
+<li><a href="#org3a98729">4.1.6. Category 5</a></li>
+<li><a href="#orgaab6b28">4.1.7. Category 6</a></li>
+</ul>
+</li>
+<li><a href="#orge66666f">4.2. Everyone stacks</a>
+<ul>
+<li><a href="#org52c0fca">4.2.1. Total</a></li>
+<li><a href="#org9b84e95">4.2.2. Category 1</a></li>
+<li><a href="#orgabf5e36">4.2.3. Category 2</a></li>
+<li><a href="#orgf92b730">4.2.4. Category 3</a></li>
+<li><a href="#org1b9ce10">4.2.5. Category 4</a></li>
+<li><a href="#org0780048">4.2.6. Category 5</a></li>
+<li><a href="#org328ca1b">4.2.7. Category 6</a></li>
+</ul>
+</li>
+<li><a href="#orgfb53c58">4.3. Everyone stacks but moves a random to first</a>
+<ul>
+<li><a href="#orgc7b4e1b">4.3.1. Total</a></li>
+<li><a href="#orge65b9a7">4.3.2. Category 1</a></li>
+<li><a href="#orgb22c6eb">4.3.3. Category 2</a></li>
+<li><a href="#org34ca250">4.3.4. Category 3</a></li>
+<li><a href="#org78c00b9">4.3.5. Category 4</a></li>
+<li><a href="#orga8c49e1">4.3.6. Category 5</a></li>
+<li><a href="#org10c0463">4.3.7. Category 6</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgfeb1034">5. Discussion</a></li>
+<li><a href="#orgfee88c7">6. What should you do?</a></li>
+<li><a href="#org4bb958c">7. <span class="todo TODO">TODO</span> Future directions/todos</a></li>
+<li><a href="#orga4186ea">8. Sources</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1120cf4" class="outline-2">
+<h2 id="org1120cf4"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>First of all there is NO guarantee that any of this is accurate. It
+is only based on hearsay about how the stack algorithm works</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdba948a" class="outline-2">
+<h2 id="orgdba948a"><span class="section-number-2">2</span> The algorithm</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Pseudocode but it's formatted as python for readability purposes
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #a020f0;">for</span> category <span style="color: #a020f0;">in</span> categories:
+  <span style="color: #a020f0;">for</span> hospital <span style="color: #a020f0;">in</span> hospitals:
+    <span style="color: #a020f0;">for</span> rank <span style="color: #a020f0;">in</span> <span style="color: #483d8b;">range</span>(length(hospitals)):
+      <span style="color: #a0522d;">preferenced_this</span> = <span style="color: #483d8b;">filter</span>(<span style="color: #a020f0;">lambda</span> a: a.preferences[rank] == hospital <span style="color: #a020f0;">and</span> a.category == category, unallocated_applicants)
+      hospital.fill(<span style="color: #483d8b;">min</span>(preferenced_this, random.select(preferenced_this, hospital.capacity)))
+</pre>
+</div>
+<ul class="org-ul">
+<li>For people who aren't nerds:
+<ul class="org-ul">
+<li>The algorithm first looks at category</li>
+<li>Then allocates people to each hospital by rank</li>
+<li>It fills spots in each hospital by selecting from people who preferenced that hospital, in descending order of rank
+<ul class="org-ul">
+<li>If there are more applicants who ranked that hospital than there are spots, it will randomly select from that pool so all spots are filled</li>
+<li>Otherwise it just fills all of those spots with those applicants</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf7c6362" class="outline-2">
+<h2 id="orgf7c6362"><span class="section-number-2">3</span> Implementation</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>3 possible scenarios were tested:
+<ol class="org-ol">
+<li>Everybody preferences hospitals entirely randomly</li>
+<li>Everybody stacks</li>
+<li>Everybody stacks but moves a random hospital of their choice to
+first place</li>
+</ol></li>
+<li>Incomplete list of deviations from reality, simplifications and
+assumptions:
+<ol class="org-ol">
+<li>Everyone chooses randomly</li>
+<li>No hospital is more favourable than another (corollary of assumption 1)</li>
+<li>Everybody has exact same stack</li>
+<li>Everyone who applies accepts the first job offer they get.</li>
+<li>There are no other entry schemes apart from the normal random-allocation route.</li>
+<li>Category 1 applicants are basically guaranteed a job (corollary
+of assumption 5).</li>
+</ol></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf09fe84" class="outline-2">
+<h2 id="orgf09fe84"><span class="section-number-2">4</span> Results</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Now you can see there are some obvious problems with the results which
+I intend to fix. First of all there are no allocations to ANYONE in
+any category below 2, which makes no sense. But otherwise it seems
+consistent with what people have been saying about the matching process.
+</p>
+</div>
+<div id="outline-container-orgf0fa805" class="outline-3">
+<h3 id="orgf0fa805"><span class="section-number-3">4.1</span> Everyone is random</h3>
+<div class="outline-text-3" id="text-4-1">
+
+<div class="figure">
+<p><img src="./images/All random Satisfied applicants.png" alt="All random Satisfied applicants.png" />
+</p>
+</div>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-right">total</th>
+<th scope="col" class="org-right">cat1</th>
+<th scope="col" class="org-right">cat2</th>
+<th scope="col" class="org-right">cat3</th>
+<th scope="col" class="org-right">cat4</th>
+<th scope="col" class="org-right">cat5</th>
+<th scope="col" class="org-right">cat6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">1st</td>
+<td class="org-right">724</td>
+<td class="org-right">697</td>
+<td class="org-right">27</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">2nd</td>
+<td class="org-right">99</td>
+<td class="org-right">79</td>
+<td class="org-right">20</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">3rd</td>
+<td class="org-right">36</td>
+<td class="org-right">18</td>
+<td class="org-right">18</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">4th</td>
+<td class="org-right">52</td>
+<td class="org-right">26</td>
+<td class="org-right">26</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">5th</td>
+<td class="org-right">40</td>
+<td class="org-right">23</td>
+<td class="org-right">17</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">6th</td>
+<td class="org-right">23</td>
+<td class="org-right">20</td>
+<td class="org-right">3</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">7th</td>
+<td class="org-right">9</td>
+<td class="org-right">9</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">8th</td>
+<td class="org-right">9</td>
+<td class="org-right">9</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">9th</td>
+<td class="org-right">12</td>
+<td class="org-right">12</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">10th</td>
+<td class="org-right">2</td>
+<td class="org-right">2</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">11st</td>
+<td class="org-right">9</td>
+<td class="org-right">9</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">12nd</td>
+<td class="org-right">6</td>
+<td class="org-right">6</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">13rd</td>
+<td class="org-right">2</td>
+<td class="org-right">2</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">14th</td>
+<td class="org-right">4</td>
+<td class="org-right">4</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">15th</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">placed</td>
+<td class="org-right">1027</td>
+<td class="org-right">916</td>
+<td class="org-right">111</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">not_placed</td>
+<td class="org-right">512</td>
+<td class="org-right">0</td>
+<td class="org-right">91</td>
+<td class="org-right">158</td>
+<td class="org-right">148</td>
+<td class="org-right">101</td>
+<td class="org-right">14</td>
+</tr>
+
+<tr>
+<td class="org-left">total</td>
+<td class="org-right">1539</td>
+<td class="org-right">916</td>
+<td class="org-right">202</td>
+<td class="org-right">158</td>
+<td class="org-right">148</td>
+<td class="org-right">101</td>
+<td class="org-right">14</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="outline-container-org705f568" class="outline-4">
+<h4 id="org705f568"><span class="section-number-4">4.1.1</span> Total</h4>
+<div class="outline-text-4" id="text-4-1-1">
+
+<div class="figure">
+<p><img src="./images/All random Satisfied applicants total.png" alt="All random Satisfied applicants total.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org9692828" class="outline-4">
+<h4 id="org9692828"><span class="section-number-4">4.1.2</span> Category 1</h4>
+<div class="outline-text-4" id="text-4-1-2">
+
+<div class="figure">
+<p><img src="./images/All random Satisfied applicants cat1.png" alt="All random Satisfied applicants cat1.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga7c7ec5" class="outline-4">
+<h4 id="orga7c7ec5"><span class="section-number-4">4.1.3</span> Category 2</h4>
+<div class="outline-text-4" id="text-4-1-3">
+
+<div class="figure">
+<p><img src="./images/All random Satisfied applicants cat2.png" alt="All random Satisfied applicants cat2.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org38c8860" class="outline-4">
+<h4 id="org38c8860"><span class="section-number-4">4.1.4</span> Category 3</h4>
+<div class="outline-text-4" id="text-4-1-4">
+
+<div class="figure">
+<p><img src="./images/All random Satisfied applicants cat3.png" alt="All random Satisfied applicants cat3.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgff11704" class="outline-4">
+<h4 id="orgff11704"><span class="section-number-4">4.1.5</span> Category 4</h4>
+<div class="outline-text-4" id="text-4-1-5">
+
+<div class="figure">
+<p><img src="./images/All random Satisfied applicants cat4.png" alt="All random Satisfied applicants cat4.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org3a98729" class="outline-4">
+<h4 id="org3a98729"><span class="section-number-4">4.1.6</span> Category 5</h4>
+<div class="outline-text-4" id="text-4-1-6">
+
+<div class="figure">
+<p><img src="./images/All random Satisfied applicants cat5.png" alt="All random Satisfied applicants cat5.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgaab6b28" class="outline-4">
+<h4 id="orgaab6b28"><span class="section-number-4">4.1.7</span> Category 6</h4>
+<div class="outline-text-4" id="text-4-1-7">
+
+<div class="figure">
+<p><img src="./images/All random Satisfied applicants cat6.png" alt="All random Satisfied applicants cat6.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orge66666f" class="outline-3">
+<h3 id="orge66666f"><span class="section-number-3">4.2</span> Everyone stacks</h3>
+<div class="outline-text-3" id="text-4-2">
+
+<div class="figure">
+<p><img src="./images/All stack Satisfied applicants.png" alt="All stack Satisfied applicants.png" />
+</p>
+</div>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-right">total</th>
+<th scope="col" class="org-right">cat1</th>
+<th scope="col" class="org-right">cat2</th>
+<th scope="col" class="org-right">cat3</th>
+<th scope="col" class="org-right">cat4</th>
+<th scope="col" class="org-right">cat5</th>
+<th scope="col" class="org-right">cat6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">1st</td>
+<td class="org-right">64</td>
+<td class="org-right">64</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">2nd</td>
+<td class="org-right">71</td>
+<td class="org-right">71</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">3rd</td>
+<td class="org-right">51</td>
+<td class="org-right">51</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">4th</td>
+<td class="org-right">54</td>
+<td class="org-right">54</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">5th</td>
+<td class="org-right">49</td>
+<td class="org-right">49</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">6th</td>
+<td class="org-right">76</td>
+<td class="org-right">76</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">7th</td>
+<td class="org-right">121</td>
+<td class="org-right">121</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">8th</td>
+<td class="org-right">40</td>
+<td class="org-right">40</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">9th</td>
+<td class="org-right">125</td>
+<td class="org-right">125</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">10th</td>
+<td class="org-right">74</td>
+<td class="org-right">74</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">11st</td>
+<td class="org-right">51</td>
+<td class="org-right">51</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">12nd</td>
+<td class="org-right">68</td>
+<td class="org-right">68</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">13rd</td>
+<td class="org-right">66</td>
+<td class="org-right">66</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">14th</td>
+<td class="org-right">63</td>
+<td class="org-right">6</td>
+<td class="org-right">57</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">15th</td>
+<td class="org-right">54</td>
+<td class="org-right">0</td>
+<td class="org-right">54</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">placed</td>
+<td class="org-right">1027</td>
+<td class="org-right">916</td>
+<td class="org-right">111</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">not_placed</td>
+<td class="org-right">512</td>
+<td class="org-right">0</td>
+<td class="org-right">91</td>
+<td class="org-right">158</td>
+<td class="org-right">148</td>
+<td class="org-right">101</td>
+<td class="org-right">14</td>
+</tr>
+
+<tr>
+<td class="org-left">total</td>
+<td class="org-right">1539</td>
+<td class="org-right">916</td>
+<td class="org-right">202</td>
+<td class="org-right">158</td>
+<td class="org-right">148</td>
+<td class="org-right">101</td>
+<td class="org-right">14</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="outline-container-org52c0fca" class="outline-4">
+<h4 id="org52c0fca"><span class="section-number-4">4.2.1</span> Total</h4>
+<div class="outline-text-4" id="text-4-2-1">
+
+<div class="figure">
+<p><img src="./images/All stack Satisfied applicants total.png" alt="All stack Satisfied applicants total.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org9b84e95" class="outline-4">
+<h4 id="org9b84e95"><span class="section-number-4">4.2.2</span> Category 1</h4>
+<div class="outline-text-4" id="text-4-2-2">
+
+<div class="figure">
+<p><img src="./images/All stack Satisfied applicants cat1.png" alt="All stack Satisfied applicants cat1.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgabf5e36" class="outline-4">
+<h4 id="orgabf5e36"><span class="section-number-4">4.2.3</span> Category 2</h4>
+<div class="outline-text-4" id="text-4-2-3">
+
+<div class="figure">
+<p><img src="./images/All stack Satisfied applicants cat2.png" alt="All stack Satisfied applicants cat2.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf92b730" class="outline-4">
+<h4 id="orgf92b730"><span class="section-number-4">4.2.4</span> Category 3</h4>
+<div class="outline-text-4" id="text-4-2-4">
+
+<div class="figure">
+<p><img src="./images/All stack Satisfied applicants cat3.png" alt="All stack Satisfied applicants cat3.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org1b9ce10" class="outline-4">
+<h4 id="org1b9ce10"><span class="section-number-4">4.2.5</span> Category 4</h4>
+<div class="outline-text-4" id="text-4-2-5">
+
+<div class="figure">
+<p><img src="./images/All stack Satisfied applicants cat4.png" alt="All stack Satisfied applicants cat4.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org0780048" class="outline-4">
+<h4 id="org0780048"><span class="section-number-4">4.2.6</span> Category 5</h4>
+<div class="outline-text-4" id="text-4-2-6">
+
+<div class="figure">
+<p><img src="./images/All stack Satisfied applicants cat5.png" alt="All stack Satisfied applicants cat5.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org328ca1b" class="outline-4">
+<h4 id="org328ca1b"><span class="section-number-4">4.2.7</span> Category 6</h4>
+<div class="outline-text-4" id="text-4-2-7">
+
+<div class="figure">
+<p><img src="./images/All stack Satisfied applicants cat6.png" alt="All stack Satisfied applicants cat6.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfb53c58" class="outline-3">
+<h3 id="orgfb53c58"><span class="section-number-3">4.3</span> Everyone stacks but moves a random to first</h3>
+<div class="outline-text-3" id="text-4-3">
+
+<div class="figure">
+<p><img src="./images/All stack but put random at top Satisfied applicants.png" alt="All stack but put random at top Satisfied applicants.png" />
+</p>
+</div>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-right">total</th>
+<th scope="col" class="org-right">cat1</th>
+<th scope="col" class="org-right">cat2</th>
+<th scope="col" class="org-right">cat3</th>
+<th scope="col" class="org-right">cat4</th>
+<th scope="col" class="org-right">cat5</th>
+<th scope="col" class="org-right">cat6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">1st</td>
+<td class="org-right">766</td>
+<td class="org-right">740</td>
+<td class="org-right">26</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">2nd</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">3rd</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">4th</td>
+<td class="org-right">8</td>
+<td class="org-right">8</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">5th</td>
+<td class="org-right">2</td>
+<td class="org-right">2</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">6th</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">7th</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">8th</td>
+<td class="org-right">22</td>
+<td class="org-right">22</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">9th</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">10th</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">11st</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">12nd</td>
+<td class="org-right">31</td>
+<td class="org-right">31</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">13rd</td>
+<td class="org-right">31</td>
+<td class="org-right">31</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">14th</td>
+<td class="org-right">118</td>
+<td class="org-right">77</td>
+<td class="org-right">41</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">15th</td>
+<td class="org-right">48</td>
+<td class="org-right">4</td>
+<td class="org-right">44</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">placed</td>
+<td class="org-right">1027</td>
+<td class="org-right">916</td>
+<td class="org-right">111</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">not_placed</td>
+<td class="org-right">512</td>
+<td class="org-right">0</td>
+<td class="org-right">91</td>
+<td class="org-right">158</td>
+<td class="org-right">148</td>
+<td class="org-right">101</td>
+<td class="org-right">14</td>
+</tr>
+
+<tr>
+<td class="org-left">total</td>
+<td class="org-right">1539</td>
+<td class="org-right">916</td>
+<td class="org-right">202</td>
+<td class="org-right">158</td>
+<td class="org-right">148</td>
+<td class="org-right">101</td>
+<td class="org-right">14</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="outline-container-orgc7b4e1b" class="outline-4">
+<h4 id="orgc7b4e1b"><span class="section-number-4">4.3.1</span> Total</h4>
+<div class="outline-text-4" id="text-4-3-1">
+
+<div class="figure">
+<p><img src="./images/All stack but put random at top Satisfied applicants total.png" alt="All stack but put random at top Satisfied applicants total.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge65b9a7" class="outline-4">
+<h4 id="orge65b9a7"><span class="section-number-4">4.3.2</span> Category 1</h4>
+<div class="outline-text-4" id="text-4-3-2">
+
+<div class="figure">
+<p><img src="./images/All stack but put random at top Satisfied applicants cat1.png" alt="All stack but put random at top Satisfied applicants cat1.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb22c6eb" class="outline-4">
+<h4 id="orgb22c6eb"><span class="section-number-4">4.3.3</span> Category 2</h4>
+<div class="outline-text-4" id="text-4-3-3">
+
+<div class="figure">
+<p><img src="./images/All stack but put random at top Satisfied applicants cat2.png" alt="All stack but put random at top Satisfied applicants cat2.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org34ca250" class="outline-4">
+<h4 id="org34ca250"><span class="section-number-4">4.3.4</span> Category 3</h4>
+<div class="outline-text-4" id="text-4-3-4">
+
+<div class="figure">
+<p><img src="./images/All stack but put random at top Satisfied applicants cat3.png" alt="All stack but put random at top Satisfied applicants cat3.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org78c00b9" class="outline-4">
+<h4 id="org78c00b9"><span class="section-number-4">4.3.5</span> Category 4</h4>
+<div class="outline-text-4" id="text-4-3-5">
+
+<div class="figure">
+<p><img src="./images/All stack but put random at top Satisfied applicants cat4.png" alt="All stack but put random at top Satisfied applicants cat4.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga8c49e1" class="outline-4">
+<h4 id="orga8c49e1"><span class="section-number-4">4.3.6</span> Category 5</h4>
+<div class="outline-text-4" id="text-4-3-6">
+
+<div class="figure">
+<p><img src="./images/All stack but put random at top Satisfied applicants cat5.png" alt="All stack but put random at top Satisfied applicants cat5.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org10c0463" class="outline-4">
+<h4 id="org10c0463"><span class="section-number-4">4.3.7</span> Category 6</h4>
+<div class="outline-text-4" id="text-4-3-7">
+
+<div class="figure">
+<p><img src="./images/All stack but put random at top Satisfied applicants cat6.png" alt="All stack but put random at top Satisfied applicants cat6.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfeb1034" class="outline-2">
+<h2 id="orgfeb1034"><span class="section-number-2">5</span> Discussion</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>In short, under each strategy:
+<ol class="org-ol">
+<li>All random
+<ul class="org-ul">
+<li>Fairest gradation of ranks from top to bottom</li>
+<li>Nobody actually selects like this IRL (unless you're a weirdo)</li>
+</ul></li>
+<li>All stack
+<ul class="org-ul">
+<li>It's basically communism for internships.</li>
+<li>You have a near-equal chance at landing just about every
+hospital.</li>
+</ul></li>
+<li>All stack but put a random on top
+<ul class="org-ul">
+<li>Interestingly, you're most likely to get (in order) your first
+or 14th preference.</li>
+<li>Proportionally, more people will be shafted to the bottom.</li>
+<li>This appears to be most consistent with the strategy people use
+IRL.</li>
+</ul></li>
+</ol></li>
+<li>It is also consistent with the following observations:
+<ul class="org-ul">
+<li>"The last 4 are the most important" - sort of. , a proportionally larger number of people are being shafted
+to the bottom.</li>
+<li>"Stacking hurts your chances of getting to preferences 1-6"
+(HETI, 2020) - true wherever stacking is used.</li>
+</ul></li>
+<li>If this is indeed HETI's algorithm, satisfaction appears to be
+maximised under strategy 3</li>
+<li>There are a lot of deviations between this simulation and the
+actual data produced by HETI.
+<ul class="org-ul">
+<li>Not only do I not have all the information to make this simulation
+completely accurate, I did not factor in for all the other entry
+pathways and schemes. That's why the simulation output is so
+hilariously bad when it comes to anyone below category 1</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfee88c7" class="outline-2">
+<h2 id="orgfee88c7"><span class="section-number-2">6</span> What should you do?</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>Depends on what you want lmao
+<ul class="org-ul">
+<li>There is not enough data to draw any definitive conclusions on what
+the "best" strategy is, especially since a lot of simplifications
+were made to run this model</li>
+<li>Strategy 3 gives you the best chance of getting your first preference</li>
+<li>Strategy 2 is best if you don't care where you will end up, but
+given that IRL it is mostly a mix between strategies 2 and 3, this
+might not lead to the same result.</li>
+</ul></li>
+<li>My code could be wrong, feel free to fork me/submit a pull request
+if you have something to add</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4bb958c" class="outline-2">
+<h2 id="org4bb958c"><span class="section-number-2">7</span> <span class="todo TODO">TODO</span> Future directions/todos</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> Significance analysis of results</li>
+<li class="off"><code>[&#xa0;]</code> Further strategic analysis</li>
+<li class="off"><code>[&#xa0;]</code> Fix the algorithm so it's more consistent with the real data</li>
+<li class="off"><code>[&#xa0;]</code> Implement more scenarios e.g. some people stack, some people
+random</li>
+<li class="off"><code>[&#xa0;]</code> More data is needed to make this more accurate e.g. how many
+people preference each hospital in what order every year?</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga4186ea" class="outline-2">
+<h2 id="orga4186ea"><span class="section-number-2">8</span> Sources</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>I based my data on the AMSA Internship Guide<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> and HETI's Annual Report<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup></li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://www.amsa.org.au/sites/amsa.org.au/files/Internship%20Guide%202019%20Final.pdf">https://www.amsa.org.au/sites/amsa.org.au/files/Internship%20Guide%202019%20Final.pdf</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://www.heti.nsw.gov.au/__data/assets/pdf_file/0019/485002/Annual-Report-for-Medical-Graduate-Recruitment-for-the-2019-Clinical-Year.PDF">https://www.heti.nsw.gov.au/__data/assets/pdf_file/0019/485002/Annual-Report-for-Medical-Graduate-Recruitment-for-the-2019-Clinical-Year.PDF</a> 
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="date">Date: 2020-04-28</p>
+<p class="author">Author: Christopher Chen</p>
+<p class="date">Created: 2020-04-29 Wed 20:37</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

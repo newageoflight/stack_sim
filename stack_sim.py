@@ -3,6 +3,7 @@
 from matplotlib.ticker import PercentFormatter
 
 import matplotlib.pyplot as plt
+import pandas as pd
 import random
 import re
 
@@ -106,6 +107,7 @@ class Simulation(object):
 		for hospital in self.hospitals:
 			hospital.empty()
 		self.applicants = [Applicant(starting_function(self.hospitals), cat) for cat in range(len(category_counts)) for i in range(category_counts[cat])]
+		self.results = pd.DataFrame()
 		self._runsim()
 	def _runsim(self):
 		for category in range(len(self.category_counts)):
@@ -115,21 +117,22 @@ class Simulation(object):
 					hospital.fill(preferenced_this)
 		self.pprint()
 	def satisfied(self, rank, category=None):
-		if category:
+		if category != None:
 			return filter(lambda a: a.preference_number == rank and a.category == category, self.applicants)
 		else:
 			return filter(lambda a: a.preference_number == rank, self.applicants)
 	def placed(self, category=None):
-		if category:
+		if category != None:
 			return filter(lambda a: a.allocation!=None and a.category==category, self.applicants)
 		else:
 			return filter(lambda a: a.allocation!=None, self.applicants)
 	def unplaced(self, category=None):
-		if category:
+		if category != None:
 			return filter(lambda a: a.allocation==None and a.category==category, self.applicants)
 		else:
 			return filter(lambda a: a.allocation==None, self.applicants)
 	def pprint(self):
+		panda_d = {}
 		for rank in range(len(self.hospitals)):
 			satisfied = list(self.satisfied(rank))
 			print("Total applicants who got their {ord} preference: {count} ({percent:.2%})".format(ord=ordinal(rank+1), count=len(satisfied), 
@@ -137,12 +140,13 @@ class Simulation(object):
 		placed = len(list(self.placed()))
 		not_placed = len(list(self.unplaced()))
 		total = sum(self.category_counts)
+		panda_d["total"] = [len(list(self.satisfied(rank))) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
 		print("Total applicants who received any placement: {count} ({percent:.2%})".format(count=placed, percent=placed/total))
 		print("Total applicants who did not get any placement: {count} ({percent:.2%})".format(count=not_placed, percent=not_placed/total))
 		print("Total applicants: {count}".format(count=sum(self.category_counts), percent=placed/total))
 		for category in range(len(self.category_counts)):
 			for rank in range(len(self.hospitals)):
-				satisfied = list(filter(lambda a: a.preference_number == rank and a.category == category, self.applicants))
+				satisfied = list(self.satisfied(rank, category))
 				print("Total Category {cat} applicants who got their {ord} preference: {count} ({percent:.2%})".format(ord=ordinal(rank+1), count=len(satisfied), 
 					percent=len(satisfied)/category_counts[category], cat=category+1))
 			cat_placed = len(list(self.placed(category)))
@@ -151,30 +155,64 @@ class Simulation(object):
 			print("Total Category {cat} applicants who received any placement: {count} ({percent:.2%})".format(cat=category+1, count=cat_placed, percent=cat_placed/cat_total))
 			print("Total Category {cat} applicants who did not get any placement: {count} ({percent:.2%})".format(cat=category+1, count=cat_not_placed, percent=cat_not_placed/cat_total))
 			print("Total Category {cat} applicants: {count}".format(cat=category+1, count=cat_total))
-	def plot_one(self, cat=None, title_prepend=""):
-		fig, ax = plt.subplots()
-		ax.yaxis.set_major_formatter(PercentFormatter())
-		append_str = " (category {0})".format(cat+1) if cat!=None else ""
-		title = title_prepend + "Satisfied applicants" + append_str
-		ranks = list(map(ordinal, range(1, len(self.hospitals)+1)))
-		# print(ranks)
-		x_posns = range(len(ranks))
-		satisfied_ranks = [100*len(list(self.satisfied(rank, cat)))/sum(self.category_counts) for rank in range(len(self.hospitals))]
-		bars = plt.bar(x_posns, satisfied_ranks, color="green")
-		for rect in bars:
-			height = rect.get_height()
-			plt.text(rect.get_x() + rect.get_width()/2.0, height, '{:.2%}'.format(height/100), ha='center', va='bottom', fontsize='8')
+			panda_d["cat{cat}".format(cat=category+1)] = [len(list(self.satisfied(rank, category))) for rank in range(len(self.hospitals))] + [cat_placed, cat_not_placed, cat_total]
+		self.results = pd.DataFrame(panda_d, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed", "not_placed", "total"])
+		print(self.results.to_string())
+	# OLD function, from when I was a NOOB who didn't know how to use pandas
+	# def plot_one(self, cat=None, title_prepend=""):
+	# 	fig, ax = plt.subplots()
+	# 	ax.yaxis.set_major_formatter(PercentFormatter())
+	# 	append_str = " (category {0})".format(cat+1) if cat!=None else ""
+	# 	title = title_prepend + "Satisfied applicants" + append_str
+	# 	ranks = list(map(ordinal, range(1, len(self.hospitals)+1)))
+	# 	# print(ranks)
+	# 	x_posns = range(len(ranks))
+	# 	satisfied_ranks = [100*len(list(self.satisfied(rank, cat)))/sum(self.category_counts) for rank in range(len(self.hospitals))]
+	# 	bars = plt.bar(x_posns, satisfied_ranks, color="green")
+	# 	for rect in bars:
+	# 		height = rect.get_height()
+	# 		plt.text(rect.get_x() + rect.get_width()/2.0, height, '{:.2%}'.format(height/100), ha='center', va='bottom', fontsize='8')
+	# 	plt.xlabel("Applicants who got their nth preference")
+	# 	plt.xticks(x_posns, ranks)
+	# 	plt.ylabel("%")
+	# 	plt.title(title)
+	# 	plt.tight_layout()
+	# 	# print(title+".png")
+	# 	plt.savefig(sanitise_filename(title+".png"), dpi=300)
+	# 	# plt.show()
+	def _plot(self, xlab, ylab, title):
 		plt.xlabel("Applicants who got their nth preference")
-		plt.xticks(x_posns, ranks)
 		plt.ylabel("%")
 		plt.title(title)
 		plt.tight_layout()
-		# print(title+".png")
-		plt.savefig(sanitise_filename(title+".png"), dpi=300)
+		plt.savefig(sanitise_filename(title)+".png", dpi=300)
 		# plt.show()
-	def plot_all(self, title_prepend=""):
-		for i in [None]+list(range(len(self.category_counts))):
-			self.plot_one(i, title_prepend)
+		plt.clf()
+		plt.cla()
+		plt.close()
+	def percentify_results(self):
+		new_results = self.results.copy()
+		for col in new_results:
+			new_results[col] = 100*new_results[col]/new_results[col]["total"]
+		return new_results.iloc[:17]
+	def export_results(self, name):
+		self.results.to_csv(name+".csv")
+		self.percentify_results().to_csv(name+"_percentified.csv")
+	def plot_one(self, header, percent=True, prepend=""):
+		toplot = self.percentify_results() if percent else self.results
+		fig, ax = plt.subplots()
+		ax.yaxis.set_major_formatter(PercentFormatter())
+		title = prepend + "Satisfied applicants: {header}".format(header=header)
+		toplot.plot.bar(y=header, rot=30)
+		self._plot("Applicants who got their nth preference", "%" if percent else "count", title)
+	def plot_all(self, percent=True, prepend=""):
+		toplot = self.percentify_results() if percent else self.results
+		toplot.plot.bar(rot=30)
+		self._plot("Applicants who got their nth preference", "%" if percent else "count", prepend + "Satisfied applicants")
+	def plot_every(self, percent=True, prepend=""):
+		for col in self.results:
+			self.plot_one(col, percent, prepend)
+	
 
 
 print("""
@@ -182,18 +220,24 @@ If all applicants select completely randomly:
 ------------------
 """)
 applicants_all_random = Simulation(shuffle)
-applicants_all_random.plot_all("All random: ")
+applicants_all_random.plot_all(prepend="All random: ")
+applicants_all_random.plot_every(prepend="All random: ")
+applicants_all_random.export_results("all_random")
 
 print("""
 If all applicants stack:
 ------------------
 """)
 applicants_all_stacked = Simulation(default_stack)
-applicants_all_stacked.plot_all("All stack: ")
+applicants_all_stacked.plot_all(prepend="All stack: ")
+applicants_all_stacked.plot_every(prepend="All stack: ")
+applicants_all_stacked.export_results("all_stack")
 
 print("""
 If all applicants stack but move a random hospital to first:
 ------------------
 """)
 applicants_stacked_with_random_first = Simulation(push_random_to_top)
-applicants_stacked_with_random_first.plot_all("All stack with random top: ")
+applicants_stacked_with_random_first.plot_all(prepend="All stack but put random at top: ")
+applicants_stacked_with_random_first.plot_every(prepend="All stack but put random at top: ")
+applicants_stacked_with_random_first.export_results("all_stack_top_random")

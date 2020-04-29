@@ -1,0 +1,9 @@
+#+OPTIONS: toc:2 num:nil H:4 tex:imagemagick
+#+HTML_HEAD: <meta name="viewport" content="width=device-width, initial-scale=1"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/style.css" />
+#+HTML_HEAD: <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="js/jquery.tocify.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="js/bootstrap.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="js/org-bootstrap.js"></script>
