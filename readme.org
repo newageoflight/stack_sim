@@ -43,9 +43,9 @@ for category in categories:
   4. There are no other entry schemes apart from the normal
      random-allocation route.
   5. Only 1 round of offers is simulated.
-  6. Corollary from 4, 5: Category 1 applicants are basically guaranteed
+  6. Corollary from 3, 4, 5: Category 1 applicants are basically guaranteed
      a job.
-  7. Corollary from 6: Anyone below category 3 will not get a job.
+  7. Corollary from 6: Anyone category 3 or below will not get a job.
 - For nerds: the actual code of this simulation is on [[https://github.com/newageoflight/stack_sim/blob/master/stack_sim.py][Github]].
 * Results
 How to read the tables:
