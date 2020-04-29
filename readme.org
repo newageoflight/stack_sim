@@ -52,7 +52,6 @@ for category in categories:
   9. Corollary from 5, 8: in terms of informing you as to what to do,
      this simulation is basically worthless for anyone outside of
      category 1
-- In short, this is basically unusable for 
 - For nerds: the actual code of this simulation is on [[https://github.com/newageoflight/stack_sim/blob/master/stack_sim.py][Github]].
 * Results
 How to read the tables:
@@ -215,6 +214,8 @@ How to read the tables:
 - [ ] Fix the algorithm so it's more consistent with the real data
 - [ ] Implement more scenarios e.g. some people stack, some people
   random
+- [ ] Implement random Category 1 rejections and multiple rounds of
+  offers so this simulation actually becomes useful for Categories 2-6
 - [ ] More data is needed to make this more accurate e.g. how many
   people preference each hospital in what order every year?
 * Sources
