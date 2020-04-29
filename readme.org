@@ -201,13 +201,14 @@ How to read the tables:
   the "best" strategy is, especially since a lot of simplifications
   were made to run this model
   - Strategy 3 gives you the best chance of getting your first
-    preference. IRL it may be best for Category 1 hospitals (RPA, RNS,
-    POW, StV) given how popular they are.
+    preference. IRL it may break down for category 1 hospitals (RPA,
+    RNS, POW, StV), but more data is needed to say for sure.
   - Strategy 2 is best if you don't care where you will end up, but
     given that IRL it is mostly a mix between strategies 2 and 3, this
-    might not lead to the same result.
-- Fork me/submit a pull request on [[https://github.com/newageoflight/stack_sim][Github]] if you want to help me
-  improve the simulation for future generations to use
+    might not lead to the same result as in the simulation.
+- Fork me/submit a pull request on [[https://github.com/newageoflight/stack_sim][Github]] to help me improve the
+  simulation so future generations can know what to do with greater
+  accuracy
 * TODO Future directions/todos
 - [ ] Significance analysis of results
 - [ ] Further strategic analysis
