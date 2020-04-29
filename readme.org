@@ -18,7 +18,7 @@
   - If there are more applicants who ranked that hospital (nth) than
     there are spots, it will randomly select just enough people from
     that group so all spots are filled
-  - If the number of empty spaces is less than or equal to the
+  - If the number of applicants is less than or equal to the
     number of spots, the hospital will take all of the applicants
     who ranked that hospital (nth)
 - For nerds: pseudocode representation of the algorithm
@@ -63,21 +63,21 @@ How to read the tables:
 [[./images/All random Satisfied applicants.png]]
 |            | total | cat1 | cat2 | cat3 | cat4 | cat5 | cat6 |
 |------------+-------+------+------+------+------+------+------|
-| 1st        |   724 |  697 |   27 |    0 |    0 |    0 |    0 |
-| 2nd        |    99 |   79 |   20 |    0 |    0 |    0 |    0 |
-| 3rd        |    36 |   18 |   18 |    0 |    0 |    0 |    0 |
-| 4th        |    52 |   26 |   26 |    0 |    0 |    0 |    0 |
-| 5th        |    40 |   23 |   17 |    0 |    0 |    0 |    0 |
-| 6th        |    23 |   20 |    3 |    0 |    0 |    0 |    0 |
-| 7th        |     9 |    9 |    0 |    0 |    0 |    0 |    0 |
-| 8th        |     9 |    9 |    0 |    0 |    0 |    0 |    0 |
-| 9th        |    12 |   12 |    0 |    0 |    0 |    0 |    0 |
-| 10th       |     2 |    2 |    0 |    0 |    0 |    0 |    0 |
-| 11st       |     9 |    9 |    0 |    0 |    0 |    0 |    0 |
-| 12nd       |     6 |    6 |    0 |    0 |    0 |    0 |    0 |
-| 13rd       |     2 |    2 |    0 |    0 |    0 |    0 |    0 |
-| 14th       |     4 |    4 |    0 |    0 |    0 |    0 |    0 |
-| 15th       |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
+| 1st        |   743 |  708 |   35 |    0 |    0 |    0 |    0 |
+| 2nd        |    97 |   76 |   21 |    0 |    0 |    0 |    0 |
+| 3rd        |    47 |   19 |   28 |    0 |    0 |    0 |    0 |
+| 4th        |    42 |   21 |   21 |    0 |    0 |    0 |    0 |
+| 5th        |    28 |   22 |    6 |    0 |    0 |    0 |    0 |
+| 6th        |    14 |   14 |    0 |    0 |    0 |    0 |    0 |
+| 7th        |     7 |    7 |    0 |    0 |    0 |    0 |    0 |
+| 8th        |     2 |    2 |    0 |    0 |    0 |    0 |    0 |
+| 9th        |     8 |    8 |    0 |    0 |    0 |    0 |    0 |
+| 10th       |     8 |    8 |    0 |    0 |    0 |    0 |    0 |
+| 11st       |     7 |    7 |    0 |    0 |    0 |    0 |    0 |
+| 12nd       |     8 |    8 |    0 |    0 |    0 |    0 |    0 |
+| 13rd       |     6 |    6 |    0 |    0 |    0 |    0 |    0 |
+| 14th       |     5 |    5 |    0 |    0 |    0 |    0 |    0 |
+| 15th       |     5 |    5 |    0 |    0 |    0 |    0 |    0 |
 | placed     |  1027 |  916 |  111 |    0 |    0 |    0 |    0 |
 | not_placed |   512 |    0 |   91 |  158 |  148 |  101 |   14 |
 | total      |  1539 |  916 |  202 |  158 |  148 |  101 |   14 |
@@ -135,21 +135,21 @@ How to read the tables:
 [[./images/All stack but put random at top Satisfied applicants.png]]
 |            | total | cat1 | cat2 | cat3 | cat4 | cat5 | cat6 |
 |------------+-------+------+------+------+------+------+------|
-| 1st        |   766 |  740 |   26 |    0 |    0 |    0 |    0 |
+| 1st        |   745 |  714 |   31 |    0 |    0 |    0 |    0 |
 | 2nd        |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
 | 3rd        |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
 | 4th        |     8 |    8 |    0 |    0 |    0 |    0 |    0 |
-| 5th        |     2 |    2 |    0 |    0 |    0 |    0 |    0 |
+| 5th        |    16 |   16 |    0 |    0 |    0 |    0 |    0 |
 | 6th        |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
-| 7th        |     1 |    1 |    0 |    0 |    0 |    0 |    0 |
-| 8th        |    22 |   22 |    0 |    0 |    0 |    0 |    0 |
-| 9th        |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
+| 7th        |     6 |    6 |    0 |    0 |    0 |    0 |    0 |
+| 8th        |    12 |   12 |    0 |    0 |    0 |    0 |    0 |
+| 9th        |    13 |   13 |    0 |    0 |    0 |    0 |    0 |
 | 10th       |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
 | 11st       |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
-| 12nd       |    31 |   31 |    0 |    0 |    0 |    0 |    0 |
-| 13rd       |    31 |   31 |    0 |    0 |    0 |    0 |    0 |
-| 14th       |   118 |   77 |   41 |    0 |    0 |    0 |    0 |
-| 15th       |    48 |    4 |   44 |    0 |    0 |    0 |    0 |
+| 12nd       |    10 |   10 |    0 |    0 |    0 |    0 |    0 |
+| 13rd       |    55 |   55 |    0 |    0 |    0 |    0 |    0 |
+| 14th       |   116 |   78 |   38 |    0 |    0 |    0 |    0 |
+| 15th       |    46 |    4 |   42 |    0 |    0 |    0 |    0 |
 | placed     |  1027 |  916 |  111 |    0 |    0 |    0 |    0 |
 | not_placed |   512 |    0 |   91 |  158 |  148 |  101 |   14 |
 | total      |  1539 |  916 |  202 |  158 |  148 |  101 |   14 |
@@ -167,6 +167,42 @@ How to read the tables:
 [[./images/All stack but put random at top Satisfied applicants cat5.png]]
 *** Category 6
 [[./images/All stack but put random at top Satisfied applicants cat6.png]]
+** Everyone stacks but moves a random to first and 14th
+[[./images/All stack but put random at top and 14 Satisfied applicants.png]]
+|            | total | cat1 | cat2 | cat3 | cat4 | cat5 | cat6 |
+|------------+-------+------+------+------+------+------+------|
+| 1st        |   712 |  687 |   25 |    0 |    0 |    0 |    0 |
+| 2nd        |     4 |    4 |    0 |    0 |    0 |    0 |    0 |
+| 3rd        |     3 |    3 |    0 |    0 |    0 |    0 |    0 |
+| 4th        |     4 |    4 |    0 |    0 |    0 |    0 |    0 |
+| 5th        |    20 |   20 |    0 |    0 |    0 |    0 |    0 |
+| 6th        |    10 |   10 |    0 |    0 |    0 |    0 |    0 |
+| 7th        |     4 |    4 |    0 |    0 |    0 |    0 |    0 |
+| 8th        |    15 |   15 |    0 |    0 |    0 |    0 |    0 |
+| 9th        |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
+| 10th       |    10 |   10 |    0 |    0 |    0 |    0 |    0 |
+| 11st       |    13 |   13 |    0 |    0 |    0 |    0 |    0 |
+| 12nd       |    72 |   72 |    0 |    0 |    0 |    0 |    0 |
+| 13rd       |    99 |   56 |   43 |    0 |    0 |    0 |    0 |
+| 14th       |    24 |   13 |   11 |    0 |    0 |    0 |    0 |
+| 15th       |    37 |    5 |   32 |    0 |    0 |    0 |    0 |
+| placed     |  1027 |  916 |  111 |    0 |    0 |    0 |    0 |
+| not_placed |   512 |    0 |   91 |  158 |  148 |  101 |   14 |
+| total      |  1539 |  916 |  202 |  158 |  148 |  101 |   14 |
+*** Total
+[[./images/All stack but put random at top and 14 Satisfied applicants total.png]]
+*** Category 1
+[[./images/All stack but put random at top and 14 Satisfied applicants cat1.png]]
+*** Category 2
+[[./images/All stack but put random at top and 14 Satisfied applicants cat2.png]]
+*** Category 3
+[[./images/All stack but put random at top and 14 Satisfied applicants cat3.png]]
+*** Category 4
+[[./images/All stack but put random at top and 14 Satisfied applicants cat4.png]]
+*** Category 5
+[[./images/All stack but put random at top and 14 Satisfied applicants cat5.png]]
+*** Category 6
+[[./images/All stack but put random at top and 14 Satisfied applicants cat6.png]]
 * Discussion
 - In short, under each strategy:
   1. All random
@@ -206,9 +242,9 @@ How to read the tables:
   - Strategy 2 is best if you don't care where you will end up, but
     given that IRL it is mostly a mix between strategies 2 and 3, this
     might not lead to the same result as in the simulation.
-- Fork me/submit a pull request on [[https://github.com/newageoflight/stack_sim][Github]] to help me improve the
-  simulation so future generations can know what to do with greater
-  accuracy
+- Fork me, submit a pull request or an issue on [[https://github.com/newageoflight/stack_sim][Github]] to help me
+  improve the simulation so future generations can know what to do
+  with greater accuracy
 * TODO Future directions/todos
 - [ ] Significance analysis of results
 - [ ] Further strategic analysis
