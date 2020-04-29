@@ -1,4 +1,4 @@
-#+TITLE: HETI Stack Simulator
+#+TITLE: HETI Stack Simulator - An Experimental Report
 #+SUBTITLE: stack_sim.py
 #+AUTHOR: Christopher Chen
 #+DATE: 2020-04-28
@@ -9,8 +9,19 @@
 - Nonetheless, let's try to find out what the best strategy is for
   ordering your hospital preferences
 * The algorithm
-- Written here as pseudocode but formatted as python for readability
-  purposes
+- The algorithm first looks at category
+- Then allocates people of that category to each hospital by how
+  they ranked their preferred hospitals
+- It fills spots in each hospital by selecting from people who
+  preferenced that hospital, in descending order of rank (e.g. 1st
+  pref, then 2nd, etc.)
+  - If there are more applicants who ranked that hospital (nth) than
+    there are spots, it will randomly select just enough people from
+    that group so all spots are filled
+  - If the number of empty spaces is less than or equal to the
+    number of spots, the hospital will take all of the applicants
+    who ranked that hospital (nth)
+- For nerds: pseudocode representation of the algorithm
 #+BEGIN_SRC python
 for category in categories:
   for hospital in hospitals:
@@ -18,19 +29,6 @@ for category in categories:
       preferenced_this = filter(lambda a: a.preferences[rank] == hospital and a.category == category, unallocated_applicants)
       hospital.fill(min(preferenced_this, random.select(preferenced_this, hospital.capacity)))
 #+END_SRC
-- For people who aren't nerds:
-  - The algorithm first looks at category
-  - Then allocates people of that category to each hospital by how
-    they ranked their preferred hospitals
-  - It fills spots in each hospital by selecting from people who
-    preferenced that hospital, in descending order of rank (e.g. 1st
-    pref, then 2nd, etc.)
-    - If there are more applicants who ranked that hospital (nth) than
-      there are spots, it will randomly select just enough people from
-      that group so all spots are filled
-    - If the number of empty spaces is less than or equal to the
-      number of spots, the hospital will take all of the applicants
-      who ranked that hospital (nth)
 * Implementation
 - 3 possible scenarios were tested:
   1. Everybody preferences hospitals entirely randomly
