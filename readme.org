@@ -36,6 +36,7 @@ for category in categories:
   5. There are no other entry schemes apart from the normal random-allocation route.
   6. Category 1 applicants are basically guaranteed a job (corollary
      of assumption 5).
+- For nerds: all my code is on [[https://github.com/newageoflight/stack_sim/blob/master/stack_sim.py][Github]].
 * Results
 Now you can see there are some obvious problems with the results which
 I intend to fix. First of all there are no allocations to ANYONE in
@@ -187,7 +188,7 @@ consistent with what people have been saying about the matching process.
     given that IRL it is mostly a mix between strategies 2 and 3, this
     might not lead to the same result.
 - My code could be wrong, feel free to fork me/submit a pull request
-  if you have something to add
+  on [[https://github.com/newageoflight/stack_sim][Github]] if you have something to add
 * TODO Future directions/todos
 - [ ] Significance analysis of results
 - [ ] Further strategic analysis

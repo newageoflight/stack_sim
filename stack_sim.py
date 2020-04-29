@@ -158,28 +158,6 @@ class Simulation(object):
 			panda_d["cat{cat}".format(cat=category+1)] = [len(list(self.satisfied(rank, category))) for rank in range(len(self.hospitals))] + [cat_placed, cat_not_placed, cat_total]
 		self.results = pd.DataFrame(panda_d, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed", "not_placed", "total"])
 		print(self.results.to_string())
-	# OLD function, from when I was a NOOB who didn't know how to use pandas
-	# def plot_one(self, cat=None, title_prepend=""):
-	# 	fig, ax = plt.subplots()
-	# 	ax.yaxis.set_major_formatter(PercentFormatter())
-	# 	append_str = " (category {0})".format(cat+1) if cat!=None else ""
-	# 	title = title_prepend + "Satisfied applicants" + append_str
-	# 	ranks = list(map(ordinal, range(1, len(self.hospitals)+1)))
-	# 	# print(ranks)
-	# 	x_posns = range(len(ranks))
-	# 	satisfied_ranks = [100*len(list(self.satisfied(rank, cat)))/sum(self.category_counts) for rank in range(len(self.hospitals))]
-	# 	bars = plt.bar(x_posns, satisfied_ranks, color="green")
-	# 	for rect in bars:
-	# 		height = rect.get_height()
-	# 		plt.text(rect.get_x() + rect.get_width()/2.0, height, '{:.2%}'.format(height/100), ha='center', va='bottom', fontsize='8')
-	# 	plt.xlabel("Applicants who got their nth preference")
-	# 	plt.xticks(x_posns, ranks)
-	# 	plt.ylabel("%")
-	# 	plt.title(title)
-	# 	plt.tight_layout()
-	# 	# print(title+".png")
-	# 	plt.savefig(sanitise_filename(title+".png"), dpi=300)
-	# 	# plt.show()
 	def _plot(self, xlab, ylab, title):
 		plt.xlabel("Applicants who got their nth preference")
 		plt.ylabel("%")
