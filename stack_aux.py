@@ -207,11 +207,13 @@ class Simulation(object):
 		plt.close()
 
 class AnnealerSimulation(Simulation):
-	"""Simulation that uses Simulated Annealling (as outlined in the official HETI document"""
+	"""Simulation that uses Simulated Annealling (as outlined in the official HETI document)"""
 	def __init__(self, starting_strategy):
 		super(AnnealerSimulation, self).__init__(starting_strategy)
 	def _runsim(self):
-		"""Planning to use scipy or similar library to maximise global_happiness"""
+		"""Planning to use scipy or similar library to minimise global_happiness"""
 		raise NotImplementedError
-	def global_happiness(self):
+	def global_unhappiness(self):
 		return sum(a.preference_number for a in self.applicants)
+
+# given that this is a minimisation problem, other approaches like GD can also be used
