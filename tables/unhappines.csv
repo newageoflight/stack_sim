@@ -1,0 +1,11 @@
+,alloc_mode,anneal,global_unhappiness
+0,All random,True,1104
+1,All random,False,1091
+2,Weighted random,True,1697
+3,Weighted random,False,2088
+4,All stack,True,6792
+5,All stack,False,7208
+6,All stack with random first,True,2484
+7,All stack with random first,False,3529
+8,All stack with weighted random first,True,3413
+9,All stack with weighted random first,False,3557

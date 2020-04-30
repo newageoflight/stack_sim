@@ -9,6 +9,7 @@
 - Nonetheless, let's try to find out what the best strategy is for
   ordering your hospital preferences
 * The algorithm
+** The oversimplified version
 - The algorithm first looks at category
 - Then allocates people of that category to each hospital by how
   they ranked their preferred hospitals
@@ -29,8 +30,29 @@ for category in categories:
       preferenced_this = filter(lambda a: a.preferences[rank] == hospital and a.category == category, unallocated_applicants)
       hospital.fill(min(preferenced_this, random.select(preferenced_this, hospital.capacity)))
 #+END_SRC
+** What HETI uses now
+- HETI uses an approach called "simulated annealing"
+- It's an algorithm commonly used in AI that tries to find the global
+  minimum of a function
+  - The name comes from the idea that if you freeze a hot liquid
+    quickly it won't form nice crystals, but if you do it slowly it
+    will. I didn't do physics so don't ask me anything about this.
+  - But in our case it's essentially a brute force algorithm that
+    tries to find the global minimum of a function
+- It starts by allocating people from each category
+  - Category 1's will all get a job, as usual
+  - Anyone below will have this process applied to them:
+    - If there are more applicants than spots, HETI's server
+      randomises the list of applicants and takes from the top however
+      many would fill the remaining spots
+- Now for the fancy AI part
+  - So basically, everyone will start in a random hospital
+  - The algorithm will try swapping two people. If it results in a net
+    increase in happiness, the swap is followed through with. If not,
+    nothing happens.
+  - The algorithm keeps doing this for a large number of iterations.
 * Implementation
-- 3 (now 4) possible scenarios were tested:
+- 4 possible scenarios were tested:
   1. Everybody preferences hospitals entirely randomly
   2. Everybody stacks
   3. Everybody stacks but moves a random hospital of their choice to
@@ -39,21 +61,23 @@ for category in categories:
      hospital to 1st and 14th place.
 - Incomplete list of deviations from reality, simplifications and
   assumptions:
-  1. No hospital is more favourable than another
-  2. Everybody has the same stack (for simulation 2 and 3).
-  3. Everyone who applies accepts the first job offer they get.
-  4. There are no other entry schemes apart from the normal
+  1. With complete randomness, no hospital is more favourable than another
+  2. With weighted randomness, hospital favourability at all levels is
+     assumed to be equal to that at the first preference
+  3. Everybody has the same stack (for simulation 2 and 3).
+  4. Everyone who applies accepts the first job offer they get.
+  5. There are no other entry schemes apart from the normal
      random-allocation route.
-  5. Only 1 round of offers is simulated.
-  6. Corollary from 3, 4, 5: Category 1 applicants are basically guaranteed
+  6. Only 1 round of offers is simulated. Rejections are not accounted for.
+  7. Corollary from 4-6: Category 1 applicants are basically guaranteed
      a job.
-  7. Corollary from 6: Anyone category 3 or below will not get a job.
-  8. [from a reader] Category 2 placements and beyond tend to be based
+  8. Corollary from 7: Anyone category 3 or below will not get a job.
+  9. [from a reader] IRL, category 2 placements and beyond tend to be based
      more on luck of the draw (offer timing, rounds, category 1
      rejections).
-  9. Corollary from 5, 8: in terms of informing you as to what to do,
-     this simulation is basically worthless for anyone outside of
-     category 1
+  10. Corollary from 6, 9: in terms of informing you as to what to do,
+      this simulation is basically worthless for anyone outside of
+      category 1
 - For nerds: the actual code of this simulation is on [[https://github.com/newageoflight/stack_sim/blob/master/stack_sim.py][Github]].
 * Results
 How to read the tables:
@@ -61,44 +85,45 @@ How to read the tables:
 - catn :: Category n applicants
 - placed :: Applicants who matched into any hospital
 - not_placed :: Applicants who did not match into any hospital
-** Everyone is random
-[[./images/All random Satisfied applicants.png]]
+** Non-AI algorithm
+*** Everyone is random
+ [[./images/All random Satisfied applicants.png]]
 |            | total | cat1 | cat2 | cat3 | cat4 | cat5 | cat6 |
 |------------+-------+------+------+------+------+------+------|
-| 1st        |   743 |  708 |   35 |    0 |    0 |    0 |    0 |
-| 2nd        |    97 |   76 |   21 |    0 |    0 |    0 |    0 |
-| 3rd        |    47 |   19 |   28 |    0 |    0 |    0 |    0 |
-| 4th        |    42 |   21 |   21 |    0 |    0 |    0 |    0 |
-| 5th        |    28 |   22 |    6 |    0 |    0 |    0 |    0 |
-| 6th        |    14 |   14 |    0 |    0 |    0 |    0 |    0 |
-| 7th        |     7 |    7 |    0 |    0 |    0 |    0 |    0 |
-| 8th        |     2 |    2 |    0 |    0 |    0 |    0 |    0 |
-| 9th        |     8 |    8 |    0 |    0 |    0 |    0 |    0 |
-| 10th       |     8 |    8 |    0 |    0 |    0 |    0 |    0 |
-| 11st       |     7 |    7 |    0 |    0 |    0 |    0 |    0 |
+| 1st        |   688 |  666 |   22 |    0 |    0 |    0 |    0 |
+| 2nd        |   135 |  115 |   20 |    0 |    0 |    0 |    0 |
+| 3rd        |    44 |   20 |   24 |    0 |    0 |    0 |    0 |
+| 4th        |    40 |   17 |   23 |    0 |    0 |    0 |    0 |
+| 5th        |    32 |   14 |   18 |    0 |    0 |    0 |    0 |
+| 6th        |    30 |   26 |    4 |    0 |    0 |    0 |    0 |
+| 7th        |    11 |   11 |    0 |    0 |    0 |    0 |    0 |
+| 8th        |     7 |    7 |    0 |    0 |    0 |    0 |    0 |
+| 9th        |     7 |    7 |    0 |    0 |    0 |    0 |    0 |
+| 10th       |     2 |    2 |    0 |    0 |    0 |    0 |    0 |
+| 11st       |     6 |    6 |    0 |    0 |    0 |    0 |    0 |
 | 12nd       |     8 |    8 |    0 |    0 |    0 |    0 |    0 |
-| 13rd       |     6 |    6 |    0 |    0 |    0 |    0 |    0 |
-| 14th       |     5 |    5 |    0 |    0 |    0 |    0 |    0 |
-| 15th       |     5 |    5 |    0 |    0 |    0 |    0 |    0 |
+| 13rd       |     5 |    5 |    0 |    0 |    0 |    0 |    0 |
+| 14th       |     9 |    9 |    0 |    0 |    0 |    0 |    0 |
+| 15th       |     3 |    3 |    0 |    0 |    0 |    0 |    0 |
 | placed     |  1027 |  916 |  111 |    0 |    0 |    0 |    0 |
 | not_placed |   512 |    0 |   91 |  158 |  148 |  101 |   14 |
 | total      |  1539 |  916 |  202 |  158 |  148 |  101 |   14 |
-*** Total
-[[./images/All random Satisfied applicants total.png]]
-*** Category 1
-[[./images/All random Satisfied applicants cat1.png]]
-*** Category 2
-[[./images/All random Satisfied applicants cat2.png]]
-*** Category 3
-[[./images/All random Satisfied applicants cat3.png]]
-*** Category 4
-[[./images/All random Satisfied applicants cat4.png]]
-*** Category 5
-[[./images/All random Satisfied applicants cat5.png]]
-*** Category 6
-[[./images/All random Satisfied applicants cat6.png]]
-** Everyone stacks
-[[./images/All stack Satisfied applicants.png]]
+**** Total
+ [[./images/All random Satisfied applicants total.png]]
+**** Category 1
+ [[./images/All random Satisfied applicants cat1.png]]
+**** Category 2
+ [[./images/All random Satisfied applicants cat2.png]]
+**** Category 3
+ [[./images/All random Satisfied applicants cat3.png]]
+**** Category 4
+ [[./images/All random Satisfied applicants cat4.png]]
+**** Category 5
+ [[./images/All random Satisfied applicants cat5.png]]
+**** Category 6
+ [[./images/All random Satisfied applicants cat6.png]]
+*** Everyone stacks
+ [[./images/All stack Satisfied applicants.png]]
 |            | total | cat1 | cat2 | cat3 | cat4 | cat5 | cat6 |
 |------------+-------+------+------+------+------+------+------|
 | 1st        |    64 |   64 |    0 |    0 |    0 |    0 |    0 |
@@ -119,92 +144,235 @@ How to read the tables:
 | placed     |  1027 |  916 |  111 |    0 |    0 |    0 |    0 |
 | not_placed |   512 |    0 |   91 |  158 |  148 |  101 |   14 |
 | total      |  1539 |  916 |  202 |  158 |  148 |  101 |   14 |
-*** Total
-[[./images/All stack Satisfied applicants total.png]]
-*** Category 1
-[[./images/All stack Satisfied applicants cat1.png]]
-*** Category 2
-[[./images/All stack Satisfied applicants cat2.png]]
-*** Category 3
-[[./images/All stack Satisfied applicants cat3.png]]
-*** Category 4
-[[./images/All stack Satisfied applicants cat4.png]]
-*** Category 5
-[[./images/All stack Satisfied applicants cat5.png]]
-*** Category 6
-[[./images/All stack Satisfied applicants cat6.png]]
-** Everyone stacks but moves a random to first
-[[./images/All stack but put random at top Satisfied applicants.png]]
+**** Total
+ [[./images/All stack Satisfied applicants total.png]]
+**** Category 1
+ [[./images/All stack Satisfied applicants cat1.png]]
+**** Category 2
+ [[./images/All stack Satisfied applicants cat2.png]]
+**** Category 3
+ [[./images/All stack Satisfied applicants cat3.png]]
+**** Category 4
+ [[./images/All stack Satisfied applicants cat4.png]]
+**** Category 5
+ [[./images/All stack Satisfied applicants cat5.png]]
+**** Category 6
+ [[./images/All stack Satisfied applicants cat6.png]]
+*** Everyone stacks but moves a random to first
+ [[./images/All stack but put random at top Satisfied applicants.png]]
 |            | total | cat1 | cat2 | cat3 | cat4 | cat5 | cat6 |
 |------------+-------+------+------+------+------+------+------|
-| 1st        |   745 |  714 |   31 |    0 |    0 |    0 |    0 |
+| 1st        |   740 |  723 |   17 |    0 |    0 |    0 |    0 |
 | 2nd        |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
 | 3rd        |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
-| 4th        |     8 |    8 |    0 |    0 |    0 |    0 |    0 |
-| 5th        |    16 |   16 |    0 |    0 |    0 |    0 |    0 |
+| 4th        |    16 |   16 |    0 |    0 |    0 |    0 |    0 |
+| 5th        |    17 |   17 |    0 |    0 |    0 |    0 |    0 |
 | 6th        |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
 | 7th        |     6 |    6 |    0 |    0 |    0 |    0 |    0 |
-| 8th        |    12 |   12 |    0 |    0 |    0 |    0 |    0 |
-| 9th        |    13 |   13 |    0 |    0 |    0 |    0 |    0 |
-| 10th       |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
-| 11st       |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
-| 12nd       |    10 |   10 |    0 |    0 |    0 |    0 |    0 |
-| 13rd       |    55 |   55 |    0 |    0 |    0 |    0 |    0 |
-| 14th       |   116 |   78 |   38 |    0 |    0 |    0 |    0 |
-| 15th       |    46 |    4 |   42 |    0 |    0 |    0 |    0 |
+| 8th        |     5 |    5 |    0 |    0 |    0 |    0 |    0 |
+| 9th        |     1 |    1 |    0 |    0 |    0 |    0 |    0 |
+| 10th       |     1 |    1 |    0 |    0 |    0 |    0 |    0 |
+| 11st       |    10 |   10 |    0 |    0 |    0 |    0 |    0 |
+| 12nd       |     5 |    5 |    0 |    0 |    0 |    0 |    0 |
+| 13rd       |    54 |   54 |    0 |    0 |    0 |    0 |    0 |
+| 14th       |   125 |   74 |   51 |    0 |    0 |    0 |    0 |
+| 15th       |    47 |    4 |   43 |    0 |    0 |    0 |    0 |
 | placed     |  1027 |  916 |  111 |    0 |    0 |    0 |    0 |
 | not_placed |   512 |    0 |   91 |  158 |  148 |  101 |   14 |
 | total      |  1539 |  916 |  202 |  158 |  148 |  101 |   14 |
-*** Total
-[[./images/All stack but put random at top Satisfied applicants total.png]]
-*** Category 1
-[[./images/All stack but put random at top Satisfied applicants cat1.png]]
-*** Category 2
-[[./images/All stack but put random at top Satisfied applicants cat2.png]]
-*** Category 3
-[[./images/All stack but put random at top Satisfied applicants cat3.png]]
-*** Category 4
-[[./images/All stack but put random at top Satisfied applicants cat4.png]]
-*** Category 5
-[[./images/All stack but put random at top Satisfied applicants cat5.png]]
-*** Category 6
-[[./images/All stack but put random at top Satisfied applicants cat6.png]]
-** Everyone stacks but moves a random to first and 14th
-[[./images/All stack but put random at top and 14 Satisfied applicants.png]]
+**** Total
+ [[./images/All stack but put random at top Satisfied applicants total.png]]
+**** Category 1
+ [[./images/All stack but put random at top Satisfied applicants cat1.png]]
+**** Category 2
+ [[./images/All stack but put random at top Satisfied applicants cat2.png]]
+**** Category 3
+ [[./images/All stack but put random at top Satisfied applicants cat3.png]]
+**** Category 4
+ [[./images/All stack but put random at top Satisfied applicants cat4.png]]
+**** Category 5
+ [[./images/All stack but put random at top Satisfied applicants cat5.png]]
+**** Category 6
+ [[./images/All stack but put random at top Satisfied applicants cat6.png]]
+*** Everyone stacks but moves a random to first and 14th
+ [[./images/All stack but put random at top and 14 Satisfied applicants.png]]
 |            | total | cat1 | cat2 | cat3 | cat4 | cat5 | cat6 |
 |------------+-------+------+------+------+------+------+------|
-| 1st        |   712 |  687 |   25 |    0 |    0 |    0 |    0 |
+| 1st        |   721 |  697 |   24 |    0 |    0 |    0 |    0 |
 | 2nd        |     4 |    4 |    0 |    0 |    0 |    0 |    0 |
-| 3rd        |     3 |    3 |    0 |    0 |    0 |    0 |    0 |
-| 4th        |     4 |    4 |    0 |    0 |    0 |    0 |    0 |
-| 5th        |    20 |   20 |    0 |    0 |    0 |    0 |    0 |
-| 6th        |    10 |   10 |    0 |    0 |    0 |    0 |    0 |
-| 7th        |     4 |    4 |    0 |    0 |    0 |    0 |    0 |
-| 8th        |    15 |   15 |    0 |    0 |    0 |    0 |    0 |
+| 3rd        |     1 |    1 |    0 |    0 |    0 |    0 |    0 |
+| 4th        |    15 |   15 |    0 |    0 |    0 |    0 |    0 |
+| 5th        |     5 |    5 |    0 |    0 |    0 |    0 |    0 |
+| 6th        |     3 |    3 |    0 |    0 |    0 |    0 |    0 |
+| 7th        |     3 |    3 |    0 |    0 |    0 |    0 |    0 |
+| 8th        |     5 |    5 |    0 |    0 |    0 |    0 |    0 |
 | 9th        |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
-| 10th       |    10 |   10 |    0 |    0 |    0 |    0 |    0 |
-| 11st       |    13 |   13 |    0 |    0 |    0 |    0 |    0 |
-| 12nd       |    72 |   72 |    0 |    0 |    0 |    0 |    0 |
-| 13rd       |    99 |   56 |   43 |    0 |    0 |    0 |    0 |
-| 14th       |    24 |   13 |   11 |    0 |    0 |    0 |    0 |
-| 15th       |    37 |    5 |   32 |    0 |    0 |    0 |    0 |
+| 10th       |    14 |   14 |    0 |    0 |    0 |    0 |    0 |
+| 11st       |    11 |   11 |    0 |    0 |    0 |    0 |    0 |
+| 12nd       |    66 |   66 |    0 |    0 |    0 |    0 |    0 |
+| 13rd       |   125 |   78 |   47 |    0 |    0 |    0 |    0 |
+| 14th       |    24 |   12 |   12 |    0 |    0 |    0 |    0 |
+| 15th       |    30 |    2 |   28 |    0 |    0 |    0 |    0 |
 | placed     |  1027 |  916 |  111 |    0 |    0 |    0 |    0 |
 | not_placed |   512 |    0 |   91 |  158 |  148 |  101 |   14 |
 | total      |  1539 |  916 |  202 |  158 |  148 |  101 |   14 |
-*** Total
-[[./images/All stack but put random at top and 14 Satisfied applicants total.png]]
-*** Category 1
-[[./images/All stack but put random at top and 14 Satisfied applicants cat1.png]]
-*** Category 2
-[[./images/All stack but put random at top and 14 Satisfied applicants cat2.png]]
-*** Category 3
-[[./images/All stack but put random at top and 14 Satisfied applicants cat3.png]]
-*** Category 4
-[[./images/All stack but put random at top and 14 Satisfied applicants cat4.png]]
-*** Category 5
-[[./images/All stack but put random at top and 14 Satisfied applicants cat5.png]]
-*** Category 6
-[[./images/All stack but put random at top and 14 Satisfied applicants cat6.png]]
+**** Total
+ [[./images/All stack but put random at top and 14 Satisfied applicants total.png]]
+**** Category 1
+ [[./images/All stack but put random at top and 14 Satisfied applicants cat1.png]]
+**** Category 2
+ [[./images/All stack but put random at top and 14 Satisfied applicants cat2.png]]
+**** Category 3
+ [[./images/All stack but put random at top and 14 Satisfied applicants cat3.png]]
+**** Category 4
+ [[./images/All stack but put random at top and 14 Satisfied applicants cat4.png]]
+**** Category 5
+ [[./images/All stack but put random at top and 14 Satisfied applicants cat5.png]]
+**** Category 6
+ [[./images/All stack but put random at top and 14 Satisfied applicants cat6.png]]
+** AI algorithm
+*** Everyone is random
+ [[./images/All random (anneal) Satisfied applicants.png]]
+|            | total | cat1 | cat2 | cat3 | cat4 | cat5 | cat6 |
+|------------+-------+------+------+------+------+------+------|
+| 1st        |   293 |  263 |   30 |    0 |    0 |    0 |    0 |
+| 2nd        |   222 |  207 |   15 |    0 |    0 |    0 |    0 |
+| 3rd        |   169 |  156 |   13 |    0 |    0 |    0 |    0 |
+| 4th        |   127 |  118 |    9 |    0 |    0 |    0 |    0 |
+| 5th        |    72 |   65 |    7 |    0 |    0 |    0 |    0 |
+| 6th        |    55 |   50 |    5 |    0 |    0 |    0 |    0 |
+| 7th        |    23 |   21 |    2 |    0 |    0 |    0 |    0 |
+| 8th        |    20 |   18 |    2 |    0 |    0 |    0 |    0 |
+| 9th        |     9 |    8 |    1 |    0 |    0 |    0 |    0 |
+| 10th       |     6 |    6 |    0 |    0 |    0 |    0 |    0 |
+| 11st       |     3 |    2 |    1 |    0 |    0 |    0 |    0 |
+| 12nd       |     1 |    1 |    0 |    0 |    0 |    0 |    0 |
+| 13rd       |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
+| 14th       |     1 |    1 |    0 |    0 |    0 |    0 |    0 |
+| 15th       |     0 |    0 |    0 |    0 |    0 |    0 |    0 |
+| placed     |  1001 |  916 |   85 |    0 |    0 |    0 |    0 |
+| not_placed |   538 |    0 |  117 |  158 |  148 |  101 |   14 |
+| total      |  1539 |  916 |  202 |  158 |  148 |  101 |   14 |
+**** Total
+ [[./images/All random (anneal) Satisfied applicants total.png]]
+**** Category 1
+ [[./images/All random (anneal) Satisfied applicants cat1.png]]
+**** Category 2
+ [[./images/All random (anneal) Satisfied applicants cat2.png]]
+**** Category 3
+ [[./images/All random (anneal) Satisfied applicants cat3.png]]
+**** Category 4
+ [[./images/All random (anneal) Satisfied applicants cat4.png]]
+**** Category 5
+ [[./images/All random (anneal) Satisfied applicants cat5.png]]
+**** Category 6
+ [[./images/All random (anneal) Satisfied applicants cat6.png]]
+*** Everyone stacks
+ [[./images/All stack (anneal) Satisfied applicants.png]]
+ |            | total | cat1 | cat2 | cat3 | cat4 | cat5 | cat6 |
+ |------------+-------+------+------+------+------+------+------|
+ | 1st        |    64 |   64 |    0 |    0 |    0 |    0 |    0 |
+ | 2nd        |    71 |   71 |    0 |    0 |    0 |    0 |    0 |
+ | 3rd        |    51 |   51 |    0 |    0 |    0 |    0 |    0 |
+ | 4th        |    54 |   54 |    0 |    0 |    0 |    0 |    0 |
+ | 5th        |    49 |   49 |    0 |    0 |    0 |    0 |    0 |
+ | 6th        |    76 |   76 |    0 |    0 |    0 |    0 |    0 |
+ | 7th        |   121 |  121 |    0 |    0 |    0 |    0 |    0 |
+ | 8th        |    40 |   40 |    0 |    0 |    0 |    0 |    0 |
+ | 9th        |   125 |  125 |    0 |    0 |    0 |    0 |    0 |
+ | 10th       |    74 |   74 |    0 |    0 |    0 |    0 |    0 |
+ | 11st       |    51 |   51 |    0 |    0 |    0 |    0 |    0 |
+ | 12nd       |    68 |   68 |    0 |    0 |    0 |    0 |    0 |
+ | 13rd       |    66 |   66 |    0 |    0 |    0 |    0 |    0 |
+ | 14th       |    63 |    6 |   57 |    0 |    0 |    0 |    0 |
+ | 15th       |    54 |    0 |   54 |    0 |    0 |    0 |    0 |
+ | placed     |  1027 |  916 |  111 |    0 |    0 |    0 |    0 |
+ | not_placed |   512 |    0 |   91 |  158 |  148 |  101 |   14 |
+ | total      |  1539 |  916 |  202 |  158 |  148 |  101 |   14 |
+**** Total
+ [[./images/All stack (anneal) Satisfied applicants total.png]]
+**** Category 1
+ [[./images/All stack (anneal) Satisfied applicants cat1.png]]
+**** Category 2
+ [[./images/All stack (anneal) Satisfied applicants cat2.png]]
+**** Category 3
+ [[./images/All stack (anneal) Satisfied applicants cat3.png]]
+**** Category 4
+ [[./images/All stack (anneal) Satisfied applicants cat4.png]]
+**** Category 5
+ [[./images/All stack (anneal) Satisfied applicants cat5.png]]
+**** Category 6
+ [[./images/All stack (anneal) Satisfied applicants cat6.png]]
+*** Everyone stacks but moves a random to first
+ [[./images/All stack but put random at top (anneal) Satisfied applicants.png]]
+ ,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,64,61,3,0,0,0,0
+2nd,71,64,7,0,0,0,0
+3rd,51,46,5,0,0,0,0
+4th,54,47,7,0,0,0,0
+5th,49,47,2,0,0,0,0
+6th,76,68,8,0,0,0,0
+7th,121,112,9,0,0,0,0
+8th,40,38,2,0,0,0,0
+9th,125,114,11,0,0,0,0
+10th,74,66,8,0,0,0,0
+11st,51,45,6,0,0,0,0
+12nd,68,64,4,0,0,0,0
+13rd,66,60,6,0,0,0,0
+14th,35,32,3,0,0,0,0
+15th,54,52,2,0,0,0,0
+placed,999,916,83,0,0,0,0
+not_placed,540,0,119,158,148,101,14
+total,1539,916,202,158,148,101,14
+**** Total
+ [[./images/All stack but put random at top (anneal) Satisfied applicants total.png]]
+**** Category 1
+ [[./images/All stack but put random at top (anneal) Satisfied applicants cat1.png]]
+**** Category 2
+ [[./images/All stack but put random at top (anneal) Satisfied applicants cat2.png]]
+**** Category 3
+ [[./images/All stack but put random at top (anneal) Satisfied applicants cat3.png]]
+**** Category 4
+ [[./images/All stack but put random at top (anneal) Satisfied applicants cat4.png]]
+**** Category 5
+ [[./images/All stack but put random at top (anneal) Satisfied applicants cat5.png]]
+**** Category 6
+ [[./images/All stack but put random at top (anneal) Satisfied applicants cat6.png]]
+*** Everyone stacks but moves a random to first and 14th
+ [[./images/All stack but put random at top and 14 (anneal) Satisfied applicants.png]]
+ ,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,456,418,38,0,0,0,0
+2nd,61,58,3,0,0,0,0
+3rd,32,29,3,0,0,0,0
+4th,35,33,2,0,0,0,0
+5th,38,35,3,0,0,0,0
+6th,32,29,3,0,0,0,0
+7th,39,36,3,0,0,0,0
+8th,46,44,2,0,0,0,0
+9th,28,27,1,0,0,0,0
+10th,31,30,1,0,0,0,0
+11st,72,62,10,0,0,0,0
+12nd,82,72,10,0,0,0,0
+13rd,18,15,3,0,0,0,0
+14th,11,10,1,0,0,0,0
+15th,19,18,1,0,0,0,0
+placed,1000,916,84,0,0,0,0
+not_placed,539,0,118,158,148,101,14
+total,1539,916,202,158,148,101,14
+**** Total
+ [[./images/All stack but put random at top and 14 (anneal) Satisfied applicants total.png]]
+**** Category 1
+ [[./images/All stack but put random at top and 14 (anneal) Satisfied applicants cat1.png]]
+**** Category 2
+ [[./images/All stack but put random at top and 14 (anneal) Satisfied applicants cat2.png]]
+**** Category 3
+ [[./images/All stack but put random at top and 14 (anneal) Satisfied applicants cat3.png]]
+**** Category 4
+ [[./images/All stack but put random at top and 14 (anneal) Satisfied applicants cat4.png]]
+**** Category 5
+ [[./images/All stack but put random at top and 14 (anneal) Satisfied applicants cat5.png]]
+**** Category 6
+ [[./images/All stack but put random at top and 14 (anneal) Satisfied applicants cat6.png]]
 * Discussion
 - In short, under each strategy:
   1. All random
@@ -228,6 +396,10 @@ How to read the tables:
        get your 12th.
      - It's likely that any attempt to "beat" the algorithm in this
        manner will not work.
+- UPDATE: under the new AI algorithm similar observations are
+  noticeable.
+  1. All random
+     - Rank gradations appear to transition more smoothly
 - It is also consistent with the following observations:
   - "The last 4 are the most important" - sort of. In strategy 3, a
     proportionally larger number of people are being shafted
@@ -270,9 +442,12 @@ How to read the tables:
   e.g. preferencing at 1st and 14th, 1st and 12th, etc? If so, why
   does it work?
 * Sources
-- I based my data on the AMSA Internship Guide[fn:1] and HETI's Annual Report[fn:2]
-
+- AMSA Internship Guide[fn:1] and HETI's Annual Report[fn:2]
+- HETI's 2021 procedure[fn:3] (thanks Chris Chiu)
+- 2019 Student Survey (available on my Github)
 * Footnotes
+
+[fn:3] https://www.heti.nsw.gov.au/__data/assets/pdf_file/0011/576470/Optimised-Allocation-Pathway-Procedure-for-2021-Clinical-Year.pdf 
 
 [fn:2] https://www.heti.nsw.gov.au/__data/assets/pdf_file/0019/485002/Annual-Report-for-Medical-Graduate-Recruitment-for-the-2019-Clinical-Year.PDF 
 
