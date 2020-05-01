@@ -1,0 +1,370 @@
+* Results
+** AI algorithm + weighted random selection
+*** All stack with weighted random first and 14th
+[[./images/all_stack_with_weighted_random_first_and_14th_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,165,155,10,0,0,0,0
+2nd,61,59,2,0,0,0,0
+3rd,54,48,6,0,0,0,0
+4th,63,55,8,0,0,0,0
+5th,71,64,7,0,0,0,0
+6th,63,61,2,0,0,0,0
+7th,60,57,3,0,0,0,0
+8th,61,56,5,0,0,0,0
+9th,54,51,3,0,0,0,0
+10th,56,49,7,0,0,0,0
+11th,100,93,7,0,0,0,0
+12th,99,90,9,0,0,0,0
+13th,57,49,8,0,0,0,0
+14th,10,9,1,0,0,0,0
+15th,21,20,1,0,0,0,0
+placed,995,916,79,0,0,0,0
+not_placed,544,0,123,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_stack_with_weighted_random_first_and_14th_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_stack_with_weighted_random_first_and_14th_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_stack_with_weighted_random_first_and_14th_anneal_satisfied_cat2.png]]
+*** All stack with weighted random first and 12th
+[[./images/all_stack_with_weighted_random_first_and_12th_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,180,170,10,0,0,0,0
+2nd,58,56,2,0,0,0,0
+3rd,55,49,6,0,0,0,0
+4th,59,54,5,0,0,0,0
+5th,63,58,5,0,0,0,0
+6th,56,50,6,0,0,0,0
+7th,58,49,9,0,0,0,0
+8th,59,55,4,0,0,0,0
+9th,41,36,5,0,0,0,0
+10th,62,57,5,0,0,0,0
+11th,108,98,10,0,0,0,0
+12th,34,33,1,0,0,0,0
+13th,89,80,9,0,0,0,0
+14th,53,47,6,0,0,0,0
+15th,25,24,1,0,0,0,0
+placed,1000,916,84,0,0,0,0
+not_placed,539,0,118,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_stack_with_weighted_random_first_and_12th_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_stack_with_weighted_random_first_and_12th_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_stack_with_weighted_random_first_and_12th_anneal_satisfied_cat2.png]]
+*** All stack with weighted random first and 2nd
+[[./images/all_stack_with_weighted_random_first_and_2nd_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,177,164,13,0,0,0,0
+2nd,181,164,17,0,0,0,0
+3rd,55,54,1,0,0,0,0
+4th,56,50,6,0,0,0,0
+5th,54,48,6,0,0,0,0
+6th,54,48,6,0,0,0,0
+7th,51,48,3,0,0,0,0
+8th,49,45,4,0,0,0,0
+9th,37,34,3,0,0,0,0
+10th,35,32,3,0,0,0,0
+11th,46,43,3,0,0,0,0
+12th,85,76,9,0,0,0,0
+13th,54,50,4,0,0,0,0
+14th,41,37,4,0,0,0,0
+15th,25,23,2,0,0,0,0
+placed,1000,916,84,0,0,0,0
+not_placed,539,0,118,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_stack_with_weighted_random_first_and_2nd_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_stack_with_weighted_random_first_and_2nd_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_stack_with_weighted_random_first_and_2nd_anneal_satisfied_cat2.png]]
+*** Weighted random
+[[./images/weighted_random_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,162,152,10,0,0,0,0
+2nd,160,139,21,0,0,0,0
+3rd,130,126,4,0,0,0,0
+4th,107,95,12,0,0,0,0
+5th,95,88,7,0,0,0,0
+6th,79,71,8,0,0,0,0
+7th,57,51,6,0,0,0,0
+8th,56,52,4,0,0,0,0
+9th,39,36,3,0,0,0,0
+10th,33,26,7,0,0,0,0
+11th,26,23,3,0,0,0,0
+12th,24,21,3,0,0,0,0
+13th,20,20,0,0,0,0,0
+14th,17,16,1,0,0,0,0
+15th,0,0,0,0,0,0,0
+placed,1005,916,89,0,0,0,0
+not_placed,534,0,113,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/weighted_random_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/weighted_random_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/weighted_random_anneal_satisfied_cat2.png]]
+*** All stack with weighted random first
+[[./images/all_stack_with_weighted_random_first_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,192,179,13,0,0,0,0
+2nd,64,60,4,0,0,0,0
+3rd,55,51,4,0,0,0,0
+4th,53,48,5,0,0,0,0
+5th,68,59,9,0,0,0,0
+6th,49,47,2,0,0,0,0
+7th,51,44,7,0,0,0,0
+8th,64,52,12,0,0,0,0
+9th,49,46,3,0,0,0,0
+10th,39,35,4,0,0,0,0
+11th,60,57,3,0,0,0,0
+12th,92,87,5,0,0,0,0
+13th,85,82,3,0,0,0,0
+14th,56,51,5,0,0,0,0
+15th,20,18,2,0,0,0,0
+placed,997,916,81,0,0,0,0
+not_placed,542,0,121,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_stack_with_weighted_random_first_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_stack_with_weighted_random_first_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_stack_with_weighted_random_first_anneal_satisfied_cat2.png]]
+** AI algorithm + unweighted random selection
+*** All stack with random first and 12th
+[[./images/all_stack_with_random_first_and_12th_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,348,319,29,0,0,0,0
+2nd,69,64,5,0,0,0,0
+3rd,50,40,10,0,0,0,0
+4th,66,60,6,0,0,0,0
+5th,58,54,4,0,0,0,0
+6th,51,49,2,0,0,0,0
+7th,70,63,7,0,0,0,0
+8th,50,45,5,0,0,0,0
+9th,40,40,0,0,0,0,0
+10th,49,45,4,0,0,0,0
+11th,94,85,9,0,0,0,0
+12th,26,24,2,0,0,0,0
+13th,28,28,0,0,0,0,0
+14th,0,0,0,0,0,0,0
+15th,1,0,1,0,0,0,0
+placed,1000,916,84,0,0,0,0
+not_placed,539,0,118,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_stack_with_random_first_and_12th_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_stack_with_random_first_and_12th_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_stack_with_random_first_and_12th_anneal_satisfied_cat2.png]]
+*** All stack with random first and 14th
+[[./images/all_stack_with_random_first_and_14th_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,367,334,33,0,0,0,0
+2nd,67,62,5,0,0,0,0
+3rd,61,57,4,0,0,0,0
+4th,55,49,6,0,0,0,0
+5th,67,62,5,0,0,0,0
+6th,52,46,6,0,0,0,0
+7th,59,56,3,0,0,0,0
+8th,58,55,3,0,0,0,0
+9th,42,35,7,0,0,0,0
+10th,46,45,1,0,0,0,0
+11th,73,69,4,0,0,0,0
+12th,41,36,5,0,0,0,0
+13th,11,10,1,0,0,0,0
+14th,0,0,0,0,0,0,0
+15th,0,0,0,0,0,0,0
+placed,999,916,83,0,0,0,0
+not_placed,540,0,119,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_stack_with_random_first_and_14th_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_stack_with_random_first_and_14th_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_stack_with_random_first_and_14th_anneal_satisfied_cat2.png]]
+*** All stack with random first and 2nd
+[[./images/all_stack_with_random_first_and_2nd_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,425,381,44,0,0,0,0
+2nd,283,263,20,0,0,0,0
+3rd,54,52,2,0,0,0,0
+4th,49,47,2,0,0,0,0
+5th,43,41,2,0,0,0,0
+6th,44,40,4,0,0,0,0
+7th,24,22,2,0,0,0,0
+8th,27,27,0,0,0,0,0
+9th,14,13,1,0,0,0,0
+10th,20,18,2,0,0,0,0
+11th,5,5,0,0,0,0,0
+12th,7,7,0,0,0,0,0
+13th,0,0,0,0,0,0,0
+14th,1,0,1,0,0,0,0
+15th,0,0,0,0,0,0,0
+placed,996,916,80,0,0,0,0
+not_placed,543,0,122,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_stack_with_random_first_and_2nd_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_stack_with_random_first_and_2nd_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_stack_with_random_first_and_2nd_anneal_satisfied_cat2.png]]
+*** All random
+[[./images/all_random_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,669,607,62,0,0,0,0
+2nd,224,206,18,0,0,0,0
+3rd,87,80,7,0,0,0,0
+4th,20,20,0,0,0,0,0
+5th,2,2,0,0,0,0,0
+6th,0,0,0,0,0,0,0
+7th,0,0,0,0,0,0,0
+8th,1,1,0,0,0,0,0
+9th,0,0,0,0,0,0,0
+10th,0,0,0,0,0,0,0
+11th,0,0,0,0,0,0,0
+12th,0,0,0,0,0,0,0
+13th,0,0,0,0,0,0,0
+14th,0,0,0,0,0,0,0
+15th,0,0,0,0,0,0,0
+placed,1003,916,87,0,0,0,0
+not_placed,536,0,115,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_random_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_random_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_random_anneal_satisfied_cat2.png]]
+*** All stack
+[[./images/all_stack_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,64,54,10,0,0,0,0
+2nd,71,69,2,0,0,0,0
+3rd,51,45,6,0,0,0,0
+4th,54,50,4,0,0,0,0
+5th,49,47,2,0,0,0,0
+6th,76,67,9,0,0,0,0
+7th,121,114,7,0,0,0,0
+8th,40,34,6,0,0,0,0
+9th,125,110,15,0,0,0,0
+10th,74,66,8,0,0,0,0
+11th,51,48,3,0,0,0,0
+12th,68,63,5,0,0,0,0
+13th,66,62,4,0,0,0,0
+14th,63,62,1,0,0,0,0
+15th,28,25,3,0,0,0,0
+placed,1001,916,85,0,0,0,0
+not_placed,538,0,117,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_stack_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_stack_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_stack_anneal_satisfied_cat2.png]]
+*** All stack with random first
+[[./images/all_stack_with_random_first_anneal_satisfied.png]]
+
+,total,cat1,cat2,cat3,cat4,cat5,cat6
+1st,374,347,27,0,0,0,0
+2nd,67,62,5,0,0,0,0
+3rd,47,42,5,0,0,0,0
+4th,49,43,6,0,0,0,0
+5th,67,60,7,0,0,0,0
+6th,50,43,7,0,0,0,0
+7th,41,40,1,0,0,0,0
+8th,71,65,6,0,0,0,0
+9th,37,34,3,0,0,0,0
+10th,34,30,4,0,0,0,0
+11th,48,43,5,0,0,0,0
+12th,75,71,4,0,0,0,0
+13th,38,35,3,0,0,0,0
+14th,2,1,1,0,0,0,0
+15th,0,0,0,0,0,0,0
+placed,1000,916,84,0,0,0,0
+not_placed,539,0,118,158,148,101,14
+total,1539,916,202,158,148,101,14
+
+**** Total
+[[./images/all_stack_with_random_first_anneal_satisfied_total.png]]
+**** Category 1
+[[./images/all_stack_with_random_first_anneal_satisfied_cat1.png]]
+**** Category 2
+[[./images/all_stack_with_random_first_anneal_satisfied_cat2.png]]
+** AI algorithm convergence
+*** All stack with weighted random first and 14th
+[[./images/conv_all_stack_with_weighted_random_first_and_14th_anneal.png]]
+*** All stack with weighted random first and 12th
+[[./images/conv_all_stack_with_weighted_random_first_and_12th_anneal.png]]
+*** All stack with weighted random first and 2nd
+[[./images/conv_all_stack_with_weighted_random_first_and_2nd_anneal.png]]
+*** All stack with random first and 12th
+[[./images/conv_all_stack_with_random_first_and_12th_anneal.png]]
+*** All stack with random first and 14th
+[[./images/conv_all_stack_with_random_first_and_14th_anneal.png]]
+*** All stack with random first and 2nd
+[[./images/conv_all_stack_with_random_first_and_2nd_anneal.png]]
+*** All random
+[[./images/conv_all_random_anneal.png]]
+*** Weighted random
+[[./images/conv_weighted_random_anneal.png]]
+*** All stack
+[[./images/conv_all_stack_anneal.png]]
+*** All stack with random first
+[[./images/conv_all_stack_with_random_first_anneal.png]]
+*** All stack with weighted random first
+[[./images/conv_all_stack_with_weighted_random_first_anneal.png]]
+** Global unhappiness when compared to categorical matching
+,alloc_mode,anneal,global_unhappiness
+0,All stack with weighted random first and 14th,True,5877
+1,All stack with weighted random first and 14th,False,3887
+2,All stack with weighted random first and 12th,True,6085
+3,All stack with weighted random first and 12th,False,3710
+4,All stack with weighted random first and 2nd,True,5131
+5,All stack with weighted random first and 2nd,False,3486
+6,All stack with random first and 12th,True,3961
+7,All stack with random first and 12th,False,3454
+8,All stack with random first and 14th,True,3705
+9,All stack with random first and 14th,False,3371
+10,All stack with random first and 2nd,True,1695
+11,All stack with random first and 2nd,False,2474
+12,All random,True,473
+13,All random,False,1123
+14,Weighted random,True,3844
+15,Weighted random,False,2100
+16,All stack,True,6844
+17,All stack,False,7208
+18,All stack with random first,True,3958
+19,All stack with random first,False,3338
+20,All stack with weighted random first,True,5987
+21,All stack with weighted random first,False,3617
+

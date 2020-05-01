@@ -1,0 +1,23 @@
+,alloc_mode,anneal,global_unhappiness
+0,All stack with weighted random first and 14th,True,5877
+1,All stack with weighted random first and 14th,False,3887
+2,All stack with weighted random first and 12th,True,6085
+3,All stack with weighted random first and 12th,False,3710
+4,All stack with weighted random first and 2nd,True,5131
+5,All stack with weighted random first and 2nd,False,3486
+6,All stack with random first and 12th,True,3961
+7,All stack with random first and 12th,False,3454
+8,All stack with random first and 14th,True,3705
+9,All stack with random first and 14th,False,3371
+10,All stack with random first and 2nd,True,1695
+11,All stack with random first and 2nd,False,2474
+12,All random,True,473
+13,All random,False,1123
+14,Weighted random,True,3844
+15,Weighted random,False,2100
+16,All stack,True,6844
+17,All stack,False,7208
+18,All stack with random first,True,3958
+19,All stack with random first,False,3338
+20,All stack with weighted random first,True,5987
+21,All stack with weighted random first,False,3617

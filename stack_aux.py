@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
+from copy import deepcopy
 from matplotlib.ticker import PercentFormatter
 from math import exp
-from copy import deepcopy
 from numpy.random import choice
+from textwrap import wrap
 
 import matplotlib.pyplot as plt
+import math
 import numba
 import numpy as np
 import pandas as pd
@@ -28,7 +30,7 @@ with open("category-counts.txt", "r") as categories_infile:
 
 # basic functions
 
-ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4])
+ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(math.floor(n/10)%10!=1)*(n%10<4)*n%10::4])
 sanitise_filename = lambda x: re.sub(r'[<>:"/\|?*]', '', x)
 
 # Classes
@@ -83,19 +85,22 @@ with open("stack.txt", "r") as stack_infile:
 def shuffle(l):
 	return random.sample(l, len(l))
 
-def weighted_shuffle(l):
-	global hospital_weights
-	return list(choice(l, len(l), p=hospital_weights, replace=False))
+def weighted_shuffle(l,w=hospital_weights):
+	return list(choice(l, len(l), p=w, replace=False))
 
 def push_random_to_top(l):
 	k = l
 	k.insert(0, k.pop(random.randint(0,len(k)-1)))
 	return k
 
-def push_wt_random_to_top(l):
-	global hospital_weights
+def push_wt_random_to_top(l,w=hospital_weights):
 	k = l
-	k.insert(0, k.pop(choice(len(k), 1, p=hospital_weights)[0]))
+	k.insert(0, k.pop(choice(len(k), 1, p=w)[0]))
+	return k
+
+def push_wt_random_to_position(l,n,w=hospital_weights):
+	k = l
+	k.insert(n, k.pop(choice(len(k), 1, p=w)[0]))
 	return k
 
 def default_stack(l):
@@ -103,16 +108,26 @@ def default_stack(l):
 	return stack
 
 def push_random_to_top_and_n(l,n):
-	k = push_random_to_top(l)
-	k.insert(n, k.pop(random.randint(1,len(k)-1)))
+	# randomly select two and then place at positions 0 and n-1
+	return push_random_to_positions(l, 0, n)
+	
+def push_wt_random_to_top_and_n(l,n,w=hospital_weights):
+	# weighted-randomly select two and then place at positions 0 and n-1
+	return push_wt_random_to_positions(l, 0, n)
+
+def push_random_to_positions(l, *positions):
+	k = l
+	pairs = zip(positions, choice(len(k), len(positions)))
+	for target, origin in pairs:
+		k.insert(target, k.pop(origin))
 	return k
 
-def push_wt_random_to_top_and_n(l,n):
-	global hospitals_with_weights
-	k = push_random_to_top(hospitals_with_weights)
-	k_weights = [i[1] for i in k]
-	k.insert(n, k.pop(choice(list(range(1,len(k))), 1, p=k_weights)[0]))
-	return [i[0] for i in k]
+def push_wt_random_to_positions(l, *positions, w=hospital_weights):
+	k = l
+	pairs = zip(positions, choice(len(k), len(positions), p=w))
+	for target, origin in pairs:
+		k.insert(target, k.pop(origin))
+	return k
 
 class Applicant(object):
 	"""An applicant is assumed to have two properties that count in the algorithm:
@@ -241,7 +256,7 @@ class Simulation(object):
 			filename = title
 		plt.xlabel(xlab)
 		plt.ylabel(ylab)
-		plt.title(title)
+		plt.title('\n'.join(wrap(title, 60)))
 		plt.tight_layout()
 		plt.savefig("images/"+sanitise_filename(filename)+".png", dpi=300)
 		# plt.show()
@@ -476,7 +491,7 @@ class Test(object):
 	"""docstring for Test"""
 	def __init__(self, name: str, function, anneal: bool):
 		self.name = name
-		self.underscore_name = Test.underscorify(name)
+		self.underscore_name = Test.underscorify(name) + ("_anneal" if anneal else "")
 		self.function = function
 		self.anneal = anneal
 		self.sim = AnnealSimulation(function) if anneal else Simulation(function)
@@ -487,7 +502,10 @@ class Test(object):
 		return new_name
 	def convergence(self):
 		if self.anneal:
-			plt.title("Convergence - {0}".format(name))
+			self.sim.unhappiness_records.plot.line()
+			plt.xlabel("Number of iterations")
+			plt.ylabel("Global unhappiness")
+			plt.title("Convergence - {0}".format(self.name))
 			plt.tight_layout()
 			plt.savefig("images/"+"conv_"+self.underscore_name+".png", dpi=300)
 			# plt.show()
@@ -497,7 +515,7 @@ class Test(object):
 		else:
 			raise Exception
 	def plot(self):
-		self.sim.plot_every(prepend=name+": ", filename_pre=underscore_name)
-		self.sim.plot_all(prepend=name+": ", filename_pre=underscore_name)
+		self.sim.plot_every(prepend=self.name+": ", filename_pre=self.underscore_name)
+		self.sim.plot_all(prepend=self.name+": ", filename_pre=self.underscore_name)
 	def export(self):
-		self.sim.export_results("all_stack_top_random_anneal")
+		self.sim.export_results(self.underscore_name)
