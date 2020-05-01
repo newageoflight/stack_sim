@@ -102,17 +102,17 @@ def default_stack(l):
 	global stack
 	return stack
 
-# def push_random_to_top_and_14(l):
-# 	k = push_random_to_top(l)
-# 	k.insert(13, k.pop(random.randint(1,len(k)-1)))
-# 	return k
+def push_random_to_top_and_n(l,n):
+	k = push_random_to_top(l)
+	k.insert(n, k.pop(random.randint(1,len(k)-1)))
+	return k
 
-# def push_wt_random_to_top_and_14(l):
-# 	global hospitals_with_weights
-# 	k = push_random_to_top(hospitals_with_weights)
-# 	k_weights = [i[1] for i in k]
-# 	k.insert(13, k.pop(list(choice(list(range(1,len(k))), 1, p=k_weights))))
-# 	return [i[0] for i in k]
+def push_wt_random_to_top_and_n(l,n):
+	global hospitals_with_weights
+	k = push_random_to_top(hospitals_with_weights)
+	k_weights = [i[1] for i in k]
+	k.insert(n, k.pop(choice(list(range(1,len(k))), 1, p=k_weights)[0]))
+	return [i[0] for i in k]
 
 class Applicant(object):
 	"""An applicant is assumed to have two properties that count in the algorithm:
@@ -120,7 +120,7 @@ class Applicant(object):
 	- Category"""
 	def __init__(self, strategy, category):
 		self.strategy = strategy.__name__
-		self.preferences = strategy(hospitals[:])
+		self.preferences = strategy(hospitals.copy())
 		self.category = category
 		self.allocation = None
 		self.preference_number = None
@@ -128,7 +128,7 @@ class Applicant(object):
 		return self.__str__()
 	def __str__(self):
 		return "Category {cat} applicant allocated to {alloc} ({prefn}): {prefs}".format(cat=self.category+1,
-			prefs=[h.abbreviation for h in self.preferences], alloc=self.allocation.abbreviation, prefn=self.preference_number)
+			prefs=[h.abbreviation for h in self.preferences], alloc=self.allocation.abbreviation if self.allocation else "NONE", prefn=self.preference_number)
 	def allocate(self, hospital):
 		self.allocation = hospital
 		self.preference_number = self.preferences.index(self.allocation)
@@ -148,7 +148,7 @@ class Simulation(object):
 	"""Runs a simulation of the allocation process"""
 	def __init__(self, starting_strategy):
 		self.category_counts = category_counts
-		self.hospitals = hospitals[:]
+		self.hospitals = hospitals.copy()
 		for hospital in self.hospitals:
 			hospital.empty()
 		self.applicants = [Applicant(starting_strategy, cat) for cat in range(len(category_counts)) for i in range(category_counts[cat])]
@@ -220,26 +220,30 @@ class Simulation(object):
 			print("Total Category {cat} applicants who received any placement: {count} ({percent:.2%})".format(cat=category+1, count=cat_placed, percent=cat_placed/cat_total))
 			print("Total Category {cat} applicants who did not get any placement: {count} ({percent:.2%})".format(cat=category+1, count=cat_not_placed, percent=cat_not_placed/cat_total))
 			print("Total Category {cat} applicants: {count}".format(cat=category+1, count=cat_total))
-	def plot_one(self, header, percent=True, prepend=""):
+	def plot_one(self, header, percent=True, prepend="", filename_pre=""):
 		toplot = self.percentify_results() if percent else self.results
 		fig, ax = plt.subplots()
 		ax.yaxis.set_major_formatter(PercentFormatter())
 		title = prepend + "Satisfied applicants: {header}".format(header=header)
+		filename = filename_pre + "_satisfied_{header}".format(header=header)
 		toplot.plot.bar(y=header, rot=30)
-		self._plot("Applicants who got their nth preference", "%" if percent else "count", title)
-	def plot_all(self, percent=True, prepend=""):
+		self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
+	def plot_all(self, percent=True, prepend="", filename_pre=""):
 		toplot = self.percentify_results() if percent else self.results
 		toplot.plot.bar(rot=30)
-		self._plot("Applicants who got their nth preference", "%" if percent else "count", prepend + "Satisfied applicants")
-	def plot_every(self, percent=True, prepend=""):
+		self._plot("Applicants who got their nth preference", "%" if percent else "count", prepend + "Satisfied applicants",
+			filename_pre + "_satisfied")
+	def plot_every(self, percent=True, prepend="", filename_pre=""):
 		for col in self.results:
-			self.plot_one(col, percent, prepend)
-	def _plot(self, xlab, ylab, title):
+			self.plot_one(col, percent, prepend, filename_pre)
+	def _plot(self, xlab, ylab, title, filename=""):
+		if not filename:
+			filename = title
 		plt.xlabel(xlab)
 		plt.ylabel(ylab)
 		plt.title(title)
 		plt.tight_layout()
-		plt.savefig("images/"+sanitise_filename(title)+".png", dpi=300)
+		plt.savefig("images/"+sanitise_filename(filename)+".png", dpi=300)
 		# plt.show()
 		plt.clf()
 		plt.cla()
@@ -247,26 +251,43 @@ class Simulation(object):
 	def current_unhappiness(self):
 		return sum(a.unhappiness() for a in self.applicants)
 
-@numba.jit
+# Numba optimisations
+# TODO: optimise these methods with CUDA/Python for GPU usage
+# https://github.com/Hellisotherpeople/Simulated-Annealing-TSP-Numba/blob/master/simulated_annealing_tsp_numba_real.py
+
+@numba.jit(fastmath=True,nopython=True)
 def accept(energy, new_energy, T):
 	if new_energy < energy:
 		return 1
 	else:
 		return np.exp((energy - new_energy)/T)
 
-@numba.jit
-def cool_gpu(current_state_arr, pref_arr, T, cool_rate, iterlimit):
+@numba.jit(fastmath=True,nopython=True)
+def swap_two(lst):
+	new_list = lst.copy()
+	app_len = len(lst)-1
+	a, b = np.random.choice(app_len, 2)
+	temp = new_list[b]
+	new_list[b] = new_list[a]
+	new_list[a] = temp
+	return new_list
+
+@numba.jit(fastmath=True,nopython=True)
+def cool_gpu(current_state_arr, pref_arr, capacity_arr, T, cool_rate, iterlimit):
 	temp = T
 	itercount = 0
-	unhappiness_log = np.empty((0,2),dtype=int)
+	unhappiness_log = np.empty((0,2),np.int64)
 	min_unhappiness = POSITIVE_INFINITY
 	while temp >= 1e-8 and itercount < iterlimit:
-		next_state_arr = current_state_arr
-		# have to define the swap locally otherwise GPU functions don't work
-		i,j = choice(len(next_state_arr), 2)
-		next_state_arr[[i,j]] = next_state_arr[[j,i]]
-		u_current, u_next = [np.sum(np.multiply(pref_arr, s)) for s in [current_state_arr, next_state_arr]]
-		if accept(u_current, u_next, T) >= np.random.random():
+		next_state_arr = swap_two(current_state_arr)
+		u_current = np.sum(np.multiply(pref_arr, current_state_arr))
+		u_next = np.sum(np.multiply(pref_arr, next_state_arr))
+		next_over_capacity = (np.sum(next_state_arr,axis=0) > capacity_arr).any()
+		# if itercount < 10:
+		# 	print(current_state_arr, next_state_arr, pref_arr)
+		# 	print(np.sum(next_state_arr,axis=0), capacity_arr)
+		# 	print(u_current, u_next)
+		if accept(u_current, u_next, temp) >= np.random.random() and not next_over_capacity:
 			current_state_arr = next_state_arr
 			u_current = u_next
 		if u_current < min_unhappiness:
@@ -274,24 +295,43 @@ def cool_gpu(current_state_arr, pref_arr, T, cool_rate, iterlimit):
 			min_unhappiness = u_current
 		temp *= 1 - cool_rate
 		itercount += 1
-		unhappiness_log = np.append(unhappiness_log, [[u_current, min_unhappiness]], axis=0)
+		unhappiness_log = np.append(unhappiness_log, np.array([[u_current, min_unhappiness]],np.int64), axis=0)
 	return (temp, min_unhappiness, current_state_arr, best_state_arr, unhappiness_log)
+
+@numba.jit(fastmath=True,nopython=True)
+def step_gpu(current_state_arr, pref_arr, iterlimit, starting_unhappiness):
+	itercount = 0
+	unhappiness_log = np.empty((0,2),np.int64)
+	min_unhappiness = starting_unhappiness
+	while itercount < iterlimit:
+		next_state_arr = swap_two(current_state_arr)
+		u_current, u_next = [np.sum(np.multiply(pref_arr, s)) for s in [current_state_arr, next_state_arr]]
+		if accept(u_current, u_next, temp) >= np.random.random():
+			current_state_arr = next_state_arr
+			u_current = u_next
+		if u_current < min_unhappiness:
+			best_state_arr = current_state_arr
+			min_unhappiness = u_current
+		itercount += 1
+		unhappiness_log = np.append(unhappiness_log, np.array([[u_current, min_unhappiness]],np.int64), axis=0)
+	return (min_unhappiness, current_state_arr, best_state_arr, unhappiness_log)
 
 class AnnealSimulation(Simulation):
 	"""Simulation that uses Simulated Annealing (as outlined in the official HETI document)
 
 	TODO: Implement GPU/Numpy related speed optimisations. Really bugged at the moment"""
-	def __init__(self, starting_strategy, gpu=False):
+	def __init__(self, starting_strategy, gpu=True, temp=10000, cool_rate=0.0002, iterlimit=1000000):
 		self.min_unhappiness = POSITIVE_INFINITY
 		self._use_gpu = gpu
 		self.best_state = None
 		self.current_state = None
 		self.best_state_arr = np.array([])
 		self.pref_arr = np.array([])
+		self.capacity_arr = np.array([])
 		self.current_state_arr = np.array([])
-		self.temp = 100000
-		self.cooling_rate = 0.001
-		self.iterlimit = 1000000
+		self.temp = temp
+		self.cooling_rate = cool_rate
+		self.iterlimit = iterlimit
 		self.unhappiness_records = pd.DataFrame(columns=["current_unhappiness", "min_unhappiness"])
 		self.unhappiness_array = np.empty((0,2),dtype=int)
 		super(AnnealSimulation, self).__init__(starting_strategy)
@@ -309,31 +349,38 @@ class AnnealSimulation(Simulation):
 					random.shuffle(leftover_applicants)
 				for hospital in self.hospitals:
 					hospital.fill(leftover_applicants[:leftover_spots])
-		self.current_state = list(self.placed())
-		self.min_unhappiness = self.unhappiness(self.current_state)
+		self.current_state = self.placed()
+		self.min_unhappiness = min(self.min_unhappiness, self.current_unhappiness())
 		return self.current_state
 	def _gpu_translate(self):
 		self.current_state_arr = np.zeros((len(self.current_state), len(hospitals)),dtype=int)
 		for a in range(len(self.current_state)):
-			self.current_state_arr[a,self.hospitals.index(self.current_state[a].preferences[0])] = 1
-		self.pref_arr = np.array([[self.hospitals.index(b) for b in a.preferences] for a in self.current_state])
+			self.current_state_arr[a,self.hospitals.index(self.current_state[a].allocation)] = 1
+		self.pref_arr = np.array([[a.preferences.index(b) for b in self.hospitals] for a in self.current_state])
+		self.capacity_arr = np.array([h.capacity for h in self.hospitals])
 		self.best_state_arr = self.current_state_arr
 	def _gpu_detranslate(self):
-		print(self.min_unhappiness)
-		print(self.current_state_arr)
-		self.unhappiness_records = self.unhappiness_records.append(
-			pd.DataFrame({"current_unhappiness": list(self.unhappiness_array[:,0]),
-			"min_unhappiness": list(self.unhappiness_array[:,1])}), ignore_index=True)
-		print(self.unhappiness_records.to_string())
-		self.unhappiness_records.plot.line()
-		plt.show()
+		# bug: hospitals do not allocate
+		append_data = pd.DataFrame({"current_unhappiness": list(self.unhappiness_array[:,0]),
+			"min_unhappiness": list(self.unhappiness_array[:,1])})
+		self.unhappiness_records = self.unhappiness_records.append(append_data, ignore_index=True)
+		# self.unhappiness_records.plot.line()
+		# plt.show()
 		
+		for hospital in self.hospitals:
+			hospital.empty()
 		for a in range(len(self.current_state_arr)):
-			the_one = np.where(self.current_state_arr[a] == 1)[0][0]
-			self.current_state[a].free()
-			self.current_state[a].allocate(self.hospitals[the_one])
-			self.best_state[a].free()
-			self.best_state[a].allocate(self.hospitals[the_one])
+			current_one = np.where(self.current_state_arr[a] == 1)[0][0]
+			best_one = np.where(self.best_state_arr[a] == 1)[0][0]
+			# do stuff
+			self.current_state[a].allocate(self.hospitals[current_one])
+		if (self.best_state_arr == self.current_state_arr).all():
+			self.best_state = self.current_state
+		self._update_applicants()
+		if self.min_unhappiness != self.current_unhappiness():
+			raise Exception("Calculated unhappiness of this arrangement is {min_uh} but actual is {cur_uh}".format(
+				min_uh=self.min_unhappiness,cur_uh=self.current_unhappiness()))
+		self._make_results()
 	def _runsim(self):
 		"""Runs simulated annealing procedures"""
 		self.current_state = self.initial_state()
@@ -349,7 +396,7 @@ class AnnealSimulation(Simulation):
 	def _step_cool(self):
 		"""Object-oriented code
 		Code based on http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
-		Painfully slow, takes like a minute to do 10000 iterations"""
+		Painfully slow, takes several minutes to do 10000 iterations"""
 		itercount = 0
 		while self.temp >= 1e-8 and itercount < self.iterlimit:
 			next_state = deepcopy(self.current_state)
@@ -369,28 +416,11 @@ class AnnealSimulation(Simulation):
 		# plt.show()
 		self._update_applicants()
 		self._make_results()
-	# @numba.jit
 	def _step_cool_gpu(self):
 		"""Meant to have converted everything to an array representation so it can be gpu-optimised.
-		numba doesn't work with class methods so this will need to be fixed somehow
-		If this works, it will take <1 second to do the same job that the other function does in 30"""
+		VERY FAST, does 30000 iterations in a few seconds"""
 		temp, min_unhappiness, current_state_arr, best_state_arr, unhappiness_log = cool_gpu(self.current_state_arr,
-			self.pref_arr, self.temp, self.cooling_rate, self.iterlimit)
-		# itercount = 0
-		# while self.temp >= 1e-8 and itercount < self.iterlimit:
-		# 	next_state_arr = self.current_state_arr
-		# 	# have to define the swap locally otherwise GPU functions don't work
-		# 	i,j = choice(len(next_state_arr), 2)
-		# 	next_state_arr[[i,j]] = next_state_arr[[j,i]]
-		# 	u_current, u_next = [np.sum(np.multiply(self.pref_arr, s)) for s in [self.current_state_arr, next_state_arr]]
-		# 	if self.accept(u_current, u_next) >= np.random.random():
-		# 		self.current_state_arr = next_state_arr
-		# 		u_current = u_next
-		# 	if u_current < self.min_unhappiness:
-		# 		self.best_state_arr = self.current_state_arr
-		# 		self.min_unhappiness = u_current
-		# 	self.temp *= 1 - self.cooling_rate
-		# 	itercount += 1
+			self.pref_arr, self.capacity_arr, self.temp, self.cooling_rate, self.iterlimit)
 		self.temp = temp
 		self.min_unhappiness = min_unhappiness
 		self.current_state_arr = current_state_arr
@@ -399,7 +429,7 @@ class AnnealSimulation(Simulation):
 		self._gpu_detranslate()
 	def step(self, iters):
 		"""Mainly for testing in the console - iterate the process a specified number of times to see
-		if it makes any difference."""
+		if it makes any difference to global unhappiness."""
 		itercount = 0
 		while itercount < iters:
 			next_state = deepcopy(self.current_state)
@@ -419,22 +449,8 @@ class AnnealSimulation(Simulation):
 		self._update_applicants()
 		self._make_results()
 	def step_gpu(self, iters):
+		"""Calls the numba function step_gpu"""
 		raise NotImplementedError
-		itercount = 0
-		while itercount < iters:
-			next_state_arr = self.current_state_arr
-			AnnealSimulation.swap_arr(next_state_arr)
-			u_current, u_next = [np.sum(np.multiply(self.pref_arr, s)) for s in [self.current_state_arr, next_state_arr]]
-			if self.accept(u_current, u_next) >= np.random.random():
-				self.current_state_arr = next_state_arr
-				u_current = u_next
-			if u_current < self.min_unhappiness:
-				self.best_state_arr = self.current_state_arr
-				self.min_unhappiness = u_current
-			self.temp *= 1 - self.cooling_rate
-			itercount += 1
-			self.unhappiness_array.append(np.array([u_current, self.min_unhappiness]), axis=0)
-		self.gpu_detranslate()
 	def _update_applicants(self):
 		self.applicants = self.current_state + self.unplaced()
 	@staticmethod
@@ -454,4 +470,34 @@ class AnnealSimulation(Simulation):
 		else:
 			return exp((energy - new_energy)/self.temp)
 
-# given that this is a minimisation problem, other approaches like GD can also be used
+# given that this is a minimisation problem, other approaches like GD can also be used, but this is IRL so idc
+
+class Test(object):
+	"""docstring for Test"""
+	def __init__(self, name: str, function, anneal: bool):
+		self.name = name
+		self.underscore_name = Test.underscorify(name)
+		self.function = function
+		self.anneal = anneal
+		self.sim = AnnealSimulation(function) if anneal else Simulation(function)
+	@staticmethod
+	def underscorify(name):
+		new_name = re.sub(r"[\s]", "_", name)
+		new_name = sanitise_filename(new_name.lower())
+		return new_name
+	def convergence(self):
+		if self.anneal:
+			plt.title("Convergence - {0}".format(name))
+			plt.tight_layout()
+			plt.savefig("images/"+"conv_"+self.underscore_name+".png", dpi=300)
+			# plt.show()
+			plt.clf()
+			plt.cla()
+			plt.close('all')
+		else:
+			raise Exception
+	def plot(self):
+		self.sim.plot_every(prepend=name+": ", filename_pre=underscore_name)
+		self.sim.plot_all(prepend=name+": ", filename_pre=underscore_name)
+	def export(self):
+		self.sim.export_results("all_stack_top_random_anneal")
