@@ -41,6 +41,7 @@ class Hospital(object):
 	def __init__(self, name: str, abbreviation: str, capacity: int, firsts: int, dra: int, remove_dra=False):
 		self.name = name
 		self.abbreviation = abbreviation
+		self.is_dra = dra > 0
 		self.dra = dra
 		self.capacity = capacity if not remove_dra else capacity - dra
 		self.firsts = firsts
@@ -50,7 +51,7 @@ class Hospital(object):
 		return self.__str__()
 	def __str__(self):
 		return "'{name}' ({abbr}): {filled}/{capacity}".format(name=self.name, abbr=self.abbreviation, filled=self.capacity - self.spots_remaining, capacity=self.capacity)
-	def fill(self, applicants):
+	def fill(self, applicants, dra_prefill=False):
 		if len(applicants) > self.spots_remaining:
 			selected_applicants = random.sample(applicants, self.spots_remaining)
 		else:
@@ -58,7 +59,7 @@ class Hospital(object):
 		self.filled_spots += selected_applicants
 		self.spots_remaining -= len(selected_applicants)
 		for a in self.filled_spots:
-			a.allocate(self)
+			a.allocate(self, dra_prefill)
 	def empty(self):
 		while self.filled_spots:
 			applicant = self.filled_spots.pop()
@@ -139,13 +140,15 @@ class Applicant(object):
 		self.category = category
 		self.allocation = None
 		self.preference_number = None
+		self.is_dra = False
 	def __repr__(self):
 		return self.__str__()
 	def __str__(self):
 		return "Category {cat} applicant allocated to {alloc} ({prefn}): {prefs}".format(cat=self.category+1,
 			prefs=[h.abbreviation for h in self.preferences], alloc=self.allocation.abbreviation if self.allocation else "NONE", prefn=self.preference_number)
-	def allocate(self, hospital):
+	def allocate(self, hospital, dra_prefill=False):
 		self.allocation = hospital
+		self.is_dra = dra_prefill
 		self.preference_number = self.preferences.index(self.allocation)
 	def swap(self, other):
 		temp = other.allocation
@@ -161,14 +164,22 @@ class Applicant(object):
 
 class Simulation(object):
 	"""Runs a simulation of the allocation process"""
-	def __init__(self, starting_strategy):
+	def __init__(self, starting_strategy, dra_prefill=False):
 		self.category_counts = category_counts
 		self.hospitals = hospitals.copy()
 		for hospital in self.hospitals:
 			hospital.empty()
 		self.applicants = [Applicant(starting_strategy, cat) for cat in range(len(category_counts)) for i in range(category_counts[cat])]
 		self.results = pd.DataFrame()
+		if dra_prefill:
+			self._dra_prefill()
 		self._runsim()
+	def _dra_prefill(self):
+		"""Prefill DRA-eligible hospitals with candidates who have preferenced them first"""
+		category_ones = [a for a in self.applicants if a.category == 0]
+		for hospital in filter(lambda h: h.is_dra, self.hospitals):
+			dra_candidates = [a for a in category_ones if a.preferences[0] == hospital]
+			hospital.fill(dra_candidates)
 	def _runsim(self):
 		for category in range(len(self.category_counts)):
 			for hospital in self.hospitals:
@@ -191,6 +202,10 @@ class Simulation(object):
 			return [a for a in self.applicants if a.allocation==None and a.category==category]
 		else:
 			return [a for a in self.applicants if a.allocation==None]
+	def dra_only(self):
+		return [a for a in self.applicants if a.is_dra]
+	def non_dra_only(self):
+		return [a for a in self.applicants if not a.is_dra]
 	def _make_results(self):
 		panda_d = {}
 		placed = len(self.placed())
@@ -331,13 +346,17 @@ def step_gpu(current_state_arr, pref_arr, iterlimit, starting_unhappiness):
 		unhappiness_log = np.append(unhappiness_log, np.array([[u_current, min_unhappiness]],np.int64), axis=0)
 	return (min_unhappiness, current_state_arr, best_state_arr, unhappiness_log)
 
+# Simulated annealing based simulation
+
 class AnnealSimulation(Simulation):
 	"""Simulation that uses Simulated Annealing (as outlined in the official HETI document)
-
-	TODO: Implement GPU/Numpy related speed optimisations. Really bugged at the moment"""
+	
+	GPU functionality does not work completely. The intent was to run the cool_gpu and step_gpu
+	functions via numba.cuda.jit but I can't figure out how to use cuda so I'm just going to leave it
+	with numpy arrays for now. It's still significantly faster than self._step_cool()"""
 	def __init__(self, starting_strategy, gpu=True, temp=10000, cool_rate=0.0002, iterlimit=1000000):
 		self.min_unhappiness = POSITIVE_INFINITY
-		self._use_gpu = gpu
+		self._use_gpu = gpu # ok I know it says "gpu" but it's really just numba.jit, not cuda
 		self.best_state = None
 		self.current_state = None
 		self.best_state_arr = np.array([])
@@ -411,7 +430,8 @@ class AnnealSimulation(Simulation):
 	def _step_cool(self):
 		"""Object-oriented code
 		Code based on http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
-		Painfully slow, takes several minutes to do 10000 iterations"""
+		
+		PAINFULLY SLOW, takes several minutes to do 10000 iterations"""
 		itercount = 0
 		while self.temp >= 1e-8 and itercount < self.iterlimit:
 			next_state = deepcopy(self.current_state)
@@ -433,6 +453,7 @@ class AnnealSimulation(Simulation):
 		self._make_results()
 	def _step_cool_gpu(self):
 		"""Meant to have converted everything to an array representation so it can be gpu-optimised.
+		
 		VERY FAST, does 30000 iterations in a few seconds"""
 		temp, min_unhappiness, current_state_arr, best_state_arr, unhappiness_log = cool_gpu(self.current_state_arr,
 			self.pref_arr, self.capacity_arr, self.temp, self.cooling_rate, self.iterlimit)
