@@ -2,7 +2,7 @@
 #+SUBTITLE: stack_sim.py
 #+AUTHOR: Christopher Chen
 #+DATE: 2020-04-28
-#+OPTIONS: ^:nil toc:4 html5-fancy:t
+#+OPTIONS: ^:nil toc:4
 * Introduction
 - Disclaimer: there is NO guarantee that any of this is accurate. It
   is only based on hearsay about how the stack algorithm works
