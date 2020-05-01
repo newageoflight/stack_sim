@@ -59,8 +59,9 @@
      more favourable than another.
   2. With weighted randomness, hospital favourability at all levels is
      assumed to be similar to that at the first preference. That is,
-     the probability-weight of each hospital is correlated with their
-     popularity based on last year's survey.
+     the probability-weight of a simulated applicant selecting each
+     hospital is correlated with their popularity based on last year's
+     survey.
   3. Everybody has the same stack.
   4. Everyone who applies accepts the first job offer they get.
   5. DRA and other pathways that cannot be considered part of the
@@ -77,7 +78,12 @@
   10. Corollary from 8,9: in terms of informing you as to what to do,
       this simulation is basically worthless for anyone outside of
       category 1, and maybe 2.
-- For nerds: the actual code of this simulation is on [[https://github.com/newageoflight/stack_sim/blob/master/stack_sim.py][Github]].
+- For nerds: the actual code of this simulation is on
+  [[https://github.com/newageoflight/stack_sim/blob/master/stack_sim.py][Github]]. Parameters used in the simulation:
+  | Parameter |  Value |
+  |-----------+--------|
+  | \alpha    | 0.0002 |
+  | T         |  10000 |
 * Results
 How to read the tables:
 - nth :: Number of applicants that got their nth preference
@@ -515,6 +521,7 @@ can fix my code to implement CUDA optimisation.
     higher preferences. The true advantage herein is that the chance
     of getting to a hospital now becomes proportional to the number of
     vacancies.
+* Limitations
 - Assumptions and deviations from reality have been addressed under
   [[*Implementation][Implementation]].
   - Regarding DRA: it is possible to factor DRA into this model. The
@@ -531,6 +538,8 @@ else:
 	dra.spots.allocate(random.select(cat1, dra.spots.count))
 # ???how to account for other categories???
 #+END_SRC
+- The exact parameters of the annealing process can affect the end
+  result. Which ones HETI plans to use are unknown to us.
 * What should you do?
 - Depends on what you want
 - There is not enough data to draw any definitive conclusions on what
