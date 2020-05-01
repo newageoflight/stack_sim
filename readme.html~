@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>HETI Stack Simulator - An Experimental Report</title>
-<!-- 2020-05-01 Fri 16:39 -->
+<!-- 2020-05-01 Fri 17:07 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Org-mode">
@@ -218,7 +218,7 @@ ordering your hospital preferences
 <h3 id="sec-2-1"><span class="section-number-3">2.1</span> HETI's 2021 algorithm</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
-<li>HETI uses an approach called "simulated annealing"
+<li>HETI uses an approach called "<a href="https://en.wikipedia.org/wiki/Simulated_annealing">simulated annealing</a>"
 </li>
 <li>It's an algorithm commonly used in AI that tries to find the global
 minimum (or maximum) of a function
@@ -226,12 +226,13 @@ minimum (or maximum) of a function
 <li>The name comes from the idea that if you freeze a hot liquid
 quickly it won't form nice crystals, but if you do it slowly it
 will because the particles are more likely to find the lowest
-energy state.
+energy (lattice) state.
 </li>
 <li>Likewise, when our system is "hot" it is more likely to jump over
 "energy barriers" (i.e. make decisions that initially appear unfavourable
-but might lead to less unhappiness on the other side). The slower we cool it,
-the more likely our system is to find the global minimum.
+but might lead to less overall unhappiness on the other
+side). The slower we cool it, the more likely our system is to
+find the global minimum.
 </li>
 </ul>
 </li>
@@ -300,6 +301,9 @@ first place
 <li>Everybody stacks but moves random hospitals of their choice to
 1st and 14th places
 </li>
+<li>Everybody stacks but moves random hospitals of their choice to
+1st and 2nd places
+</li>
 </ol>
 </li>
 <li>Incomplete list of deviations from reality, simplifications and
@@ -333,7 +337,7 @@ a job.
 more on luck of the draw (offer timing, rounds, category 1
 rejections).
 </li>
-<li>Corollary from 7,8: in terms of informing you as to what to do,
+<li>Corollary from 8,9: in terms of informing you as to what to do,
 this simulation is basically worthless for anyone outside of
 category 1, and maybe 2.
 </li>
@@ -3730,7 +3734,7 @@ does it work?
 <footer id="postamble" class="">
 <div><p class="date">Date: 2020-04-28</p>
 <p class="author">Author: Christopher Chen</p>
-<p class="date">Created: 2020-05-01 Fri 16:39</p>
+<p class="date">Created: 2020-05-01 Fri 17:07</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="http://orgmode.org">Org-mode</a> 9.3.6)</p>
 </div>
 </footer>

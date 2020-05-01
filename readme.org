@@ -19,7 +19,7 @@
     energy (lattice) state.
   - Likewise, when our system is "hot" it is more likely to jump over
     "energy barriers" (i.e. make decisions that initially appear unfavourable
-    at first but might lead to less overall unhappiness on the other
+    but might lead to less overall unhappiness on the other
     side). The slower we cool it, the more likely our system is to
     find the global minimum.
 - It starts by randomly allocating people per category
@@ -74,7 +74,7 @@
   9. [from a reader] IRL, category 2 placements and beyond tend to be based
      more on luck of the draw (offer timing, rounds, category 1
      rejections).
-  10. Corollary from 7,8: in terms of informing you as to what to do,
+  10. Corollary from 8,9: in terms of informing you as to what to do,
       this simulation is basically worthless for anyone outside of
       category 1, and maybe 2.
 - For nerds: the actual code of this simulation is on [[https://github.com/newageoflight/stack_sim/blob/master/stack_sim.py][Github]].
@@ -447,25 +447,26 @@ How to read the legend:
 *** Everyone stacks with a weighted random first and 14th
 [[./images/conv_all_stack_with_weighted_random_first_and_14th_anneal.png]]
 ** Global unhappiness when compared to categorical matching
-The AI algorithm does not always lead to an improved reduction in global/total
-unhappiness when compared to categorical matching. However I didn't simulate
-for millions of iterations like HETI claims to. Calling on anyone with a fancy
-graphics card (or even a cryptocurrency mining rig) to try it out
-though. Bonus points if you can fix my code to implement CUDA
-optimisation.
+The AI algorithm does not appear to always lead to an improved
+reduction in global/total unhappiness when compared to categorical
+matching. However I didn't simulate for millions of iterations like
+HETI claims to. Calling on anyone with a fancy graphics card (or even
+a cryptocurrency mining rig) to try it out though. Bonus points if you
+can fix my code to implement CUDA optimisation.
 
-alloc_mode,global_unhappiness_anneal,global_unhappiness_no_anneal
-All random,473,1123
-Weighted random,3844,2100
-All stack,6844,7208
-All stack with random first,3958,3338
-All stack with weighted random first,5987,3617
-All stack with random first and 12th,3961,3454
-All stack with weighted random first and 12th,6085,3710
-All stack with random first and 14th,3705,3371
-All stack with weighted random first and 14th,5877,3887
-All stack with random first and 2nd,1695,2474
-All stack with weighted random first and 2nd,5131,3486
+| Allocation mode                               | Global unhappiness - annealing | Global unhappiness - categorical |
+|-----------------------------------------------+--------------------------------+----------------------------------|
+| All random                                    |                          *473* | 1123                             |
+| Weighted random                               |                           3844 | *2100*                           |
+| All stack                                     |                         *6844* | 7208                             |
+| All stack with random first                   |                           3958 | *3338*                           |
+| All stack with weighted random first          |                           5987 | *3617*                           |
+| All stack with random first and 12th          |                           3961 | *3454*                           |
+| All stack with weighted random first and 12th |                           6085 | *3710*                           |
+| All stack with random first and 14th          |                           3705 | *3371*                           |
+| All stack with weighted random first and 14th |                           5877 | *3887*                           |
+| All stack with random first and 2nd           |                         *1695* | 2474                             |
+| All stack with weighted random first and 2nd  |                           5131 | *3486*                           |
 * Discussion
 - In short, under each strategy, with weighting for random choices:
   1. All random
