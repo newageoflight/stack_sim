@@ -479,7 +479,7 @@ can fix my code to implement CUDA optimisation.
   3. All stack but put a random on top
      - Interestingly, you're most likely to get (in order) your first
        or 12th preference.
-     - Otherwise it can be considered like Stack Plus, where you
+     - Otherwise it can be considered a sort of Stack Plus, where you
        basically have a greater chance of getting your favourite but a
        similar chance at the rest.
      - This appears to be most consistent with the strategy people use
