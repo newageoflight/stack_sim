@@ -551,6 +551,11 @@ else:
   - Strategy 2 is best if you don't care where you will end up, but
     given that IRL it is mostly a mix between strategies 2 and 3, this
     might not lead to the same result as in the simulation.
+  - Can't decide between two favourites? Try strategy 6 (random at 1
+    and 2).
+  - The AI appears to do the best job of maximising global happiness
+    when everyone preferences entirely randomly, with no regard for
+    hospital popularity.
 - Fork me, submit a pull request or an issue on [[https://github.com/newageoflight/stack_sim][Github]] to help me
   improve the simulation so future generations can know what to do
   with greater accuracy. There's probably a lot of higher-level
