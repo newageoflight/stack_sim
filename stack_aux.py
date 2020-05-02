@@ -28,7 +28,7 @@ with open("category-counts.txt", "r") as categories_infile:
 		catid, catnum = line.split('\t')
 		category_counts.append(int(catnum))
 
-# basic functions
+# Basic functions
 
 ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(math.floor(n/10)%10!=1)*(n%10<4)*n%10::4])
 sanitise_filename = lambda x: re.sub(r'[<>:"/\|?*]', '', x)
@@ -37,7 +37,8 @@ sanitise_filename = lambda x: re.sub(r'[<>:"/\|?*]', '', x)
 
 class Hospital(object):
 	"""Hospitals are assumed to have one property that counts in the algorithm:
-	- Capacity"""
+	- Capacity
+	Further pathways like DRA can also be implemented"""
 	def __init__(self, name: str, abbreviation: str, capacity: int, firsts: int, dra: int, remove_dra=False):
 		self.name = name
 		self.abbreviation = abbreviation
@@ -65,6 +66,8 @@ class Hospital(object):
 			applicant = self.filled_spots.pop()
 			applicant.free()
 			self.spots_remaining += 1
+
+# Class-dependent constants
 
 hospitals = []
 with open("hospital-networks.txt", "r") as hospital_infile:
@@ -134,22 +137,25 @@ class Applicant(object):
 	"""An applicant is assumed to have two properties that count in the algorithm:
 	- Order of preferences
 	- Category"""
-	def __init__(self, strategy, category):
+	def __init__(self, strategy, category, reject=0):
 		self.strategy = strategy.__name__
 		self.preferences = strategy(hospitals.copy())
 		self.category = category
 		self.allocation = None
 		self.preference_number = None
 		self.is_dra = False
+		self.reject_pr = reject
 	def __repr__(self):
 		return self.__str__()
 	def __str__(self):
 		return "Category {cat} applicant allocated to {alloc} ({prefn}): {prefs}".format(cat=self.category+1,
 			prefs=[h.abbreviation for h in self.preferences], alloc=self.allocation.abbreviation if self.allocation else "NONE", prefn=self.preference_number)
 	def allocate(self, hospital, dra_prefill=False):
-		self.allocation = hospital
-		self.is_dra = dra_prefill
-		self.preference_number = self.preferences.index(self.allocation)
+		reject = random.random() < self.reject_pr
+		if not reject:
+			self.allocation = hospital
+			self.is_dra = dra_prefill
+			self.preference_number = self.preferences.index(self.allocation)
 	def swap(self, other):
 		temp = other.allocation
 		other.allocate(self.allocation)
@@ -164,22 +170,25 @@ class Applicant(object):
 
 class Simulation(object):
 	"""Runs a simulation of the allocation process"""
-	def __init__(self, starting_strategy, dra_prefill=False):
+	def __init__(self, starting_strategy, dra_prefill=False, rounds=1):
 		self.category_counts = category_counts
 		self.hospitals = hospitals.copy()
 		for hospital in self.hospitals:
 			hospital.empty()
 		self.applicants = [Applicant(starting_strategy, cat) for cat in range(len(category_counts)) for i in range(category_counts[cat])]
+		self.allocation_rounds = rounds
 		self.results = pd.DataFrame()
 		if dra_prefill:
 			self._dra_prefill()
 		self._runsim()
 	def _dra_prefill(self):
-		"""Prefill DRA-eligible hospitals with candidates who have preferenced them first"""
+		"""Prefill DRA-eligible hospitals with candidates who have preferenced them first prior to allocation round"""
 		category_ones = [a for a in self.applicants if a.category == 0]
 		for hospital in filter(lambda h: h.is_dra, self.hospitals):
 			dra_candidates = [a for a in category_ones if a.preferences[0] == hospital]
 			hospital.fill(dra_candidates)
+		# DRA spots are only given to category 2-4 after the optimised allocation process:
+		# https://www.heti.nsw.gov.au/__data/assets/pdf_file/0011/424667/Direct-Regional-Allocation-Procedure.PDF
 	def _runsim(self):
 		for category in range(len(self.category_counts)):
 			for hospital in self.hospitals:
@@ -506,10 +515,10 @@ class AnnealSimulation(Simulation):
 		else:
 			return exp((energy - new_energy)/self.temp)
 
-# given that this is a minimisation problem, other approaches like GD can also be used, but this is IRL so idc
+# Test object(s)
 
 class Test(object):
-	"""docstring for Test"""
+	"""Holds information about a stacking strategy test"""
 	def __init__(self, name: str, function, anneal: bool):
 		self.name = name
 		self.underscore_name = Test.underscorify(name) + ("_anneal" if anneal else "")
