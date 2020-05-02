@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>HETI Stack Simulator - An Experimental Report</title>
-<!-- 2020-05-02 Sat 15:50 -->
+<!-- 2020-05-02 Sat 16:15 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Org-mode">
@@ -344,7 +344,8 @@ the probability-weight of a simulated applicant selecting each
 hospital is correlated with their popularity based on last year's
 survey.
 </li>
-<li>Everybody has the same stack.
+<li>Either everybody having the same stack or using two different
+variants of the stack were tested.
 </li>
 <li>Everyone who applies accepts the first job offer they get.
 </li>
@@ -369,6 +370,9 @@ this simulation is basically worthless for anyone outside of
 category 1, and maybe 2.
 </li>
 </ol>
+</li>
+<li>The ones you should be looking at are the AI algorithm + weighted
+random selection. The unweighted is included merely for comparison.
 </li>
 <li>For nerds: the actual code of this simulation is on
 <a href="https://github.com/newageoflight/stack_sim/blob/master/stack_sim.py">Github</a>. Parameters used in the simulation:
@@ -6328,34 +6332,44 @@ can fix my code to implement CUDA optimisation.
 <li>You have a near-equal chance at landing just about every
 hospital.
 </li>
+<li>Stack heterogeneity does not seem to change this overall effect.
+</li>
 </ul>
 </li>
 <li>All stack but put a random on top
 <ul class="org-ul">
-<li>Interestingly, you're most likely to get (in order) your first
-or 12th preference.
-</li>
-<li>Otherwise it can be considered a sort of Stack Plus, where you
-basically have a greater chance of getting your favourite but a
-similar chance at the rest.
+<li>Slightly improves your chance of getting first preference, but
+otherwise probability of landing other hospitals is similar to
+when everyone stacks.
 </li>
 <li>This appears to be most consistent with the strategy people use
-IRL and possibly the best.
+IRL.
 </li>
 </ul>
 </li>
-<li>All stack but put a random at 1 and 14, 1 and 12
+<li>All stack but put a random at 1 and 12
 <ul class="org-ul">
-<li>Don't do this. It hurts your chances of getting whatever
-position you decide to randomise, and your chances of getting
-your first preference.
+<li>Similar chances of getting your first, but strengthens chance
+at 12th.
+</li>
+<li>Weakens both if stacks are heterogenous.
+</li>
+</ul>
+</li>
+<li>All stack but put a random at 1 and 14
+<ul class="org-ul">
+<li>Similar shot at 14th but definitely worsens your first.
+</li>
+<li>Better shot at 1st and worst at 14th if stacks are heterogenous.
 </li>
 </ul>
 </li>
 <li>All stack but put a random at 1 and 2
 <ul class="org-ul">
-<li>Interestingly this gives you an equally good chance of getting
-either your first or second preference.
+<li>Similar shot at 2nd, definitely worsens first.
+</li>
+<li>Only slightly levels the chances at both if stacks are
+heterogenous.
 </li>
 </ul>
 </li>
@@ -6369,7 +6383,7 @@ every hospital after your first (two) is preserved
 <li>If everyone selects randomly, less people get their first
 preference.
 </li>
-<li>Strategy 3 perhaps represents the best idea - you are most likely
+<li>Strategy 3 perhaps represents the best idea - you are more likely
 to get your best, but otherwise you get an equal chance of getting
 everything else.
 </li>
@@ -6377,12 +6391,7 @@ everything else.
 </li>
 <li>Counterintuitively, simulated annealing does not always result in a
 net increase in happiness, when compared to a categorical allocation
-approach.
-</li>
-<li>The necessity of "millions of iterations" as claimed in HETI's
-policy document is questionable because in all of these instances
-the minimum unhappiness is reached within tens to hundreds
-of thousands of iterations.
+approach. However, this may be an effect of low iteration count.
 </li>
 <li>Regarding common rumours:
 <ul class="org-ul">
@@ -6391,10 +6400,9 @@ no longer true. If the matching system was categorical, it would
 be.
 </li>
 <li>"Stacking hurts your chances of getting to preferences 1-6"
-(HETI, 2020) - true to some extent insofar as less people get to
-higher preferences. The true advantage herein is that the chance
-of getting to a hospital now becomes proportional to the number of
-vacancies.
+(HETI, 2020) - definitely true but this seems to miss the point of
+stacking. The true advantage herein is that the chance of getting
+to a hospital now becomes proportional to the number of vacancies.
 </li>
 </ul>
 </li>
@@ -6435,15 +6443,8 @@ categories):
 <li>The exact parameters of the annealing process can affect the end
 result. Which ones HETI plans to use are unknown to us.
 </li>
-<li>Heterogenities of stack choice in real life can invalidate some of
-these conclusions. So it's imperative that everyone applying use the
-same stack.
-<ul class="org-ul">
-<li>It's probably better if the stack corresponds to the actual
-popularity order of the hospitals, in which case the probability
-weights will correspond to the stack.
-</li>
-</ul>
+<li>I only used two stack variants to demonstrate the effect of mixed
+stacks. It could be a lot worse if there are more.
 </li>
 </ul>
 </div>
@@ -6452,24 +6453,23 @@ weights will correspond to the stack.
 <h2 id="sec-7"><span class="section-number-2">7</span> What should you do?</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
-<li>Depends on what you want
+<li>Everyone should use the same stack
+</li>
+<li>In terms of what strategy use:
+<ol class="org-ol">
+<li>Strategy 3 has been in use for the longest time and probably
+represents the most advantageous idea.
+</li>
+<li>Strategy 2 is best if you don't care where you end up.
+</li>
+<li>If you have 2 favourites you can't decide between, try
+strategy 6.
+</li>
+</ol>
 </li>
 <li>There is not enough data to draw any definitive conclusions on what
 the "best" strategy is, especially since a lot of simplifications
 were made to run this model
-<ul class="org-ul">
-<li>Strategy 3 gives you the best chance of getting your first
-preference. IRL it may break down for category 1 hospitals (RPA,
-RNS, POW, StV), but more data is needed to say for sure.
-</li>
-<li>Strategy 2 is best if you don't care where you will end up, but
-given that IRL it is mostly a mix between strategies 2 and 3, this
-might not lead to the same result as in the simulation.
-</li>
-<li>Can't decide between two favourites? Try strategy 6 (put your
-favourites first and second).
-</li>
-</ul>
 </li>
 <li>Fork me, submit a pull request or an issue on <a href="https://github.com/newageoflight/stack_sim/blob/master/stack_aux.py">Github</a> to help me
 improve the simulation so future generations can know what to do
@@ -6483,17 +6483,19 @@ math/CS knowledge that could be applied here that I don't know about.
 <h2 id="sec-8"><span class="section-number-2">8</span> <span class="label label-primary TODO">TODO</span> Future directions/todos</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
+<li><code>[&#xa0;]</code> Fix the algorithm so it's more consistent with the real data
+</li>
 <li><code>[&#xa0;]</code> Significance analysis of results
 </li>
 <li><code>[&#xa0;]</code> Further strategic analysis
 </li>
-<li><code>[&#xa0;]</code> Fix the algorithm so it's more consistent with the real data
-</li>
-<li><code>[&#xa0;]</code> Implement more scenarios e.g. mixed strategies; inconsistent
-stacks
+<li><code>[&#xa0;]</code> Implement mixed strategies (data on rough proportioning of
+strategies among applicants is needed)
 </li>
 <li><code>[&#xa0;]</code> Implement random Category 1 rejections and multiple rounds of
 offers so this simulation actually becomes useful for Categories 2-6
+</li>
+<li><code>[&#xa0;]</code> Implement DRA pre-allocation
 </li>
 <li><code>[&#xa0;]</code> More complete preferencing data
 </li>
@@ -6501,7 +6503,7 @@ offers so this simulation actually becomes useful for Categories 2-6
 </li>
 <li><code>[&#xa0;]</code> GPU optimisation of simulated annealing
 </li>
-<li><code>[&#xa0;]</code> Implement all the other pathways (Simulation: Become HETI)
+<li><code>[&#xa0;]</code> Implement all the other pathways
 </li>
 </ul>
 </div>
@@ -6739,7 +6741,7 @@ offers so this simulation actually becomes useful for Categories 2-6
 <footer id="postamble" class="">
 <div><p class="date">Date: 2020-04-28</p>
 <p class="author">Author: Christopher Chen</p>
-<p class="date">Created: 2020-05-02 Sat 15:50</p>
+<p class="date">Created: 2020-05-02 Sat 16:15</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="http://orgmode.org">Org-mode</a> 9.3.6)</p>
 </div>
 </footer>

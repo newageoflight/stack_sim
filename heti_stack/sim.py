@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 
+"""
+ALlocation process simulation objects
+"""
+
 from copy import deepcopy
 from matplotlib.ticker import PercentFormatter
 from math import exp
-from stack_aux import *
 from textwrap import wrap
+
+from .base import *
 
 import matplotlib.pyplot as plt
 import numba
@@ -15,15 +20,27 @@ plt.style.use("ggplot")
 plt.rcParams["font.family"] = "Avenir Next"
 
 # Simulation objects
+# TODO: consider making satisfied, placed, unplaced, plot* methods into static/classmethods
+# This is all because of the need for stratification by stacking strategy, represents a major overhaul
 
 class Simulation(object):
-	"""Runs a simulation of the allocation process"""
+	"""Runs a simulation of the allocation process
+	starting_strategy can either be a single function with a single argument
+	or a list of tuples: (function, weight)"""
 	def __init__(self, starting_strategy, dra_prefill=False, rounds=1):
 		self.category_counts = category_counts
 		self.hospitals = hospitals.copy()
 		for hospital in self.hospitals:
 			hospital.empty()
-		self.applicants = [Applicant(starting_strategy, cat) for cat in range(len(category_counts)) for i in range(category_counts[cat])]
+		if callable(starting_strategy):
+			self.strategies_used = [starting_strategy.__name__]
+			self.applicants = [Applicant(starting_strategy, cat) for cat in range(len(category_counts)) for i in range(category_counts[cat])]
+		elif type(starting_strategy) == list:
+			functions, weights = list(zip(*starting_strategy))
+			self.strategies_used = [f.__name__ for f in functions]
+			self.applicants = [Applicant(choice(functions, 1, p=weights)[0], cat) for cat in range(len(category_counts)) for i in range(category_counts[cat])]
+		else:
+			raise TypeError
 		self.allocation_rounds = rounds
 		self.results = pd.DataFrame()
 		if dra_prefill:
@@ -41,43 +58,52 @@ class Simulation(object):
 		for category in range(len(self.category_counts)):
 			for hospital in self.hospitals:
 				for rank in range(len(self.hospitals)):
-					preferenced_this = [a for a in self.unplaced() if a.preferences[rank] == hospital and a.category == category]
+					preferenced_this = [a for a in self.unplaced() if a.preferences[rank] == hospital
+										and a.category == category]
 					hospital.fill(preferenced_this)
 		self._make_results()
 	def satisfied(self, rank, category=None):
-		if category != None:
-			return [a for a in self.applicants if a.preference_number == rank and a.category == category]
-		else:
-			return [a for a in self.applicants if a.preference_number == rank]
+		return [a for a in self.applicants if a.preference_number == rank and (a.category == category if category != None else True)]
 	def placed(self, category=None):
-		if category != None:
-			return [a for a in self.applicants if a.allocation!=None and a.category==category]
-		else:
-			return [a for a in self.applicants if a.allocation!=None]
+		return [a for a in self.applicants if a.allocation!=None and (a.category == category if category != None else True)]
 	def unplaced(self, category=None):
-		if category != None:
-			return [a for a in self.applicants if a.allocation==None and a.category==category]
-		else:
-			return [a for a in self.applicants if a.allocation==None]
+		return [a for a in self.applicants if a.allocation==None and (a.category == category if category != None else True)]
 	def dra_only(self):
 		return [a for a in self.applicants if a.is_dra]
 	def non_dra_only(self):
 		return [a for a in self.applicants if not a.is_dra]
+	def stratify_applicants(self):
+		return [[a for a in self.applicants if a.strategy == s] for s in self.strategies_used]
 	def _make_results(self):
-		panda_d = {}
-		placed = len(self.placed())
-		not_placed = len(self.unplaced())
-		total = sum(self.category_counts)
-		panda_d["total"] = [len(self.satisfied(rank)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
-		for category in range(len(self.category_counts)):
-			cat_placed = len(self.placed(category))
-			cat_not_placed = len(self.unplaced(category))
-			cat_total = self.category_counts[category]
-			panda_d["cat{cat}".format(cat=category+1)] = [len(self.satisfied(rank, category)) for rank in range(len(self.hospitals))] + [cat_placed, cat_not_placed, cat_total]
-		self.results = pd.DataFrame(panda_d, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed", "not_placed", "total"])
+		df_dict = {}
+		flags = ["total", "cat"]
+		for flag in flags:
+			for i in range(6 if flag=="cat" else 1):
+				cat = i if flag == "cat" else None
+				append_str = "" if flag=="total" else str(i+1)
+				placed = len(self.placed(cat))
+				not_placed = len(self.unplaced(cat))
+				total = sum(self.category_counts) if flag == "total" else self.category_counts[cat]
+				df_dict[flag+append_str] = [len([a for a in pool if a.preference_number == rank]) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
+		self.results = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
 		return self.results
 	def stratify_results(self):
-		pass
+		applicant_pools = self.stratify_applicants()
+		df_list = []
+		flags = ["total", "cat"]
+		for pool in applicant_pools:
+			df_dict = {}
+			for flag in flags:
+				for i in range(6 if flag=="cat" else 1):
+					subpool = pool if flag == "total" else [a for a in pool if a.category == i]
+					append_str = "" if flag=="total" else str(i+1)
+					placed = len([a for a in pool if a.allocation!=None])
+					not_placed = len([a for a in pool if a.allocation==None])
+					total = len(subpool)
+					df_dict[flag+append_str] = [len([a for a in pool if a.preference_number == rank]) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
+			df = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
+			df_list.append(df)
+		return df_list
 	def percentify_results(self):
 		new_results = self.results.copy()
 		for col in new_results:
@@ -294,8 +320,8 @@ class AnnealSimulation(Simulation):
 		itercount = 0
 		while self.temp >= 1e-8 and itercount < self.iterlimit:
 			next_state = deepcopy(self.current_state)
-			AnnealSimulation.swap(next_state)
-			u_current, u_next = [AnnealSimulation.unhappiness(s) for s in [self.current_state, next_state]]
+			self.swap(next_state)
+			u_current, u_next = [self.unhappiness(s) for s in [self.current_state, next_state]]
 			if self.accept(u_current, u_next) >= random.random():
 				self.current_state = next_state
 			if self.current_unhappiness() < self.min_unhappiness:
@@ -358,7 +384,7 @@ class AnnealSimulation(Simulation):
 		a, b = random.sample(state, 2)
 		a.swap(b)
 	def current_unhappiness(self):
-		return AnnealSimulation.unhappiness(self.current_state)
+		return self.unhappiness(self.current_state)
 	def accept(self, energy, new_energy):
 		if new_energy < energy:
 			return 1

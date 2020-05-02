@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+"""
+Base functions and classes
+"""
+
 from numpy.random import choice
 
 import math
@@ -21,6 +25,12 @@ with open("category-counts.txt", "r") as categories_infile:
 
 ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(math.floor(n/10)%10!=1)*(n%10<4)*n%10::4])
 sanitise_filename = lambda x: re.sub(r'[<>:"/\|?*]', '', x)
+def uniq(l):
+	seen = []
+	for i in l:
+		if i not in seen:
+			seen.append(i)
+	return seen
 
 # Classes
 
@@ -40,7 +50,8 @@ class Hospital(object):
 	def __repr__(self):
 		return self.__str__()
 	def __str__(self):
-		return "'{name}' ({abbr}): {filled}/{capacity}".format(name=self.name, abbr=self.abbreviation, filled=self.capacity - self.spots_remaining, capacity=self.capacity)
+		return "'{name}' ({abbr}): {filled}/{capacity}".format(name=self.name, abbr=self.abbreviation,
+	   		filled=self.capacity - self.spots_remaining, capacity=self.capacity)
 	def fill(self, applicants, dra_prefill=False):
 		if len(applicants) > self.spots_remaining:
 			selected_applicants = random.sample(applicants, self.spots_remaining)
@@ -140,6 +151,8 @@ def mixed_strategy_stack_and_random():
 def mixed_strategy_stack_and_wt_random():
 	return choice([default_stack, weighted_shuffle], 1, p=[0.8, 0.2])[0]
 
+# More base classes
+
 class Applicant(object):
 	"""An applicant is assumed to have two properties that count in the algorithm:
 	- Order of preferences
@@ -156,7 +169,8 @@ class Applicant(object):
 		return self.__str__()
 	def __str__(self):
 		return "Category {cat} applicant allocated to {alloc} ({prefn}): {prefs}".format(cat=self.category+1,
-			prefs=[h.abbreviation for h in self.preferences], alloc=self.allocation.abbreviation if self.allocation else "NONE", prefn=self.preference_number)
+			prefs=[h.abbreviation for h in self.preferences],
+			 alloc=self.allocation.abbreviation if self.allocation else "NONE", prefn=self.preference_number)
 	def allocate(self, hospital, dra_prefill=False):
 		reject = random.random() < self.reject_pr
 		if not reject:
