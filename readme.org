@@ -835,7 +835,7 @@ can fix my code to implement CUDA optimisation.
 - Assumptions and deviations from reality have been addressed under
   [[*Implementation][Implementation]].
   - Regarding DRA: it is possible to factor DRA into this model. The
-    [[https://github.com/newageoflight/stack_sim/stack_aux.py][source files]] now include DRA counts from last year and include
+    [[https://github.com/newageoflight/stack_sim/blob/master/stack_aux.py][source files]] now include DRA counts from last year and include
     those values in =Hospital.__init__()=. Feel free to tinker around
     with the source code if you want to account for DRA, I just cbf to
     implement it atm. Also I'm unsure how much it will actually affect
