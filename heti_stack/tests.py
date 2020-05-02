@@ -67,11 +67,15 @@ single_tests = {
 }
 
 mixed_tests = {
-	"Mixed strategies: 80% stack, 20% weighted random": mixed_strategy_stack_and_wt_random(),
-	"Mixed strategies: 80% stack, 20% unweighted random": mixed_strategy_stack_and_random()
+	"Mixed strategies: 80% stack with weighted random first, 20% weighted random": [
+		(stack_random_top, 0.8), (weighted_shuffle, 0.2)
+		],
+	"Mixed strategies: 80% stack with unweighted random, 20% unweighted random": [
+		(stack_wt_random_top, 0.8), (shuffle, 0.2)
+		],
 }
 
-def run_tests(function_dict, run_non_anneals=True, mixed=False):
+def run_tests(function_dict, name, run_non_anneals=True, mixed=False):
 	unhappy_df = pd.DataFrame(columns=["alloc_mode", "anneal", "global_unhappiness"])
 	tests = []
 	anneal_switches = [True] + ([False] if run_non_anneals else [])
@@ -86,5 +90,5 @@ def run_tests(function_dict, run_non_anneals=True, mixed=False):
 			current_test.plot()
 			current_test.export()
 			tests.append(current_test)
-	unhappy_df.to_csv("tables/unhappiness_{0}.csv".format(function_dict.__name__))
+	unhappy_df.to_csv("tables/unhappiness_{0}.csv".format(name))
 	return tests

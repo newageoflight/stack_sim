@@ -103,10 +103,18 @@ def push_random_to_top(l):
 	k.insert(0, k.pop(random.randint(0,len(k)-1)))
 	return k
 
+def stack_random_top(l):
+	global stack
+	return push_random_to_top(stack)
+
 def push_wt_random_to_top(l,w=stack_weights):
 	k = l
 	k.insert(0, k.pop(choice(len(k), 1, p=w)[0]))
 	return k
+
+def stack_wt_random_top(l):
+	global stack
+	return push_wt_random_to_top(stack)
 
 def push_wt_random_to_position(l,n,w=stack_weights):
 	k = l
@@ -143,13 +151,15 @@ def push_wt_random_to_positions(l, *positions, w=stack_weights):
 		k.insert(target, k.pop(origin))
 	return k
 
-# Mixed strategies
-
-def mixed_strategy_stack_and_random():
-	return random.choice([default_stack, weighted_shuffle])
-
-def mixed_strategy_stack_and_wt_random():
-	return choice([default_stack, weighted_shuffle], 1, p=[0.8, 0.2])[0]
+strategy_function_names = {
+	"":"",
+	"shuffle": "Random",
+	"weighted_shuffle": "Weighted random",
+	"default_stack": "Stack",
+	"mixed_stacks": "Mixed stacks",
+	"stack_random_top": "Stack with random top",
+	"stack_wt_random_top": "Stack with weighted random top",
+}
 
 # More base classes
 

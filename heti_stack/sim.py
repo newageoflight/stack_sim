@@ -42,6 +42,7 @@ class Simulation(object):
 		else:
 			raise TypeError
 		self.allocation_rounds = rounds
+		self.stratified_results = {}
 		self.results = pd.DataFrame()
 		if dra_prefill:
 			self._dra_prefill()
@@ -58,22 +59,25 @@ class Simulation(object):
 		for category in range(len(self.category_counts)):
 			for hospital in self.hospitals:
 				for rank in range(len(self.hospitals)):
-					preferenced_this = [a for a in self.unplaced() if a.preferences[rank] == hospital
+					preferenced_this = [a for a in self.unplaced(self.applicants) if a.preferences[rank] == hospital
 										and a.category == category]
 					hospital.fill(preferenced_this)
 		self._make_results()
-	def satisfied(self, rank, category=None):
-		return [a for a in self.applicants if a.preference_number == rank and (a.category == category if category != None else True)]
-	def placed(self, category=None):
-		return [a for a in self.applicants if a.allocation!=None and (a.category == category if category != None else True)]
-	def unplaced(self, category=None):
-		return [a for a in self.applicants if a.allocation==None and (a.category == category if category != None else True)]
+	@staticmethod
+	def satisfied(apps, rank, category=None):
+		return [a for a in apps if a.preference_number == rank and (a.category == category if category != None else True)]
+	@staticmethod
+	def placed(apps, category=None):
+		return [a for a in apps if a.allocation!=None and (a.category == category if category != None else True)]
+	@staticmethod
+	def unplaced(apps, category=None):
+		return [a for a in apps if a.allocation==None and (a.category == category if category != None else True)]
 	def dra_only(self):
 		return [a for a in self.applicants if a.is_dra]
 	def non_dra_only(self):
 		return [a for a in self.applicants if not a.is_dra]
 	def stratify_applicants(self):
-		return [[a for a in self.applicants if a.strategy == s] for s in self.strategies_used]
+		return {s: [a for a in self.applicants if a.strategy == s] for s in self.strategies_used}
 	def _make_results(self):
 		df_dict = {}
 		flags = ["total", "cat"]
@@ -81,77 +85,96 @@ class Simulation(object):
 			for i in range(6 if flag=="cat" else 1):
 				cat = i if flag == "cat" else None
 				append_str = "" if flag=="total" else str(i+1)
-				placed = len(self.placed(cat))
-				not_placed = len(self.unplaced(cat))
+				placed = len(self.placed(self.applicants, cat))
+				not_placed = len(self.unplaced(self.applicants, cat))
 				total = sum(self.category_counts) if flag == "total" else self.category_counts[cat]
-				df_dict[flag+append_str] = [len([a for a in pool if a.preference_number == rank]) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
+				df_dict[flag+append_str] = [len(self.satisfied(self.applicants, rank, cat)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
 		self.results = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
 		return self.results
 	def stratify_results(self):
 		applicant_pools = self.stratify_applicants()
-		df_list = []
+		df_container = {}
 		flags = ["total", "cat"]
-		for pool in applicant_pools:
+		for strategy, pool in applicant_pools.items():
 			df_dict = {}
 			for flag in flags:
 				for i in range(6 if flag=="cat" else 1):
 					subpool = pool if flag == "total" else [a for a in pool if a.category == i]
 					append_str = "" if flag=="total" else str(i+1)
-					placed = len([a for a in pool if a.allocation!=None])
-					not_placed = len([a for a in pool if a.allocation==None])
+					placed = len(self.placed(subpool))
+					not_placed = len(self.unplaced(subpool))
 					total = len(subpool)
-					df_dict[flag+append_str] = [len([a for a in pool if a.preference_number == rank]) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
+					df_dict[flag+append_str] = [len(self.satisfied(subpool, rank)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
 			df = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
-			df_list.append(df)
-		return df_list
-	def percentify_results(self):
-		new_results = self.results.copy()
+			df_container[strategy] = df
+		self.stratified_results = df_container
+		return self.stratified_results
+	@staticmethod
+	def percentify_results(results):
+		new_results = results.copy()
 		for col in new_results:
 			new_results[col] = 100*new_results[col]/new_results[col]["total"]
 		return new_results.iloc[:17]
 	def export_results(self, name: str):
 		self.results.to_csv("tables/"+name+".csv")
-		self.percentify_results().to_csv("tables/"+name+"_percentified.csv")
+		self.percentify_results(self.results).to_csv("tables/"+name+"_percentified.csv")
+		if len(self.strategies_used) > 1:
+			for k,v in self.stratified_results.items():
+				v.to_csv("tables/"+name+"_"+k+".csv")
+				self.percentify_results(v).to_csv("tables/"+name+"_"+k+"_percentified.csv")
 	def pprint(self):
 		"""Legacy function: pretty-prints out the results"""
 		for rank in range(len(self.hospitals)):
-			satisfied = self.satisfied(rank)
+			satisfied = self.satisfied(self.applicants, rank)
 			print("Total applicants who got their {ord} preference: {count} ({percent:.2%})".format(ord=ordinal(rank+1), count=len(satisfied), 
 				percent=len(satisfied)/sum(self.category_counts)))
-		placed = len(self.placed())
-		not_placed = len(self.unplaced())
+		placed = len(self.placed(self.applicants))
+		not_placed = len(self.unplaced(self.applicants))
 		total = sum(self.category_counts)
 		print("Total applicants who received any placement: {count} ({percent:.2%})".format(count=placed, percent=placed/total))
 		print("Total applicants who did not get any placement: {count} ({percent:.2%})".format(count=not_placed, percent=not_placed/total))
 		print("Total applicants: {count}".format(count=sum(self.category_counts), percent=placed/total))
 		for category in range(len(self.category_counts)):
 			for rank in range(len(self.hospitals)):
-				satisfied = self.satisfied(rank, category)
+				satisfied = self.satisfied(self.applicants, rank, category)
 				print("Total Category {cat} applicants who got their {ord} preference: {count} ({percent:.2%})".format(ord=ordinal(rank+1), count=len(satisfied), 
 					percent=len(satisfied)/category_counts[category], cat=category+1))
-			cat_placed = len(self.placed(category))
-			cat_not_placed = len(self.unplaced(category))
+			cat_placed = len(self.placed(self.applicants, category))
+			cat_not_placed = len(self.unplaced(self.applicants, category))
 			cat_total = self.category_counts[category]
 			print("Total Category {cat} applicants who received any placement: {count} ({percent:.2%})".format(cat=category+1, count=cat_placed, percent=cat_placed/cat_total))
 			print("Total Category {cat} applicants who did not get any placement: {count} ({percent:.2%})".format(cat=category+1, count=cat_not_placed, percent=cat_not_placed/cat_total))
 			print("Total Category {cat} applicants: {count}".format(cat=category+1, count=cat_total))
 	def plot_one(self, header, percent=True, prepend="", filename_pre=""):
-		toplot = self.percentify_results() if percent else self.results
-		fig, ax = plt.subplots()
-		ax.yaxis.set_major_formatter(PercentFormatter())
-		title = prepend + "Satisfied applicants: {header}".format(header=header)
-		filename = filename_pre + "_satisfied_{header}".format(header=header)
-		toplot.plot.bar(y=header, rot=30)
-		self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
+		stratify_switches = [False] + ([True] if len(self.strategies_used) > 1 else [])
+		for stratify in stratify_switches:
+			result_dict = self.stratified_results if stratify else {"": self.results}
+			for name, result_item in result_dict.items():
+				# print(stratify, name)
+				# print(result_item)
+				toplot = self.percentify_results(result_item) if percent else result_item
+				fig, ax = plt.subplots()
+				ax.yaxis.set_major_formatter(PercentFormatter())
+				title_insert = " ({0})".format(strategy_function_names[name].lower()) if stratify else ""
+				filename_insert = "_{0}".format(name) if stratify else ""
+				title = prepend + "Satisfied applicants{insert}: {header}".format(insert=title_insert, header=header)
+				filename = filename_pre + "{insert}_satisfied_{header}".format(insert=filename_insert, header=header)
+				toplot.plot.bar(y=header, rot=30)
+				self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
 	def plot_all(self, percent=True, prepend="", filename_pre=""):
-		toplot = self.percentify_results() if percent else self.results
-		toplot.plot.bar(rot=30)
-		self._plot("Applicants who got their nth preference", "%" if percent else "count", prepend + "Satisfied applicants",
-			filename_pre + "_satisfied")
+		stratify_switches = [False] + ([True] if len(self.strategies_used) > 1 else [])
+		for stratify in stratify_switches:
+			result_dict = self.stratified_results if stratify else {"": self.results}
+			for name, result_item in result_dict.items():
+				toplot = self.percentify_results(result_item) if percent else result_item
+				toplot.plot.bar(rot=30)
+				self._plot("Applicants who got their nth preference", "%" if percent else "count", prepend + "Satisfied applicants",
+					filename_pre + "_satisfied")
 	def plot_every(self, percent=True, prepend="", filename_pre=""):
 		for col in self.results:
 			self.plot_one(col, percent, prepend, filename_pre)
-	def _plot(self, xlab, ylab, title, filename=""):
+	@staticmethod
+	def _plot(xlab, ylab, title, filename=""):
 		if not filename:
 			filename = title
 		plt.xlabel(xlab)
@@ -258,9 +281,9 @@ class AnnealSimulation(Simulation):
 		for category in range(len(self.category_counts)):
 			if category == 0:
 				for hospital in self.hospitals:
-					hospital.fill(self.unplaced(category))
+					hospital.fill(self.unplaced(self.applicants, category))
 			else:
-				leftover_applicants = self.unplaced(category)
+				leftover_applicants = self.unplaced(self.applicants, category)
 				leftover_spots = sum(h.spots_remaining for h in self.hospitals)
 				# print("{apps} applicants remain to be placed in {spots} spots".format(apps=len(leftover_applicants),
 				# 	spots=leftover_spots))
@@ -268,7 +291,7 @@ class AnnealSimulation(Simulation):
 					random.shuffle(leftover_applicants)
 				for hospital in self.hospitals:
 					hospital.fill(leftover_applicants[:leftover_spots])
-		self.current_state = self.placed()
+		self.current_state = self.placed(self.applicants)
 		self.min_unhappiness = min(self.min_unhappiness, self.current_unhappiness())
 		return self.current_state
 	def _gpu_translate(self):
@@ -373,7 +396,7 @@ class AnnealSimulation(Simulation):
 		"""Calls the numba function step_gpu"""
 		raise NotImplementedError
 	def _update_applicants(self):
-		self.applicants = self.current_state + self.unplaced()
+		self.applicants = self.current_state + self.unplaced(self.applicants)
 	@staticmethod
 	def unhappiness(state):
 		"""Cost function for an allocation state"""

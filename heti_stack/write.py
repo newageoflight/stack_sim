@@ -14,7 +14,7 @@ def org_table_from_csv(csv_file):
 			line_count += 1
 	return table_string
 
-def write_results(tests, unhappiness, org_file):
+def write_results(tests, unhappiness, org_file, mixed=False):
 	with open(org_file, "w") as outfile:
 		print("* Results", file=outfile)
 		weighted_tests = [k for k in tests if "weighted" in k.name.lower()]
@@ -37,6 +37,11 @@ def write_results(tests, unhappiness, org_file):
 					else:
 						print("**** Category {0}".format(i), file=outfile)
 						print("[[./images/{0}_satisfied_cat{1}.png]]".format(test.underscore_name, i), file=outfile)
+					if mixed:
+						for strategy in test.strategies_used:
+							print("***** {0}".format(strategy_function_names[strategies_used]))
+							print("[[./images/{0}_{1}_satisfied_cat{2}.png]]".format(test.underscore_name,
+								strategy, i), file=outfile)
 		print("** AI algorithm convergence", file=outfile)
 		for test in tests:
 			print("*** {0}".format(test.name), file=outfile)
