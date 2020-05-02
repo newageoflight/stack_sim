@@ -1,0 +1,4 @@
+#+TITLE: HETI Internship Stack articles
+
+- [[file:readme.org][Simulation of the stack and optimal preferencing strategies]]
+- [[file:order.org][Choice of stack ordering]]

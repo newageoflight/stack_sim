@@ -81,6 +81,12 @@ stack = []
 with open("stack.txt", "r") as stack_infile:
 	for line in stack_infile:
 		stack.append(next((h for h in hospitals if h.abbreviation == line.strip()), None))
+stack_weights = [h.firsts/366 for h in stack]
+
+altstack = []
+with open("altstack.txt", "r") as altstack_infile:
+	for line in altstack_infile:
+		altstack.append(next((h for h in hospitals if h.abbreviation == line.strip()), None))
 
 # stack strategy functions
 # these need to be fixed somehow so they don't look retarded like they do now (global variables, redundant arguments)
@@ -97,12 +103,12 @@ def push_random_to_top(l):
 	k.insert(0, k.pop(random.randint(0,len(k)-1)))
 	return k
 
-def push_wt_random_to_top(l,w=hospital_weights):
+def push_wt_random_to_top(l,w=stack_weights):
 	k = l
 	k.insert(0, k.pop(choice(len(k), 1, p=w)[0]))
 	return k
 
-def push_wt_random_to_position(l,n,w=hospital_weights):
+def push_wt_random_to_position(l,n,w=stack_weights):
 	k = l
 	k.insert(n, k.pop(choice(len(k), 1, p=w)[0]))
 	return k
@@ -111,11 +117,15 @@ def default_stack(l):
 	global stack
 	return stack
 
+def mixed_stacks(l):
+	global stack, altstack
+	return random.choice([stack, altstack])
+
 def push_random_to_top_and_n(l,n):
 	# randomly select two and then place at positions 0 and n-1
 	return push_random_to_positions(l, 0, n)
 	
-def push_wt_random_to_top_and_n(l,n,w=hospital_weights):
+def push_wt_random_to_top_and_n(l,n,w=stack_weights):
 	# weighted-randomly select two and then place at positions 0 and n-1
 	return push_wt_random_to_positions(l, 0, n)
 
@@ -126,7 +136,7 @@ def push_random_to_positions(l, *positions):
 		k.insert(target, k.pop(origin))
 	return k
 
-def push_wt_random_to_positions(l, *positions, w=hospital_weights):
+def push_wt_random_to_positions(l, *positions, w=stack_weights):
 	k = l
 	pairs = zip(positions, choice(len(k), len(positions), p=w))
 	for target, origin in pairs:
@@ -186,7 +196,7 @@ class Simulation(object):
 		category_ones = [a for a in self.applicants if a.category == 0]
 		for hospital in filter(lambda h: h.is_dra, self.hospitals):
 			dra_candidates = [a for a in category_ones if a.preferences[0] == hospital]
-			hospital.fill(dra_candidates)
+			hospital.fill(dra_candidates, dra_prefill=True)
 		# DRA spots are only given to category 2-4 after the optimised allocation process:
 		# https://www.heti.nsw.gov.au/__data/assets/pdf_file/0011/424667/Direct-Regional-Allocation-Procedure.PDF
 	def _runsim(self):

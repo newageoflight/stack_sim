@@ -1,23 +1,41 @@
 ,alloc_mode,anneal,global_unhappiness
-0,All stack with weighted random first and 14th,True,5877
-1,All stack with weighted random first and 14th,False,3887
-2,All stack with weighted random first and 12th,True,6085
-3,All stack with weighted random first and 12th,False,3710
-4,All stack with weighted random first and 2nd,True,5131
-5,All stack with weighted random first and 2nd,False,3486
-6,All stack with random first and 12th,True,3961
-7,All stack with random first and 12th,False,3454
-8,All stack with random first and 14th,True,3705
-9,All stack with random first and 14th,False,3371
-10,All stack with random first and 2nd,True,1695
-11,All stack with random first and 2nd,False,2474
-12,All random,True,473
-13,All random,False,1123
-14,Weighted random,True,3844
-15,Weighted random,False,2100
-16,All stack,True,6844
-17,All stack,False,7208
-18,All stack with random first,True,3958
-19,All stack with random first,False,3338
-20,All stack with weighted random first,True,5987
-21,All stack with weighted random first,False,3617
+0,All random,True,559
+1,All random,False,1012
+2,Weighted random,True,3452
+3,Weighted random,False,2025
+4,All stack,True,6830
+5,All stack,False,7208
+6,Mixed stacks,True,6821
+7,Mixed stacks,False,7070
+8,All same stack with random first,True,7157
+9,All same stack with random first,False,7231
+10,All same stack with weighted random first,True,6641
+11,All same stack with weighted random first,False,7117
+12,All same stack with random first and 12th,True,7573
+13,All same stack with random first and 12th,False,7107
+14,All same stack with weighted random first and 12th,True,6326
+15,All same stack with weighted random first and 12th,False,7629
+16,All same stack with random first and 14th,True,6801
+17,All same stack with random first and 14th,False,6997
+18,All same stack with weighted random first and 14th,True,6314
+19,All same stack with weighted random first and 14th,False,6602
+20,All same stack with random first and 2nd,True,6897
+21,All same stack with random first and 2nd,False,7188
+22,All same stack with weighted random first and 2nd,True,6452
+23,All same stack with weighted random first and 2nd,False,8022
+24,Mixed stacks with random first,True,4479
+25,Mixed stacks with random first,False,3989
+26,Mixed stacks with weighted random first,True,4209
+27,Mixed stacks with weighted random first,False,5475
+28,Mixed stacks with random first and 12th,True,4192
+29,Mixed stacks with random first and 12th,False,6111
+30,Mixed stacks with weighted random first and 12th,True,4560
+31,Mixed stacks with weighted random first and 12th,False,5946
+32,Mixed stacks with random first and 14th,True,5180
+33,Mixed stacks with random first and 14th,False,4800
+34,Mixed stacks with weighted random first and 14th,True,4822
+35,Mixed stacks with weighted random first and 14th,False,4528
+36,Mixed stacks with random first and 2nd,True,5067
+37,Mixed stacks with random first and 2nd,False,5481
+38,Mixed stacks with weighted random first and 2nd,True,4618
+39,Mixed stacks with weighted random first and 2nd,False,5450

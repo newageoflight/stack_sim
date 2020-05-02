@@ -1,0 +1,46 @@
+#+TITLE: Which stack should I use?
+* Why should I care?
+- It's probably fairer for everyone if we all use the same stack (as
+  discussed [[file:readme.org][here]]).
+* "Conventional" stack order
+- Everyone knows this "conventional" stack which has been documented
+  since at least 2016:
+  1. RPA
+  2. RNS
+  3. POW
+  4. StV
+  5. Concord
+  6. StG
+  7. Westmead
+  8. Hornsby
+  9. JHH
+  10. Liverpool
+  11. Bankstown
+  12. Gosford
+  13. Wollongong
+  14. Nepean
+  15. Blacktown
+- However based on the latest statistics, this might be *wrong*.
+* "Statistical" stack order (based on 2019 data)
+- Hospitals sorted in ascending order of allocations over first
+  preferences ratio:
+  1. RNS
+  2. RPA
+  3. Concord
+  4. POW
+  5. StV
+  6. StG
+  7. Hornsby
+  8. Westmead
+  9. Liverpool
+  10. Gosford
+  11. JHH
+  12. Nepean
+  13. Wollongong
+  14. Blacktown
+  15. Bankstown
+- However, there are several reasons not to put this as your "stack":
+  - The benefit of stacking is reliant on consensus. As far as I can
+    tell the consensus is still to use the conventional stack.
+  - Unless everyone agrees on a new stack order, there is no point
+    trying to change it.

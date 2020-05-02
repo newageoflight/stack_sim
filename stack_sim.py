@@ -2,20 +2,43 @@
 
 from stack_aux import *
 
+import csv
+
+def org_table_from_csv(csv_file):
+	table_string = ""
+	line_count = 0
+	with open(csv_file, "r") as csv_in:
+		reader = csv.reader(csv_in)
+		for row in reader:
+			table_string += "|" + "|".join(row) + "|\n"
+			if line_count == 0:
+				table_string += "|-\n"
+			line_count += 1
+	return table_string
+
 unhappy_df = pd.DataFrame(columns=["alloc_mode", "anneal", "global_unhappiness"])
 
 test_function_dict = {
-	"All stack with weighted random first and 14th": lambda l: push_wt_random_to_top_and_n(l, 13),
-	"All stack with weighted random first and 12th": lambda l: push_wt_random_to_top_and_n(l, 11),
-	"All stack with weighted random first and 2nd": lambda l: push_wt_random_to_top_and_n(l, 1),
-	"All stack with random first and 12th": lambda l: push_random_to_top_and_n(l, 11),
-	"All stack with random first and 14th": lambda l: push_random_to_top_and_n(l, 13),
-	"All stack with random first and 2nd": lambda l: push_random_to_top_and_n(l, 1),
 	"All random": shuffle,
 	"Weighted random": weighted_shuffle,
 	"All stack": default_stack,
-	"All stack with random first": push_random_to_top,
-	"All stack with weighted random first": push_wt_random_to_top,
+	"Mixed stacks": mixed_stacks,
+	"All same stack with random first": lambda l: push_random_to_top(stack),
+	"All same stack with weighted random first": lambda l: push_wt_random_to_top(stack),
+	"All same stack with random first and 12th": lambda l: push_random_to_top_and_n(stack, 11),
+	"All same stack with weighted random first and 12th": lambda l: push_wt_random_to_top_and_n(stack, 11),
+	"All same stack with random first and 14th": lambda l: push_random_to_top_and_n(stack, 13),
+	"All same stack with weighted random first and 14th": lambda l: push_wt_random_to_top_and_n(stack, 13),
+	"All same stack with random first and 2nd": lambda l: push_random_to_top_and_n(stack, 1),
+	"All same stack with weighted random first and 2nd": lambda l: push_wt_random_to_top_and_n(stack, 1),
+	"Mixed stacks with random first": lambda l: push_random_to_top(mixed_stacks(l)),
+	"Mixed stacks with weighted random first": lambda l: push_wt_random_to_top(mixed_stacks(l)),
+	"Mixed stacks with random first and 12th": lambda l: push_random_to_top_and_n(mixed_stacks(l), 11),
+	"Mixed stacks with weighted random first and 12th": lambda l: push_wt_random_to_top_and_n(mixed_stacks(l), 11),
+	"Mixed stacks with random first and 14th": lambda l: push_random_to_top_and_n(mixed_stacks(l), 13),
+	"Mixed stacks with weighted random first and 14th": lambda l: push_wt_random_to_top_and_n(mixed_stacks(l), 13),
+	"Mixed stacks with random first and 2nd": lambda l: push_random_to_top_and_n(mixed_stacks(l), 1),
+	"Mixed stacks with weighted random first and 2nd": lambda l: push_wt_random_to_top_and_n(mixed_stacks(l), 1),
 }
 
 tests = []
@@ -48,7 +71,7 @@ with open("results.org", "w") as outfile:
 			print("*** {0}".format(test.name), file=outfile)
 			print("[[./images/{0}_satisfied.png]]".format(test.underscore_name), file=outfile)
 			print(file=outfile)
-			print(open("./tables/{0}.csv".format(test.underscore_name)).read(),file=outfile)
+			print(org_table_from_csv("./tables/{0}.csv".format(test.underscore_name)),file=outfile)
 			for i in range(3):
 				if i == 0:
 					print("**** Total", file=outfile)
@@ -61,4 +84,4 @@ with open("results.org", "w") as outfile:
 		print("*** {0}".format(test.name), file=outfile)
 		print("[[./images/conv_{0}.png]]".format(test.underscore_name), file=outfile)
 	print("** Global unhappiness when compared to categorical matching", file=outfile)
-	print(open("./tables/unhappiness.csv").read(),file=outfile)
+	print(org_table_from_csv("./tables/unhappiness.csv"),file=outfile)
