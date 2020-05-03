@@ -24,7 +24,7 @@ with open("category-counts.txt", "r") as categories_infile:
 # Basic functions
 
 ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(math.floor(n/10)%10!=1)*(n%10<4)*n%10::4])
-sanitise_filename = lambda x: re.sub(r'[<>:"/\|?*]', '', x)
+sanitise_filename = lambda x: re.sub(r'[<>:"/\|?*,]', '', x)
 def uniq(l):
 	seen = []
 	for i in l:
@@ -82,6 +82,7 @@ with open("stack.txt", "r") as stack_infile:
 	for line in stack_infile:
 		stack.append(next((h for h in hospitals if h.abbreviation == line.strip()), None))
 stack_weights = [h.firsts/366 for h in stack]
+tier_one_hospitals = stack[:4]
 
 altstack = []
 with open("altstack.txt", "r") as altstack_infile:
@@ -105,7 +106,7 @@ def push_random_to_top(l):
 
 def stack_random_top(l):
 	global stack
-	return push_random_to_top(stack)
+	return push_random_to_top(stack.copy())
 
 def push_wt_random_to_top(l,w=stack_weights):
 	k = l
@@ -114,7 +115,7 @@ def push_wt_random_to_top(l,w=stack_weights):
 
 def stack_wt_random_top(l):
 	global stack
-	return push_wt_random_to_top(stack)
+	return push_wt_random_to_top(stack.copy())
 
 def push_wt_random_to_position(l,n,w=stack_weights):
 	k = l
@@ -152,13 +153,26 @@ def push_wt_random_to_positions(l, *positions, w=stack_weights):
 	return k
 
 strategy_function_names = {
-	"":"",
+	"": "",
 	"shuffle": "Random",
 	"weighted_shuffle": "Weighted random",
 	"default_stack": "Stack",
 	"mixed_stacks": "Mixed stacks",
 	"stack_random_top": "Stack with random top",
 	"stack_wt_random_top": "Stack with weighted random top",
+}
+
+def wanted_top_4_hospital(applicant):
+	global tier_one_hospitals
+	return applicant.preferences[0] in tier_one_hospitals
+
+def got_top_4_hospital(applicant):
+	global tier_one_hospitals
+	return applicant.allocation in tier_one_hospitals
+
+filter_function_names = {
+	"wanted_top_4_hospital": "Wanted a top 4 hospital",
+	"got_top_4_hospital": "Got a top 4 hospital",
 }
 
 # More base classes

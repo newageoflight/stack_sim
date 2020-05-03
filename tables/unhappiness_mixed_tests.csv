@@ -1,5 +1,3 @@
 ,alloc_mode,anneal,global_unhappiness
-0,"Mixed strategies: 80% stack with weighted random first, 20% weighted random",True,5611
-1,"Mixed strategies: 80% stack with weighted random first, 20% weighted random",False,6401
-2,"Mixed strategies: 80% stack with unweighted random, 20% unweighted random",True,5837
-3,"Mixed strategies: 80% stack with unweighted random, 20% unweighted random",False,5827
+0,"Mixed strategies: 80% stack with weighted random first, 20% weighted random",True,5607
+1,"Mixed strategies: 80% stack with weighted random first, 20% weighted random",False,2378

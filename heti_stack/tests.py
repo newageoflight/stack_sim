@@ -12,7 +12,7 @@ class Test(object):
 	"""Holds information about a stacking strategy test"""
 	def __init__(self, name: str, function, anneal: bool):
 		self.name = name
-		self.underscore_name = Test.underscorify(name) + ("_anneal" if anneal else "")
+		self.underscore_name = self.underscorify(name) + ("_anneal" if anneal else "")
 		self.function = function
 		self.anneal = anneal
 		self.sim = AnnealSimulation(function) if anneal else Simulation(function)
@@ -26,7 +26,7 @@ class Test(object):
 			self.sim.unhappiness_records.plot.line()
 			plt.xlabel("Number of iterations")
 			plt.ylabel("Global unhappiness")
-			plt.title("Convergence - {0}".format(self.name))
+			plt.title('\n'.join(wrap("Convergence - {0}".format(self.name), 60)))
 			plt.tight_layout()
 			plt.savefig("images/"+"conv_"+self.underscore_name+".png", dpi=300)
 			# plt.show()
@@ -35,11 +35,13 @@ class Test(object):
 			plt.close('all')
 		else:
 			raise Exception
-	def plot(self):
-		self.sim.plot_every(prepend=self.name+": ", filename_pre=self.underscore_name)
-		self.sim.plot_all(prepend=self.name+": ", filename_pre=self.underscore_name)
-	def export(self):
-		self.sim.export_results(self.underscore_name)
+	def plot(self, filter_f=None):
+		title_insert = " (filter by {0})".format(filter_function_names[filter_f.__name__].lower()) if filter_f else ""
+		filename_insert = "_filter_{0}".format(filter_f.__name__) if filter_f else ""
+		self.sim.plot_every(filter_f=filter_f, prepend=self.name+title_insert+": ", filename_pre=self.underscore_name+filename_insert)
+		self.sim.plot_all(filter_f=filter_f, prepend=self.name+title_insert+": ", filename_pre=self.underscore_name+filename_insert)
+	def export(self, filter_f=None):
+		self.sim.export_results(self.underscore_name, filter_f=filter_f)
 
 # Test dictionaries
 
@@ -70,12 +72,13 @@ mixed_tests = {
 	"Mixed strategies: 80% stack with weighted random first, 20% weighted random": [
 		(stack_random_top, 0.8), (weighted_shuffle, 0.2)
 		],
-	"Mixed strategies: 80% stack with unweighted random, 20% unweighted random": [
-		(stack_wt_random_top, 0.8), (shuffle, 0.2)
-		],
+	# "Mixed strategies: 80% stack with unweighted random, 20% unweighted random": [
+	# 	(stack_wt_random_top, 0.8), (shuffle, 0.2)
+	# 	],
 }
 
-def run_tests(function_dict, name, run_non_anneals=True, mixed=False):
+def run_tests(function_dict, name, run_non_anneals=True, mixed=False, filter_f=None):
+	# print("Filter function:", filter_f)
 	unhappy_df = pd.DataFrame(columns=["alloc_mode", "anneal", "global_unhappiness"])
 	tests = []
 	anneal_switches = [True] + ([False] if run_non_anneals else [])
@@ -89,6 +92,10 @@ def run_tests(function_dict, name, run_non_anneals=True, mixed=False):
 				current_test.convergence()
 			current_test.plot()
 			current_test.export()
+			if filter_f != None:
+				# print("Filtering by {0}".format(filter_f.__name__))
+				current_test.plot(filter_f)
+				current_test.export(filter_f)
 			tests.append(current_test)
 	unhappy_df.to_csv("tables/unhappiness_{0}.csv".format(name))
 	return tests

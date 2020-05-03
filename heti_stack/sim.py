@@ -76,8 +76,12 @@ class Simulation(object):
 		return [a for a in self.applicants if a.is_dra]
 	def non_dra_only(self):
 		return [a for a in self.applicants if not a.is_dra]
-	def stratify_applicants(self):
+	def stratify_applicants_by_strategy(self):
 		return {s: [a for a in self.applicants if a.strategy == s] for s in self.strategies_used}
+	def stratify_applicants_by_strategy_and_filter(self, test):
+		return {s: [a for a in self.applicants if a.strategy == s and test(a)] for s in self.strategies_used}
+	def filter_applicants(self, test):
+		return [a for a in self.applicants if test(a)]
 	def _make_results(self):
 		df_dict = {}
 		flags = ["total", "cat"]
@@ -91,12 +95,15 @@ class Simulation(object):
 				df_dict[flag+append_str] = [len(self.satisfied(self.applicants, rank, cat)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
 		self.results = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
 		return self.results
-	def stratify_results(self):
-		applicant_pools = self.stratify_applicants()
-		df_container = {}
+	def stratify_and_filter_results(self, test):
+		# TODO: restructure this as a 3d dataframe with pd.MultiIndex
+		applicant_pools = self.stratify_applicants_by_strategy_and_filter(test)
+		# print("Applicants stratified by strategy and filter:", applicant_pools)
+		df_dict = {flag:[] for flag in ["total"]+["cat"+str(n+1) for n in range(6)]}
 		flags = ["total", "cat"]
+		indices = [ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"]
+		strategies = applicant_pools.keys()
 		for strategy, pool in applicant_pools.items():
-			df_dict = {}
 			for flag in flags:
 				for i in range(6 if flag=="cat" else 1):
 					subpool = pool if flag == "total" else [a for a in pool if a.category == i]
@@ -104,24 +111,61 @@ class Simulation(object):
 					placed = len(self.placed(subpool))
 					not_placed = len(self.unplaced(subpool))
 					total = len(subpool)
-					df_dict[flag+append_str] = [len(self.satisfied(subpool, rank)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
-			df = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
-			df_container[strategy] = df
-		self.stratified_results = df_container
+					df_dict[flag+append_str] += [len(self.satisfied(subpool, rank)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
+			df = pd.DataFrame(df_dict, index=pd.MultiIndex.from_product([strategies, indices]))
+		return df
+	def stratify_results(self):
+		# TODO: restructure this as a 3d dataframe with pd.MultiIndex
+		applicant_pools = self.stratify_applicants_by_strategy()
+		df_dict = {flag:[] for flag in ["total"]+["cat"+str(n+1) for n in range(6)]}
+		flags = ["total", "cat"]
+		indices = [ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"]
+		strategies = applicant_pools.keys()
+		for strategy, pool in applicant_pools.items():
+			for flag in flags:
+				for i in range(6 if flag=="cat" else 1):
+					subpool = pool if flag == "total" else [a for a in pool if a.category == i]
+					append_str = "" if flag=="total" else str(i+1)
+					placed = len(self.placed(subpool))
+					not_placed = len(self.unplaced(subpool))
+					total = len(subpool)
+					df_dict[flag+append_str] += [len(self.satisfied(subpool, rank)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
+		df = pd.DataFrame(df_dict, index=pd.MultiIndex.from_product([strategies, indices]))
+		self.stratified_results = df
 		return self.stratified_results
+	def filter_results(self, test):
+		filtered_applicants = self.filter_applicants(test)
+		df_dict = {}
+		flags = ["total", "cat"]
+		for flag in flags:
+			for i in range(6 if flag=="cat" else 1):
+				cat = i if flag == "cat" else None
+				append_str = "" if flag=="total" else str(i+1)
+				placed = len(self.placed(filtered_applicants, cat))
+				not_placed = len(self.unplaced(filtered_applicants, cat))
+				total = sum(self.category_counts) if flag == "total" else self.category_counts[cat]
+				df_dict[flag+append_str] = [len(self.satisfied(filtered_applicants, rank, cat)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
+		filtered_results = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
+		return filtered_results
 	@staticmethod
 	def percentify_results(results):
 		new_results = results.copy()
 		for col in new_results:
 			new_results[col] = 100*new_results[col]/new_results[col]["total"]
 		return new_results.iloc[:17]
-	def export_results(self, name: str):
+	def export_results(self, name: str, filter_f=None):
 		self.results.to_csv("tables/"+name+".csv")
 		self.percentify_results(self.results).to_csv("tables/"+name+"_percentified.csv")
+		if filter_f:
+			self.filter_results(filter_f).to_csv("tables/"+name+"_filter_"+filter_f.__name__+".csv")
 		if len(self.strategies_used) > 1:
 			for k,v in self.stratified_results.items():
 				v.to_csv("tables/"+name+"_"+k+".csv")
 				self.percentify_results(v).to_csv("tables/"+name+"_"+k+"_percentified.csv")
+			if filter_f:
+				for k,v in self.stratify_and_filter_results(filter_f).items():
+					v.to_csv("tables/"+name+"_"+k+"_filter_"+filter_f.__name__+".csv")
+					self.percentify_results(v).to_csv("tables/"+name+"_"+k+"_filter_"+filter_f.__name__+"_percentified.csv")
 	def pprint(self):
 		"""Legacy function: pretty-prints out the results"""
 		for rank in range(len(self.hospitals)):
@@ -145,34 +189,57 @@ class Simulation(object):
 			print("Total Category {cat} applicants who received any placement: {count} ({percent:.2%})".format(cat=category+1, count=cat_placed, percent=cat_placed/cat_total))
 			print("Total Category {cat} applicants who did not get any placement: {count} ({percent:.2%})".format(cat=category+1, count=cat_not_placed, percent=cat_not_placed/cat_total))
 			print("Total Category {cat} applicants: {count}".format(cat=category+1, count=cat_total))
-	def plot_one(self, header, percent=True, prepend="", filename_pre=""):
+	def plot_one(self, header, percent=True, filter_f=None, prepend="", filename_pre=""):
+		# TODO: redo function to work with MultiIndex dataframe
+		# it's now possible to plot a stratified single function using df.xs("a", axis=1).unstack().plot().bar()
+		# none of this code is now functional so keep your hands off of it. may need to revert to a previous commit
+		raise NotImplementedError
 		stratify_switches = [False] + ([True] if len(self.strategies_used) > 1 else [])
 		for stratify in stratify_switches:
-			result_dict = self.stratified_results if stratify else {"": self.results}
-			for name, result_item in result_dict.items():
-				# print(stratify, name)
-				# print(result_item)
-				toplot = self.percentify_results(result_item) if percent else result_item
-				fig, ax = plt.subplots()
-				ax.yaxis.set_major_formatter(PercentFormatter())
-				title_insert = " ({0})".format(strategy_function_names[name].lower()) if stratify else ""
-				filename_insert = "_{0}".format(name) if stratify else ""
-				title = prepend + "Satisfied applicants{insert}: {header}".format(insert=title_insert, header=header)
-				filename = filename_pre + "{insert}_satisfied_{header}".format(insert=filename_insert, header=header)
-				toplot.plot.bar(y=header, rot=30)
-				self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
-	def plot_all(self, percent=True, prepend="", filename_pre=""):
+			# print(stratify, self.strategies_used, filter_f)
+			if stratify and filter_f != None:
+				# print("Entered")
+				results = self.stratify_and_filter_results(filter_f)
+			elif stratify and filter_f == None:
+				results = self.stratified_results
+			else:
+				results = self.results
+			# print(result_dict)
+			toplot = self.percentify_results(results) if percent else results
+			fig, ax = plt.subplots()
+			ax.yaxis.set_major_formatter(PercentFormatter())
+			title_insert = " ({0})".format(strategy_function_names[name].lower()) if stratify else ""
+			filename_insert = "_{0}".format(name) if stratify else ""
+			title = prepend + "Satisfied applicants{insert}: {header}".format(insert=title_insert, header=header)
+			filename = filename_pre + "{insert}_satisfied_{header}".format(insert=filename_insert, header=header)
+			# print(title, filename)
+			toplot.plot.bar(y=header, rot=30)
+			self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
+	def plot_one_stratified(self, header, percent=True, filter_f=None, prepend="", filename_pre=""):
+		"""Separate function for plotting stratified dataframes"""
+		raise NotImplementedError
+	def plot_all(self, percent=True, filter_f=None, prepend="", filename_pre=""):
+		# TODO: redo function to work with MultiIndex dataframe
+		raise NotImplementedError
 		stratify_switches = [False] + ([True] if len(self.strategies_used) > 1 else [])
 		for stratify in stratify_switches:
-			result_dict = self.stratified_results if stratify else {"": self.results}
+			if stratify and filter_f != None:
+				result_dict = self.stratify_and_filter_results(filter_f)
+			elif stratify and filter_f == None:
+				result_dict = self.stratified_results
+			else:
+				result_dict = {"": self.results}
 			for name, result_item in result_dict.items():
 				toplot = self.percentify_results(result_item) if percent else result_item
 				toplot.plot.bar(rot=30)
 				self._plot("Applicants who got their nth preference", "%" if percent else "count", prepend + "Satisfied applicants",
 					filename_pre + "_satisfied")
-	def plot_every(self, percent=True, prepend="", filename_pre=""):
+	def plot_all_stratified(self, percent=True, filter_f=None, prepend="", filename_pre=""):
+		"""Separate function for plotting stratified dataframes"""
+		raise NotImplementedError
+	def plot_every(self, percent=True, filter_f=None, prepend="", filename_pre=""):
 		for col in self.results:
-			self.plot_one(col, percent, prepend, filename_pre)
+			self.plot_one(col, percent, filter_f, prepend, filename_pre)
 	@staticmethod
 	def _plot(xlab, ylab, title, filename=""):
 		if not filename:
@@ -262,7 +329,7 @@ class AnnealSimulation(Simulation):
 	GPU functionality does not work completely. The intent was to run the cool_gpu and step_gpu
 	functions via numba.cuda.jit but I can't figure out how to use cuda so I'm just going to leave it
 	with numpy arrays for now. It's still significantly faster than self._step_cool()"""
-	def __init__(self, starting_strategy, gpu=True, temp=10000, cool_rate=0.0002, iterlimit=1000000):
+	def __init__(self, starting_strategy, gpu=True, temp=10000, cool_rate=0.003, iterlimit=1000000):
 		self.min_unhappiness = POSITIVE_INFINITY
 		self._use_gpu = gpu # ok I know it says "gpu" but it's really just numba.jit, not cuda
 		self.best_state = None

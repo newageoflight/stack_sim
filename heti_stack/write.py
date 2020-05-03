@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from .base import *
+
 import csv
 
 def org_table_from_csv(csv_file):
@@ -14,7 +16,8 @@ def org_table_from_csv(csv_file):
 			line_count += 1
 	return table_string
 
-def write_results(tests, unhappiness, org_file, mixed=False):
+def write_results(tests, unhappiness, org_file, mixed=False, filter_f=None):
+	global strategy_function_names, filter_function_names
 	with open(org_file, "w") as outfile:
 		print("* Results", file=outfile)
 		weighted_tests = [k for k in tests if "weighted" in k.name.lower()]
@@ -38,8 +41,8 @@ def write_results(tests, unhappiness, org_file, mixed=False):
 						print("**** Category {0}".format(i), file=outfile)
 						print("[[./images/{0}_satisfied_cat{1}.png]]".format(test.underscore_name, i), file=outfile)
 					if mixed:
-						for strategy in test.strategies_used:
-							print("***** {0}".format(strategy_function_names[strategies_used]))
+						for strategy in test.sim.strategies_used:
+							print("***** {0}".format(strategy_function_names[strategy]), file=outfile)
 							print("[[./images/{0}_{1}_satisfied_cat{2}.png]]".format(test.underscore_name,
 								strategy, i), file=outfile)
 		print("** AI algorithm convergence", file=outfile)
