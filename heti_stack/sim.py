@@ -96,7 +96,6 @@ class Simulation(object):
 		self.results = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
 		return self.results
 	def stratify_and_filter_results(self, test):
-		# TODO: restructure this as a 3d dataframe with pd.MultiIndex
 		applicant_pools = self.stratify_applicants_by_strategy_and_filter(test)
 		# print("Applicants stratified by strategy and filter:", applicant_pools)
 		df_dict = {flag:[] for flag in ["total"]+["cat"+str(n+1) for n in range(6)]}
@@ -112,10 +111,9 @@ class Simulation(object):
 					not_placed = len(self.unplaced(subpool))
 					total = len(subpool)
 					df_dict[flag+append_str] += [len(self.satisfied(subpool, rank)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
-			df = pd.DataFrame(df_dict, index=pd.MultiIndex.from_product([strategies, indices]))
+		df = pd.DataFrame(df_dict, index=pd.MultiIndex.from_product([strategies, indices]))
 		return df
 	def stratify_results(self):
-		# TODO: restructure this as a 3d dataframe with pd.MultiIndex
 		applicant_pools = self.stratify_applicants_by_strategy()
 		df_dict = {flag:[] for flag in ["total"]+["cat"+str(n+1) for n in range(6)]}
 		flags = ["total", "cat"]
@@ -190,56 +188,69 @@ class Simulation(object):
 			print("Total Category {cat} applicants who did not get any placement: {count} ({percent:.2%})".format(cat=category+1, count=cat_not_placed, percent=cat_not_placed/cat_total))
 			print("Total Category {cat} applicants: {count}".format(cat=category+1, count=cat_total))
 	def plot_one(self, header, percent=True, filter_f=None, prepend="", filename_pre=""):
-		# TODO: redo function to work with MultiIndex dataframe
-		# it's now possible to plot a stratified single function using df.xs("a", axis=1).unstack().plot().bar()
-		# none of this code is now functional so keep your hands off of it. may need to revert to a previous commit
-		raise NotImplementedError
-		stratify_switches = [False] + ([True] if len(self.strategies_used) > 1 else [])
-		for stratify in stratify_switches:
-			# print(stratify, self.strategies_used, filter_f)
-			if stratify and filter_f != None:
-				# print("Entered")
-				results = self.stratify_and_filter_results(filter_f)
-			elif stratify and filter_f == None:
-				results = self.stratified_results
-			else:
-				results = self.results
-			# print(result_dict)
-			toplot = self.percentify_results(results) if percent else results
+		if len(self.strategies_used) > 1:
+			self.plot_one_stratified(header, percent, filter_f, prepend, filename_pre)
+		else:
+			toplot = self.filter_results(filter_f) if filter_f != None else self.results
+			toplot = self.percentify_results(toplot) if percent else toplot
 			fig, ax = plt.subplots()
 			ax.yaxis.set_major_formatter(PercentFormatter())
+			title = prepend + "Satisfied applicants: {header}".format(header=header)
+			filename = filename_pre + "_satisfied_{header}".format(header=header)
+			toplot.plot.bar(y=header, rot=30)
+			self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
+	def plot_all(self, percent=True, filter_f=None, prepend="", filename_pre=""):
+		if len(self.strategies_used) > 1:
+			self.plot_all_stratified(percent, filter_f, prepend, filename_pre)
+		else:
+			toplot = self.filter_results(filter_f) if filter_f != None else self.results
+			toplot = self.percentify_results(toplot) if percent else toplot
+			toplot.plot.bar(rot=30)
+			self._plot("Applicants who got their nth preference", "%" if percent else "count", prepend + "Satisfied applicants",
+				filename_pre + "_satisfied")
+	def plot_every(self, percent=True, filter_f=None, prepend="", filename_pre=""):
+		for col in self.results:
+			self.plot_one(col, percent, filter_f, prepend, filename_pre)
+	def plot_one_stratified(self, header, percent=True, filter_f=None, prepend="", filename_pre=""):
+		"""Separate function for plotting single columns from stratified dataframes"""
+		# it's now possible to plot a stratified single function using df.xs("a", axis=1).unstack().plot().bar()
+		# none of this code is now functional so keep your hands off of it. may need to revert to a previous commit
+		if filter_f != None:
+			result_df = self.stratify_and_filter_results(filter_f)
+		else:
+			result_df = self.stratified_results
+		fig, ax = plt.subplots()
+		ax.yaxis.set_major_formatter(PercentFormatter())
+		toplot = result_df.xs(header, axis=1).unstack().T
+		toplot.plot.bar(rot=30)
+		title = prepend + "Satisfied applicants: {header}".format(header=header)
+		filename = filename_pre + "_satisfied_{header}".format(header=header)
+		self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
+		for col in toplot:
+			toplot.plot.bar(y=col, rot=30)
 			title_insert = " ({0})".format(strategy_function_names[name].lower()) if stratify else ""
 			filename_insert = "_{0}".format(name) if stratify else ""
 			title = prepend + "Satisfied applicants{insert}: {header}".format(insert=title_insert, header=header)
 			filename = filename_pre + "{insert}_satisfied_{header}".format(insert=filename_insert, header=header)
-			# print(title, filename)
-			toplot.plot.bar(y=header, rot=30)
 			self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
-	def plot_one_stratified(self, header, percent=True, filter_f=None, prepend="", filename_pre=""):
-		"""Separate function for plotting stratified dataframes"""
-		raise NotImplementedError
-	def plot_all(self, percent=True, filter_f=None, prepend="", filename_pre=""):
-		# TODO: redo function to work with MultiIndex dataframe
-		raise NotImplementedError
-		stratify_switches = [False] + ([True] if len(self.strategies_used) > 1 else [])
-		for stratify in stratify_switches:
-			if stratify and filter_f != None:
-				result_dict = self.stratify_and_filter_results(filter_f)
-			elif stratify and filter_f == None:
-				result_dict = self.stratified_results
-			else:
-				result_dict = {"": self.results}
-			for name, result_item in result_dict.items():
-				toplot = self.percentify_results(result_item) if percent else result_item
-				toplot.plot.bar(rot=30)
-				self._plot("Applicants who got their nth preference", "%" if percent else "count", prepend + "Satisfied applicants",
-					filename_pre + "_satisfied")
 	def plot_all_stratified(self, percent=True, filter_f=None, prepend="", filename_pre=""):
-		"""Separate function for plotting stratified dataframes"""
+		"""Separate function for plotting everything from a stratified dataframe"""
+		if filter_f != None:
+			result_df = self.stratify_and_filter_results(filter_f)
+		else:
+			result_df = self.stratified_results
+		# consider additionally using a 3d plot to show each xs
+		for f in self.strategies_used:
+			toplot = result_df.xs(f)
+			toplot.plot.bar(rot=30)
+			title_insert = " ({0})".format(strategy_function_names[name].lower()) if stratify else ""
+			filename_insert = "_{0}".format(name) if stratify else ""
+			self._plot("Applicants who got their nth preference", "%" if percent else "count",
+				prepend + "Satisfied applicants{insert}".format(insert=title_insert),
+				filename_pre + "{insert}_satisfied".format(insert=filename_insert))
+	def plot_every_stratified(self, percent=True, filter_f=None, prepend="", filename_pre=""):
+		"""Separate function for plotting each column from a stratified dataframe"""
 		raise NotImplementedError
-	def plot_every(self, percent=True, filter_f=None, prepend="", filename_pre=""):
-		for col in self.results:
-			self.plot_one(col, percent, filter_f, prepend, filename_pre)
 	@staticmethod
 	def _plot(xlab, ylab, title, filename=""):
 		if not filename:
