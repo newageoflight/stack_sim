@@ -6,7 +6,6 @@ Base functions and classes
 
 from numpy.random import choice
 
-import math
 import random
 import re
 
@@ -23,7 +22,7 @@ with open("category-counts.txt", "r") as categories_infile:
 
 # Basic functions
 
-ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(math.floor(n/10)%10!=1)*(n%10<4)*n%10::4])
+ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n//10%10!=1)*(n%10<4)*n%10::4])
 sanitise_filename = lambda x: re.sub(r'[<>:"/\|?*,]', '', x)
 def uniq(l):
 	seen = []
@@ -94,41 +93,41 @@ with open("altstack.txt", "r") as altstack_infile:
 # may need e.g. a separate class for HospitalList
 
 def shuffle(l):
-	return random.sample(l, len(l))
+	return random.sample(l[:], len(l))
 
 def weighted_shuffle(l,w=hospital_weights):
-	return list(choice(l, len(l), p=w, replace=False))
+	return list(choice(l[:], len(l), p=w, replace=False))
 
 def push_random_to_top(l):
-	k = l
+	k = l[:]
 	k.insert(0, k.pop(random.randint(0,len(k)-1)))
 	return k
 
 def stack_random_top(l):
 	global stack
-	return push_random_to_top(stack.copy())
+	return push_random_to_top(stack)
 
-def push_wt_random_to_top(l,w=stack_weights):
-	k = l
+def push_wt_random_to_top(l,w=hospital_weights):
+	k = l[:]
 	k.insert(0, k.pop(choice(len(k), 1, p=w)[0]))
 	return k
 
 def stack_wt_random_top(l):
 	global stack
-	return push_wt_random_to_top(stack.copy())
+	return push_wt_random_to_top(stack, w=stack_weights)
 
-def push_wt_random_to_position(l,n,w=stack_weights):
+def push_wt_random_to_position(l,n,w=hospital_weights):
 	k = l
 	k.insert(n, k.pop(choice(len(k), 1, p=w)[0]))
 	return k
 
 def default_stack(l):
 	global stack
-	return stack
+	return stack.copy()
 
 def mixed_stacks(l):
 	global stack, altstack
-	return random.choice([stack, altstack])
+	return random.choice([stack.copy(), altstack.copy()])
 
 def push_random_to_top_and_n(l,n):
 	# randomly select two and then place at positions 0 and n-1
@@ -136,7 +135,7 @@ def push_random_to_top_and_n(l,n):
 	
 def push_wt_random_to_top_and_n(l,n,w=stack_weights):
 	# weighted-randomly select two and then place at positions 0 and n-1
-	return push_wt_random_to_positions(l, 0, n)
+	return push_wt_random_to_positions(l, 0, n, w=w)
 
 def push_random_to_positions(l, *positions):
 	k = l

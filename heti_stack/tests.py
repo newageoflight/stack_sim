@@ -44,36 +44,44 @@ class Test(object):
 		self.sim.export_results(self.underscore_name, filter_f=filter_f)
 
 # Test dictionaries
+# TODO: consider changing the test dictionaries to lists of Test objects
+# TODO: add filters for likelihood of getting into top 4 and top 6 hospitals
 
 single_tests = {
-	"All random": shuffle,
+	# "All random": shuffle,
 	"Weighted random": weighted_shuffle,
 	"All stack": default_stack,
 	"Mixed stacks": mixed_stacks,
-	"All same stack with random first": lambda l: push_random_to_top(stack),
+	# "All same stack with random first": lambda l: push_random_to_top(stack),
 	"All same stack with weighted random first": lambda l: push_wt_random_to_top(stack),
-	"All same stack with random first and 12th": lambda l: push_random_to_top_and_n(stack, 11),
+	# "All same stack with random first and 12th": lambda l: push_random_to_top_and_n(stack, 11),
 	"All same stack with weighted random first and 12th": lambda l: push_wt_random_to_top_and_n(stack, 11),
-	"All same stack with random first and 14th": lambda l: push_random_to_top_and_n(stack, 13),
+	# "All same stack with random first and 14th": lambda l: push_random_to_top_and_n(stack, 13),
 	"All same stack with weighted random first and 14th": lambda l: push_wt_random_to_top_and_n(stack, 13),
-	"All same stack with random first and 2nd": lambda l: push_random_to_top_and_n(stack, 1),
+	# "All same stack with random first and 2nd": lambda l: push_random_to_top_and_n(stack, 1),
 	"All same stack with weighted random first and 2nd": lambda l: push_wt_random_to_top_and_n(stack, 1),
-	"Mixed stacks with random first": lambda l: push_random_to_top(mixed_stacks(l)),
-	"Mixed stacks with weighted random first": lambda l: push_wt_random_to_top(mixed_stacks(l)),
-	"Mixed stacks with random first and 12th": lambda l: push_random_to_top_and_n(mixed_stacks(l), 11),
-	"Mixed stacks with weighted random first and 12th": lambda l: push_wt_random_to_top_and_n(mixed_stacks(l), 11),
-	"Mixed stacks with random first and 14th": lambda l: push_random_to_top_and_n(mixed_stacks(l), 13),
-	"Mixed stacks with weighted random first and 14th": lambda l: push_wt_random_to_top_and_n(mixed_stacks(l), 13),
-	"Mixed stacks with random first and 2nd": lambda l: push_random_to_top_and_n(mixed_stacks(l), 1),
-	"Mixed stacks with weighted random first and 2nd": lambda l: push_wt_random_to_top_and_n(mixed_stacks(l), 1),
+	# "Mixed stacks with random first": lambda l: push_random_to_top(mixed_stacks(l)),
+	# "Mixed stacks with weighted random first": lambda l: push_wt_random_to_top(mixed_stacks(l)),
+	# "Mixed stacks with random first and 12th": lambda l: push_random_to_top_and_n(mixed_stacks(l), 11),
+	# "Mixed stacks with weighted random first and 12th": lambda l: push_wt_random_to_top_and_n(mixed_stacks(l), 11),
+	# "Mixed stacks with random first and 14th": lambda l: push_random_to_top_and_n(mixed_stacks(l), 13),
+	# "Mixed stacks with weighted random first and 14th": lambda l: push_wt_random_to_top_and_n(mixed_stacks(l), 13),
+	# "Mixed stacks with random first and 2nd": lambda l: push_random_to_top_and_n(mixed_stacks(l), 1),
+	# "Mixed stacks with weighted random first and 2nd": lambda l: push_wt_random_to_top_and_n(mixed_stacks(l), 1),
 }
 
 mixed_tests = {
 	"Mixed strategies: 80% stack with weighted random first, 20% weighted random": [
-		(stack_random_top, 0.8), (weighted_shuffle, 0.2)
+		(stack_wt_random_top, 0.8), (weighted_shuffle, 0.2)
 		],
 	# "Mixed strategies: 80% stack with unweighted random, 20% unweighted random": [
-	# 	(stack_wt_random_top, 0.8), (shuffle, 0.2)
+	# 	(stack_random_top, 0.8), (shuffle, 0.2)
+	# 	],
+	"Mixed strategies: 60% stack with weighted random, 40% weighted random": [
+		(stack_wt_random_top, 0.6), (weighted_shuffle, 0.4)
+		],
+	# "Mixed strategies: 60% stack with unweighted random, 40% unweighted random": [
+	# 	(stack_random_top, 0.6), (shuffle, 0.4)
 	# 	],
 }
 

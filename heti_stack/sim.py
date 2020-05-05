@@ -42,7 +42,9 @@ class Simulation(object):
 		else:
 			raise TypeError
 		self.allocation_rounds = rounds
-		self.stratified_results = {}
+		self.stratified_results = pd.DataFrame()
+		self.stratified_filtered_results = {}
+		self.filtered_results = {}
 		self.results = pd.DataFrame()
 		if dra_prefill:
 			self._dra_prefill()
@@ -94,8 +96,12 @@ class Simulation(object):
 				total = sum(self.category_counts) if flag == "total" else self.category_counts[cat]
 				df_dict[flag+append_str] = [len(self.satisfied(self.applicants, rank, cat)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
 		self.results = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
+		if len(self.strategies_used) > 1:
+			self.stratify_results()
 		return self.results
 	def stratify_and_filter_results(self, test):
+		# TODO: retain unfiltered data's totals
+		# will allow for better calculation of strategy usefulness
 		applicant_pools = self.stratify_applicants_by_strategy_and_filter(test)
 		# print("Applicants stratified by strategy and filter:", applicant_pools)
 		df_dict = {flag:[] for flag in ["total"]+["cat"+str(n+1) for n in range(6)]}
@@ -112,6 +118,7 @@ class Simulation(object):
 					total = len(subpool)
 					df_dict[flag+append_str] += [len(self.satisfied(subpool, rank)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
 		df = pd.DataFrame(df_dict, index=pd.MultiIndex.from_product([strategies, indices]))
+		self.stratified_filtered_results[test.__name__] = df
 		return df
 	def stratify_results(self):
 		applicant_pools = self.stratify_applicants_by_strategy()
@@ -132,6 +139,8 @@ class Simulation(object):
 		self.stratified_results = df
 		return self.stratified_results
 	def filter_results(self, test):
+		# TODO: needs to somehow preserve the total being from the non-filtered dataset
+		# doing so will be more useful for calculations of strategy usefulness
 		filtered_applicants = self.filter_applicants(test)
 		df_dict = {}
 		flags = ["total", "cat"]
@@ -141,29 +150,38 @@ class Simulation(object):
 				append_str = "" if flag=="total" else str(i+1)
 				placed = len(self.placed(filtered_applicants, cat))
 				not_placed = len(self.unplaced(filtered_applicants, cat))
-				total = sum(self.category_counts) if flag == "total" else self.category_counts[cat]
+				total = len(filtered_applicants) if flag == "total" else len([a for a in filtered_applicants if a.category == i])
 				df_dict[flag+append_str] = [len(self.satisfied(filtered_applicants, rank, cat)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
 		filtered_results = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
+		self.filtered_results[test.__name__] = filtered_results
 		return filtered_results
 	@staticmethod
 	def percentify_results(results):
 		new_results = results.copy()
-		for col in new_results:
-			new_results[col] = 100*new_results[col]/new_results[col]["total"]
+		new_results = 100. * new_results/new_results.iloc[-1]
+		# print(results.to_string(), new_results.to_string())
 		return new_results.iloc[:17]
+	@staticmethod
+	def percentify_stratified_results(results):
+		# TODO: fix bug, keeps throwing them, also results look wrong
+		to_ret = []
+		new_results = results.copy()
+		for idx, df in new_results.groupby(level=0):
+			to_ret.append(Simulation.percentify_results(df))
+		# print(pd.concat(to_ret))
+		return pd.concat(to_ret)
 	def export_results(self, name: str, filter_f=None):
 		self.results.to_csv("tables/"+name+".csv")
 		self.percentify_results(self.results).to_csv("tables/"+name+"_percentified.csv")
 		if filter_f:
 			self.filter_results(filter_f).to_csv("tables/"+name+"_filter_"+filter_f.__name__+".csv")
 		if len(self.strategies_used) > 1:
-			for k,v in self.stratified_results.items():
-				v.to_csv("tables/"+name+"_"+k+".csv")
-				self.percentify_results(v).to_csv("tables/"+name+"_"+k+"_percentified.csv")
+			self.stratified_results.to_csv("tables/"+name+"_stratified"+".csv")
+			self.percentify_stratified_results(self.stratified_results).to_csv("tables/"+name+"_stratified_percentified.csv")
 			if filter_f:
-				for k,v in self.stratify_and_filter_results(filter_f).items():
-					v.to_csv("tables/"+name+"_"+k+"_filter_"+filter_f.__name__+".csv")
-					self.percentify_results(v).to_csv("tables/"+name+"_"+k+"_filter_"+filter_f.__name__+"_percentified.csv")
+				stratify_and_filter = self.stratify_and_filter_results(filter_f)
+				stratify_and_filter.to_csv("tables/"+name+"_stratified_filter_"+filter_f.__name__+".csv")
+				self.percentify_stratified_results(stratify_and_filter).to_csv("tables/"+name+"_stratified_filter_"+filter_f.__name__+"_percentified.csv")
 	def pprint(self):
 		"""Legacy function: pretty-prints out the results"""
 		for rank in range(len(self.hospitals)):
@@ -209,16 +227,21 @@ class Simulation(object):
 			self._plot("Applicants who got their nth preference", "%" if percent else "count", prepend + "Satisfied applicants",
 				filename_pre + "_satisfied")
 	def plot_every(self, percent=True, filter_f=None, prepend="", filename_pre=""):
-		for col in self.results:
-			self.plot_one(col, percent, filter_f, prepend, filename_pre)
+		if len(self.strategies_used) > 1:
+			self.plot_every_stratified(percent, filter_f, prepend, filename_pre)
+		else:
+			for col in self.results:
+				self.plot_one(col, percent, filter_f, prepend, filename_pre)
 	def plot_one_stratified(self, header, percent=True, filter_f=None, prepend="", filename_pre=""):
 		"""Separate function for plotting single columns from stratified dataframes"""
 		# it's now possible to plot a stratified single function using df.xs("a", axis=1).unstack().plot().bar()
 		# none of this code is now functional so keep your hands off of it. may need to revert to a previous commit
+		# TODO: fix bug, positions on chart are out of order
 		if filter_f != None:
 			result_df = self.stratify_and_filter_results(filter_f)
 		else:
 			result_df = self.stratified_results
+		result_df = self.percentify_stratified_results(result_df) if percent else result_df
 		fig, ax = plt.subplots()
 		ax.yaxis.set_major_formatter(PercentFormatter())
 		toplot = result_df.xs(header, axis=1).unstack().T
@@ -228,29 +251,33 @@ class Simulation(object):
 		self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
 		for col in toplot:
 			toplot.plot.bar(y=col, rot=30)
-			title_insert = " ({0})".format(strategy_function_names[name].lower()) if stratify else ""
-			filename_insert = "_{0}".format(name) if stratify else ""
+			title_insert = " ({0})".format(strategy_function_names[col].lower())
+			filename_insert = "_{0}".format(col)
 			title = prepend + "Satisfied applicants{insert}: {header}".format(insert=title_insert, header=header)
 			filename = filename_pre + "{insert}_satisfied_{header}".format(insert=filename_insert, header=header)
 			self._plot("Applicants who got their nth preference", "%" if percent else "count", title, filename)
 	def plot_all_stratified(self, percent=True, filter_f=None, prepend="", filename_pre=""):
 		"""Separate function for plotting everything from a stratified dataframe"""
+		# TODO: fix bug, positions on chart are out of order
 		if filter_f != None:
 			result_df = self.stratify_and_filter_results(filter_f)
 		else:
 			result_df = self.stratified_results
 		# consider additionally using a 3d plot to show each xs
+		result_df = self.percentify_stratified_results(result_df) if percent else result_df
 		for f in self.strategies_used:
 			toplot = result_df.xs(f)
+			# print(toplot.to_string())
 			toplot.plot.bar(rot=30)
-			title_insert = " ({0})".format(strategy_function_names[name].lower()) if stratify else ""
-			filename_insert = "_{0}".format(name) if stratify else ""
+			title_insert = " ({0})".format(strategy_function_names[f].lower())
+			filename_insert = "_{0}".format(f)
 			self._plot("Applicants who got their nth preference", "%" if percent else "count",
 				prepend + "Satisfied applicants{insert}".format(insert=title_insert),
 				filename_pre + "{insert}_satisfied".format(insert=filename_insert))
 	def plot_every_stratified(self, percent=True, filter_f=None, prepend="", filename_pre=""):
 		"""Separate function for plotting each column from a stratified dataframe"""
-		raise NotImplementedError
+		for col in self.results:
+			self.plot_one_stratified(col, percent, filter_f, prepend, filename_pre)
 	@staticmethod
 	def _plot(xlab, ylab, title, filename=""):
 		if not filename:
@@ -340,7 +367,7 @@ class AnnealSimulation(Simulation):
 	GPU functionality does not work completely. The intent was to run the cool_gpu and step_gpu
 	functions via numba.cuda.jit but I can't figure out how to use cuda so I'm just going to leave it
 	with numpy arrays for now. It's still significantly faster than self._step_cool()"""
-	def __init__(self, starting_strategy, gpu=True, temp=10000, cool_rate=0.003, iterlimit=1000000):
+	def __init__(self, starting_strategy, gpu=True, temp=100000, cool_rate=0.0002, iterlimit=1000000):
 		self.min_unhappiness = POSITIVE_INFINITY
 		self._use_gpu = gpu # ok I know it says "gpu" but it's really just numba.jit, not cuda
 		self.best_state = None
@@ -491,3 +518,13 @@ class AnnealSimulation(Simulation):
 			return 1
 		else:
 			return exp((energy - new_energy)/self.temp)
+
+# TODO: create a new class to run the arithmogeometric and demon annealing methods described in here
+# the demon method description is not entirely correct, wikipedia does a better job
+# http://www.scielo.org.mx/pdf/cys/v21n3/1405-5546-cys-21-03-00493.pdf
+# there doesn't seem to be any particular advantage to doing a million operations
+# if you plot this function, you'd need a very long integer to store the number of decimal places
+# required to get n=6, and a very small value of alpha.
+# n = log10(8+log10(T0)) - log10(-log10(1-a))
+# there are far more efficient ways of reaching the same outcome without the unnecessary wasteful use
+# of computational resources, which I will try to implement in the next update
