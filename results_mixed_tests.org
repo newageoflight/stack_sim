@@ -1,54 +1,110 @@
 * Results
 ** AI algorithm + weighted random selection
-*** Mixed strategies: 80% stack with weighted random first, 20% weighted random
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_satisfied.png]]
+*** Mixed strategies: 10% random with weighted random top, 30% mixed stacks with weighted random top, 60% default stack with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_satisfied.png]]
 
 ||total|cat1|cat2|cat3|cat4|cat5|cat6|
 |-
-|1st|152|143|9|0|0|0|0|
-|2nd|76|67|9|0|0|0|0|
-|3rd|67|58|9|0|0|0|0|
-|4th|59|54|5|0|0|0|0|
-|5th|59|54|5|0|0|0|0|
-|6th|67|66|1|0|0|0|0|
-|7th|105|97|8|0|0|0|0|
-|8th|72|67|5|0|0|0|0|
-|9th|84|77|7|0|0|0|0|
-|10th|74|70|4|0|0|0|0|
-|11th|51|46|5|0|0|0|0|
-|12th|41|36|5|0|0|0|0|
-|13th|48|41|7|0|0|0|0|
-|14th|32|27|5|0|0|0|0|
-|15th|16|13|3|0|0|0|0|
-|placed|1003|916|87|0|0|0|0|
-|not_placed|536|0|115|158|148|101|14|
+|1st|254|252|2|0|0|0|0|
+|2nd|64|62|2|0|0|0|0|
+|3rd|52|52|0|0|0|0|0|
+|4th|45|45|0|0|0|0|0|
+|5th|40|39|1|0|0|0|0|
+|6th|66|65|1|0|0|0|0|
+|7th|86|83|3|0|0|0|0|
+|8th|36|35|1|0|0|0|0|
+|9th|75|75|0|0|0|0|0|
+|10th|42|42|0|0|0|0|0|
+|11th|56|56|0|0|0|0|0|
+|12th|47|46|1|0|0|0|0|
+|13th|48|45|3|0|0|0|0|
+|14th|35|12|23|0|0|0|0|
+|15th|47|7|40|0|0|0|0|
+|placed|993|916|77|0|0|0|0|
+|not_placed|546|0|125|158|148|101|14|
 |total|1539|916|202|158|148|101|14|
 
 **** Total
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_satisfied_total.png]]
-***** Stack with random top
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_stack_random_top_satisfied_cat0.png]]
-***** Weighted random
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_weighted_shuffle_satisfied_cat0.png]]
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_satisfied_total.png]]
+***** Random with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_random_with_wt_random_top_satisfied_cat0.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_mixed_stack_wt_random_top_satisfied_cat0.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_stack_wt_random_top_satisfied_cat0.png]]
 **** Category 1
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_satisfied_cat1.png]]
-***** Stack with random top
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_stack_random_top_satisfied_cat1.png]]
-***** Weighted random
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_weighted_shuffle_satisfied_cat1.png]]
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_satisfied_cat1.png]]
+***** Random with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_random_with_wt_random_top_satisfied_cat1.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_mixed_stack_wt_random_top_satisfied_cat1.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_stack_wt_random_top_satisfied_cat1.png]]
 **** Category 2
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_satisfied_cat2.png]]
-***** Stack with random top
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_stack_random_top_satisfied_cat2.png]]
-***** Weighted random
-[[./images/mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal_weighted_shuffle_satisfied_cat2.png]]
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_satisfied_cat2.png]]
+***** Random with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_random_with_wt_random_top_satisfied_cat2.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_mixed_stack_wt_random_top_satisfied_cat2.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal_stack_wt_random_top_satisfied_cat2.png]]
+*** Mixed strategies: 20% random with weighted random top, 50% mixed stacks with weighted random top, 30% default stack with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_satisfied.png]]
+
+||total|cat1|cat2|cat3|cat4|cat5|cat6|
+|-
+|1st|259|258|1|0|0|0|0|
+|2nd|75|71|4|0|0|0|0|
+|3rd|52|52|0|0|0|0|0|
+|4th|50|48|2|0|0|0|0|
+|5th|55|54|1|0|0|0|0|
+|6th|56|56|0|0|0|0|0|
+|7th|54|52|2|0|0|0|0|
+|8th|43|43|0|0|0|0|0|
+|9th|62|62|0|0|0|0|0|
+|10th|35|33|2|0|0|0|0|
+|11th|47|45|2|0|0|0|0|
+|12th|57|54|3|0|0|0|0|
+|13th|76|66|10|0|0|0|0|
+|14th|36|17|19|0|0|0|0|
+|15th|42|5|37|0|0|0|0|
+|placed|999|916|83|0|0|0|0|
+|not_placed|540|0|119|158|148|101|14|
+|total|1539|916|202|158|148|101|14|
+
+**** Total
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_satisfied_total.png]]
+***** Random with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_random_with_wt_random_top_satisfied_cat0.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_mixed_stack_wt_random_top_satisfied_cat0.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_stack_wt_random_top_satisfied_cat0.png]]
+**** Category 1
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_satisfied_cat1.png]]
+***** Random with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_random_with_wt_random_top_satisfied_cat1.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_mixed_stack_wt_random_top_satisfied_cat1.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_stack_wt_random_top_satisfied_cat1.png]]
+**** Category 2
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_satisfied_cat2.png]]
+***** Random with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_random_with_wt_random_top_satisfied_cat2.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_mixed_stack_wt_random_top_satisfied_cat2.png]]
+***** Stack with weighted random top
+[[./images/mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal_stack_wt_random_top_satisfied_cat2.png]]
 ** AI algorithm + unweighted random selection
 ** AI algorithm convergence
-*** Mixed strategies: 80% stack with weighted random first, 20% weighted random
-[[./images/conv_mixed_strategies_80%_stack_with_weighted_random_first_20%_weighted_random_anneal.png]]
+*** Mixed strategies: 10% random with weighted random top, 30% mixed stacks with weighted random top, 60% default stack with weighted random top
+[[./images/conv_mixed_strategies_10%_random_with_weighted_random_top_30%_mixed_stacks_with_weighted_random_top_60%_default_stack_with_weighted_random_top_anneal.png]]
+*** Mixed strategies: 20% random with weighted random top, 50% mixed stacks with weighted random top, 30% default stack with weighted random top
+[[./images/conv_mixed_strategies_20%_random_with_weighted_random_top_50%_mixed_stacks_with_weighted_random_top_30%_default_stack_with_weighted_random_top_anneal.png]]
 ** Global unhappiness when compared to categorical matching
 ||alloc_mode|anneal|global_unhappiness|
 |-
-|0|Mixed strategies: 80% stack with weighted random first, 20% weighted random|True|5607|
-|1|Mixed strategies: 80% stack with weighted random first, 20% weighted random|False|2378|
+|0|Mixed strategies: 10% random with weighted random top, 30% mixed stacks with weighted random top, 60% default stack with weighted random top|True|5305|
+|1|Mixed strategies: 20% random with weighted random top, 50% mixed stacks with weighted random top, 30% default stack with weighted random top|True|5330|
 

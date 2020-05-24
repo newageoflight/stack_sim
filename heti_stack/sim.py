@@ -5,8 +5,10 @@ ALlocation process simulation objects
 """
 
 from copy import deepcopy
+from functools import reduce
 from matplotlib.ticker import PercentFormatter
 from math import exp
+from scipy import stats
 from textwrap import wrap
 
 from .base import *
@@ -20,7 +22,6 @@ plt.style.use("ggplot")
 plt.rcParams["font.family"] = "Avenir Next"
 
 # Simulation objects
-# TODO: consider making satisfied, placed, unplaced, plot* methods into static/classmethods
 # This is all because of the need for stratification by stacking strategy, represents a major overhaul
 
 class Simulation(object):
@@ -32,7 +33,7 @@ class Simulation(object):
 		self.hospitals = hospitals.copy()
 		for hospital in self.hospitals:
 			hospital.empty()
-		if callable(starting_strategy):
+		if callable(starting_strategy) or isinstance(starting_strategy, StrategyObj):
 			self.strategies_used = [starting_strategy.__name__]
 			self.applicants = [Applicant(starting_strategy, cat) for cat in range(len(category_counts)) for i in range(category_counts[cat])]
 		elif type(starting_strategy) == list:
@@ -58,6 +59,7 @@ class Simulation(object):
 		# DRA spots are only given to category 2-4 after the optimised allocation process:
 		# https://www.heti.nsw.gov.au/__data/assets/pdf_file/0011/424667/Direct-Regional-Allocation-Procedure.PDF
 	def _runsim(self):
+		self._dra_prefill()
 		for category in range(len(self.category_counts)):
 			for hospital in self.hospitals:
 				for rank in range(len(self.hospitals)):
@@ -99,7 +101,7 @@ class Simulation(object):
 		if len(self.strategies_used) > 1:
 			self.stratify_results()
 		return self.results
-	def stratify_and_filter_results(self, test):
+	def stratify_and_filter_results(self, test, keep_original_totals=False):
 		# TODO: retain unfiltered data's totals
 		# will allow for better calculation of strategy usefulness
 		applicant_pools = self.stratify_applicants_by_strategy_and_filter(test)
@@ -138,8 +140,8 @@ class Simulation(object):
 		df = pd.DataFrame(df_dict, index=pd.MultiIndex.from_product([strategies, indices]))
 		self.stratified_results = df
 		return self.stratified_results
-	def filter_results(self, test):
-		# TODO: needs to somehow preserve the total being from the non-filtered dataset
+	def filter_results(self, test, keep_original_totals=False):
+		# TODO: needs option to preserve the total being from the non-filtered dataset
 		# doing so will be more useful for calculations of strategy usefulness
 		filtered_applicants = self.filter_applicants(test)
 		df_dict = {}
@@ -150,7 +152,10 @@ class Simulation(object):
 				append_str = "" if flag=="total" else str(i+1)
 				placed = len(self.placed(filtered_applicants, cat))
 				not_placed = len(self.unplaced(filtered_applicants, cat))
-				total = len(filtered_applicants) if flag == "total" else len([a for a in filtered_applicants if a.category == i])
+				if not keep_original_totals:
+					total = len(filtered_applicants) if flag == "total" else len([a for a in filtered_applicants if a.category == i])
+				else:
+					total = len(self.applicants) if flag == "total" else len([a for a in self.applicants if a.category == i])
 				df_dict[flag+append_str] = [len(self.satisfied(filtered_applicants, rank, cat)) for rank in range(len(self.hospitals))] + [placed, not_placed, total]
 		filtered_results = pd.DataFrame(df_dict, index=[ordinal(n) for n in range(1, len(self.hospitals)+1)]+["placed","not_placed", "total"])
 		self.filtered_results[test.__name__] = filtered_results
@@ -176,12 +181,14 @@ class Simulation(object):
 		if filter_f:
 			self.filter_results(filter_f).to_csv("tables/"+name+"_filter_"+filter_f.__name__+".csv")
 		if len(self.strategies_used) > 1:
-			self.stratified_results.to_csv("tables/"+name+"_stratified"+".csv")
+			self.stratified_results.to_csv("tables/"+name+"_stratified.csv")
 			self.percentify_stratified_results(self.stratified_results).to_csv("tables/"+name+"_stratified_percentified.csv")
+			self._recut_results("cat1", False).to_csv("tables/"+name+"_stratified_recut.csv")
 			if filter_f:
 				stratify_and_filter = self.stratify_and_filter_results(filter_f)
 				stratify_and_filter.to_csv("tables/"+name+"_stratified_filter_"+filter_f.__name__+".csv")
 				self.percentify_stratified_results(stratify_and_filter).to_csv("tables/"+name+"_stratified_filter_"+filter_f.__name__+"_percentified.csv")
+				self._recut_results("cat1", False, filter_f).to_csv("tables/"+name+"_stratified_filter_"+filter_f.__name__+"_recut.csv")
 	def pprint(self):
 		"""Legacy function: pretty-prints out the results"""
 		for rank in range(len(self.hospitals)):
@@ -232,19 +239,27 @@ class Simulation(object):
 		else:
 			for col in self.results:
 				self.plot_one(col, percent, filter_f, prepend, filename_pre)
-	def plot_one_stratified(self, header, percent=True, filter_f=None, prepend="", filename_pre=""):
-		"""Separate function for plotting single columns from stratified dataframes"""
-		# it's now possible to plot a stratified single function using df.xs("a", axis=1).unstack().plot().bar()
-		# none of this code is now functional so keep your hands off of it. may need to revert to a previous commit
-		# TODO: fix bug, positions on chart are out of order
+	def _recut_results(self, header, percent=False, filter_f=None):
 		if filter_f != None:
 			result_df = self.stratify_and_filter_results(filter_f)
 		else:
 			result_df = self.stratified_results
 		result_df = self.percentify_stratified_results(result_df) if percent else result_df
+		# print(result_df.to_string())
+		toplot = result_df.xs(header, axis=1).unstack().T
+		# print(toplot.to_string())
+		toplot = toplot.reindex(result_df.index.get_level_values(1).unique())
+		return toplot
+	def plot_one_stratified(self, header, percent=True, filter_f=None, prepend="", filename_pre=""):
+		"""Separate function for plotting single columns from stratified dataframes"""
+		# it's now possible to plot a stratified single function using df.xs("a", axis=1).unstack().plot().bar()
+		# none of this code is now functional so keep your hands off of it. may need to revert to a previous commit
+		# TODO: fix bug, positions on chart are out of order
+		toplot = self._recut_results(header, percent, filter_f)
+		# print(toplot)
 		fig, ax = plt.subplots()
 		ax.yaxis.set_major_formatter(PercentFormatter())
-		toplot = result_df.xs(header, axis=1).unstack().T
+		# print(toplot.to_string())
 		toplot.plot.bar(rot=30)
 		title = prepend + "Satisfied applicants: {header}".format(header=header)
 		filename = filename_pre + "_satisfied_{header}".format(header=header)
@@ -293,6 +308,67 @@ class Simulation(object):
 		plt.close('all')
 	def current_unhappiness(self):
 		return sum(a.unhappiness() for a in self.applicants)
+	@staticmethod
+	def expand(group):
+		a = []
+		for i in range(len(group)):
+			a += [i]*group[i]
+		return a
+	def compare_two_subgroups(self, cols, filter_f=None, category=0):
+		"""Run Mann-Whitney U test between two specified subgroups
+		Also allows for filters and composite subgroups i.e. adding >1 subgroup into one
+		Should exclude unallocated applicants by default
+		Both cols should be passed as lists
+		stats.mannwhitneyu(a,b)"""
+		# raise an error if there are any duplicates
+		result_df = self._recut_results("cat{0}".format(category+1), False, filter_f).iloc[:15]
+		print(result_df)
+		flattened_cols = [c for sublist in cols for c in sublist]
+		if len(uniq(flattened_cols)) < len(flattened_cols):
+			raise Exception
+		col_a, col_b = cols
+		# do some cross-sectional magic
+		group_a = result_df[col_a].sum(axis=1)
+		group_b = result_df[col_b].sum(axis=1)
+		# expand the group columns at this point
+		expand_a = self.expand(group_a)
+		expand_b = self.expand(group_b)
+		print(cols)
+		print(np.mean(expand_a), np.mean(expand_b))
+		return stats.mannwhitneyu(expand_a, expand_b)
+	def compare_all_subgroups(self, filter_f=None):
+		"""Runs Kruskal-Wallis H test between all subgroups
+		stats.kruskal(a,b,c)"""
+		toplot = self._recut_results("cat1", False, filter_f).iloc[:15]
+		print(toplot)
+		# expand the group columns at this point
+		expands = []
+		for col in toplot:
+			expand = []
+			group = toplot[col]
+			for i in range(len(group)):
+				expand += [i]*group[i]
+			expands.append(expand)
+		print([np.mean(ex) for ex in expands])
+		return stats.kruskal(*expands)
+	def compare_two_firsts(self, cols, filter_f=None, category=0):
+		result_df = self._recut_results("cat{0}".format(category+1), True, filter_f).iloc[:15]
+		print(result_df)
+		flattened_cols = [c for sublist in cols for c in sublist]
+		if len(uniq(flattened_cols)) < len(flattened_cols):
+			raise Exception
+		col_a, col_b = cols
+		# do some cross-sectional magic
+		group_a = result_df[col_a].sum(axis=1)
+		group_b = result_df[col_b].sum(axis=1)
+		group_a = group_a/group_a.sum()
+		group_b = group_b/group_b.sum()
+		row_a = [group_a[0], sum(group_a[1:])]
+		row_b = [group_b[0], sum(group_b[1:])]
+		chi2_table = np.array([row_a, row_b]).T
+		print(cols)
+		print(chi2_table)
+		return stats.chi2_contingency(chi2_table)
 
 # Numba optimisations
 # TODO: optimise these methods with CUDA/Python for GPU usage
@@ -367,7 +443,7 @@ class AnnealSimulation(Simulation):
 	GPU functionality does not work completely. The intent was to run the cool_gpu and step_gpu
 	functions via numba.cuda.jit but I can't figure out how to use cuda so I'm just going to leave it
 	with numpy arrays for now. It's still significantly faster than self._step_cool()"""
-	def __init__(self, starting_strategy, gpu=True, temp=100000, cool_rate=0.0002, iterlimit=1000000):
+	def __init__(self, starting_strategy, gpu=True, temp=10000, cool_rate=0.003, iterlimit=1000000):
 		self.min_unhappiness = POSITIVE_INFINITY
 		self._use_gpu = gpu # ok I know it says "gpu" but it's really just numba.jit, not cuda
 		self.best_state = None
@@ -404,7 +480,7 @@ class AnnealSimulation(Simulation):
 		for a in range(len(self.current_state)):
 			self.current_state_arr[a,self.hospitals.index(self.current_state[a].allocation)] = 1
 		self.pref_arr = np.array([[a.preferences.index(b) for b in self.hospitals] for a in self.current_state])
-		self.capacity_arr = np.array([h.capacity for h in self.hospitals])
+		self.capacity_arr = np.array([h.spots_remaining for h in self.hospitals])
 		self.best_state_arr = self.current_state_arr
 	def _gpu_detranslate(self):
 		# bug: hospitals do not allocate
@@ -418,7 +494,6 @@ class AnnealSimulation(Simulation):
 			hospital.empty()
 		for a in range(len(self.current_state_arr)):
 			current_one = np.where(self.current_state_arr[a] == 1)[0][0]
-			best_one = np.where(self.best_state_arr[a] == 1)[0][0]
 			# do stuff
 			self.current_state[a].allocate(self.hospitals[current_one])
 		if (self.best_state_arr == self.current_state_arr).all():
@@ -430,6 +505,7 @@ class AnnealSimulation(Simulation):
 		self._make_results()
 	def _runsim(self):
 		"""Runs simulated annealing procedures"""
+		self._dra_prefill()
 		self.current_state = self.initial_state()
 		self.best_state = deepcopy(self.current_state)
 		self.unhappiness_records = self.unhappiness_records.append(
@@ -499,6 +575,7 @@ class AnnealSimulation(Simulation):
 		self._make_results()
 	def step_gpu(self, iters):
 		"""Calls the numba function step_gpu"""
+		# cbf implementing this shit, final year exams are a bitch
 		raise NotImplementedError
 	def _update_applicants(self):
 		self.applicants = self.current_state + self.unplaced(self.applicants)

@@ -16,7 +16,7 @@ def org_table_from_csv(csv_file):
 			line_count += 1
 	return table_string
 
-def write_results(tests, unhappiness, org_file, mixed=False, filter_f=None):
+def write_results(tests, unhappiness, org_file, mixed=False, filters=[]):
 	global strategy_function_names, filter_function_names
 	with open(org_file, "w") as outfile:
 		print("* Results", file=outfile)

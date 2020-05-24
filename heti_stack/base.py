@@ -5,6 +5,7 @@ Base functions and classes
 """
 
 from numpy.random import choice
+from functools import wraps
 
 import random
 import re
@@ -30,6 +31,10 @@ def uniq(l):
 		if i not in seen:
 			seen.append(i)
 	return seen
+def underscorify(name):
+	new_name = re.sub(r"[\s]", "_", name)
+	new_name = sanitise_filename(new_name.lower())
+	return new_name
 
 # Classes
 
@@ -81,7 +86,9 @@ with open("stack.txt", "r") as stack_infile:
 	for line in stack_infile:
 		stack.append(next((h for h in hospitals if h.abbreviation == line.strip()), None))
 stack_weights = [h.firsts/366 for h in stack]
+stack_with_weights = list(zip(hospitals, hospital_weights))
 tier_one_hospitals = stack[:4]
+top_six_hospitals = stack[:6]
 
 altstack = []
 with open("altstack.txt", "r") as altstack_infile:
@@ -92,9 +99,39 @@ with open("altstack.txt", "r") as altstack_infile:
 # these need to be fixed somehow so they don't look retarded like they do now (global variables, redundant arguments)
 # may need e.g. a separate class for HospitalList
 
+# here's an idea that may fix it
+# have a callable object that contains a preferencing strategy
+# when called (takes an argument), it can check if it was initiated with a list or a function and return accordingly
+
+class StrategyObj(object):
+	"""Callable object containing a preferencing strategy
+	Can either be a list of hospitals or a function of that list"""
+	def __init__(self, name, strategy):
+		self.name = name
+		self.strategy = strategy
+		self.__name__ = strategy.__name__ if callable(strategy) else underscorify(name)
+	def __call__(self, *args, **kwargs):	
+		if callable(self.strategy):
+			return self.strategy(*args, **kwargs)
+		elif type(self.strategy) == list:
+			return self.strategy
+
+def Strategy(function=None, name=""):
+	if function:
+		return StrategyObj(name, function)
+	else:
+		@wraps(function)
+		def wrapper(function):
+			return StrategyObj(name, function)
+		return wrapper
+
+# strategies
+
+@Strategy(name="Random")
 def shuffle(l):
 	return random.sample(l[:], len(l))
 
+@Strategy(name="Weighted random")
 def weighted_shuffle(l,w=hospital_weights):
 	return list(choice(l[:], len(l), p=w, replace=False))
 
@@ -103,6 +140,7 @@ def push_random_to_top(l):
 	k.insert(0, k.pop(random.randint(0,len(k)-1)))
 	return k
 
+@Strategy(name="Stack with random top")
 def stack_random_top(l):
 	global stack
 	return push_random_to_top(stack)
@@ -112,6 +150,15 @@ def push_wt_random_to_top(l,w=hospital_weights):
 	k.insert(0, k.pop(choice(len(k), 1, p=w)[0]))
 	return k
 
+@Strategy(name="Random with weighted random top")
+def random_with_wt_random_top(l,w=hospital_weights):
+	global hospitals_with_weights
+	k = hospitals_with_weights[:]
+	random.shuffle(k)
+	lst, wts = zip(*k)
+	return push_wt_random_to_top(list(lst), list(wts))
+
+@Strategy(name="Stack with weighted random top")
 def stack_wt_random_top(l):
 	global stack
 	return push_wt_random_to_top(stack, w=stack_weights)
@@ -121,13 +168,60 @@ def push_wt_random_to_position(l,n,w=hospital_weights):
 	k.insert(n, k.pop(choice(len(k), 1, p=w)[0]))
 	return k
 
+# default_stack = StrategyObj("Stack", stack.copy())
+@Strategy(name="Stack")
 def default_stack(l):
 	global stack
 	return stack.copy()
 
+def stack_rearrange(l, w=hospital_weights):
+	# This function has since been updated to reflect that several order swap proposals exist
+	# They are mainly based around hearsay and differ vastly between universities
+	# Therefore I will assume that the distribution is random
+	# This is treated as a separate function from the default stack so the default case is excluded
+	global stack_with_weights
+	base_stack = stack_with_weights.copy()
+	# return random.choice([stack.copy(), altstack.copy()])
+	# proposals involve swapping one or more pairs of adjacent hospitals.
+	# for the sake of this simulation there are a few rules:
+	# 1. pairs cannot overlap (i.e. cannot choose [2,3] and [3,4] to swap)
+	# 2. the maximum allowable swap count is 5 - unrealistic that there would be more
+	# therefore...
+	# choose a random number between 1 and 5 first
+	pair_count = random.randint(1,5)
+	# create a list of pairs to swap
+	indices_remaining = set(range(len(base_stack)))
+	pairs = []
+	# iteratively generate pairs
+	for i in range(pair_count):
+		pair_first = random.choice(tuple(indices_remaining))
+		pair_second = pair_first + 1 if pair_first != len(base_stack) - 1 else pair_first - 1
+		pair = set([pair_first, pair_second])
+		indices_remaining -= pair
+		pairs.append(pair)
+	# now swap the pairs
+	for pair in pairs:
+		i,j = pair
+		temp = base_stack[i]
+		base_stack[i] = base_stack[j]
+		base_stack[j] = temp
+	# return the rearranged stack
+	return base_stack
+
+stack_rearr_cache = [stack_rearrange(stack, hospital_weights) for i in range(7)]
+def stack_rearrangement(l, w=hospital_weights):
+	global stack_rearr_cache
+	return random.choice(stack_rearr_cache)
+
+@Strategy(name="Mixed stacks")
 def mixed_stacks(l):
-	global stack, altstack
-	return random.choice([stack.copy(), altstack.copy()])
+	lst, wts = zip(*stack_rearrangement(l))
+	return list(lst)
+
+@Strategy(name="Mixed stacks with weighted random top")
+def mixed_stack_wt_random_top(l, w=hospital_weights):
+	lst, wts = zip(*stack_rearrangement(l, w))
+	return push_wt_random_to_top(list(lst), list(wts))
 
 def push_random_to_top_and_n(l,n):
 	# randomly select two and then place at positions 0 and n-1
@@ -151,6 +245,7 @@ def push_wt_random_to_positions(l, *positions, w=stack_weights):
 		k.insert(target, k.pop(origin))
 	return k
 
+# TODO: obsolete this dictionary, rely on names given in StrategyObj class
 strategy_function_names = {
 	"": "",
 	"shuffle": "Random",
@@ -159,7 +254,35 @@ strategy_function_names = {
 	"mixed_stacks": "Mixed stacks",
 	"stack_random_top": "Stack with random top",
 	"stack_wt_random_top": "Stack with weighted random top",
+	"mixed_stack_wt_random_top": "Stack with weighted random top",
+	"random_with_wt_random_top": "Random with weighted random top",
 }
+
+# Filters
+# Should this be represented as an object as well?
+
+class FilterObj(object):
+	"""Callable object containing a filter"""
+	def __init__(self, name, strategy):
+		self.name = name
+		self.strategy = strategy
+		self.__name__ = strategy.__name__ if callable(strategy) else underscorify(name)
+	def __call__(self, *args, **kwargs):
+		if callable(self.strategy):
+			return self.strategy(*args, **kwargs)
+		elif type(self.strategy) == list:
+			return self.strategy
+
+def Filter(function=None, name=""):
+	if function:
+		return StrategyObj(name, function)
+	else:
+		@wraps(function)
+		def wrapper(function):
+			return StrategyObj(name, function)
+		return wrapper
+
+# functions
 
 def wanted_top_4_hospital(applicant):
 	global tier_one_hospitals
@@ -169,9 +292,19 @@ def got_top_4_hospital(applicant):
 	global tier_one_hospitals
 	return applicant.allocation in tier_one_hospitals
 
+def wanted_top_6_hospital(applicant):
+	global top_six_hospitals
+	return applicant.preferences[0] in top_six_hospitals
+
+def got_top_6_hospital(applicant):
+	global top_six_hospitals
+	return applicant.allocation in top_six_hospitals
+
 filter_function_names = {
 	"wanted_top_4_hospital": "Wanted a top 4 hospital",
 	"got_top_4_hospital": "Got a top 4 hospital",
+	"wanted_top_6_hospital": "Wanted a top 6 hospital",
+	"got_top_6_hospital": "Got a top 6 hospital",
 }
 
 # More base classes
