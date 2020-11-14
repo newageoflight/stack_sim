@@ -87,8 +87,8 @@ mixed_tests = {
 	# "Mixed strategies: 10% random with weighted random top, 30% mixed stacks, 60% default stack": [
 	# 	(random_with_wt_random_top, 0.10), (mixed_stacks, 0.3), (default_stack, 0.6)
 	# ],
-	"Mixed strategies: 10% random with weighted random top, 30% mixed stacks with weighted random top, 60% default stack with weighted random top": [
-		(random_with_wt_random_top, 0.10), (mixed_stack_wt_random_top, 0.3), (stack_wt_random_top, 0.6)
+	"Mixed strategies: 15% random with weighted random top, 30% mixed stacks with weighted random top, 55% default stack with weighted random top": [
+		(random_with_wt_random_top, 0.15), (mixed_stack_wt_random_top, 0.3), (stack_wt_random_top, 0.55)
 	],
 	# "Mixed strategies: 20% random with weighted random top, 25% mixed stacks with weighted random top, 55% default stack with weighted random top": [
 	# 	(random_with_wt_random_top, 0.20), (mixed_stack_wt_random_top, 0.25), (stack_wt_random_top, 0.55)

@@ -174,12 +174,13 @@ def default_stack(l):
 	global stack
 	return stack.copy()
 
-def stack_rearrange(l, w=hospital_weights):
+stack_rearr_cache = []
+def stack_rearrange():
 	# This function has since been updated to reflect that several order swap proposals exist
 	# They are mainly based around hearsay and differ vastly between universities
 	# Therefore I will assume that the distribution is random
 	# This is treated as a separate function from the default stack so the default case is excluded
-	global stack_with_weights
+	global stack_with_weights, stack_rearr_cache
 	base_stack = stack_with_weights.copy()
 	# return random.choice([stack.copy(), altstack.copy()])
 	# proposals involve swapping one or more pairs of adjacent hospitals.
@@ -188,7 +189,7 @@ def stack_rearrange(l, w=hospital_weights):
 	# 2. the maximum allowable swap count is 5 - unrealistic that there would be more
 	# therefore...
 	# choose a random number between 1 and 5 first
-	pair_count = random.randint(1,5)
+	pair_count = 3
 	# create a list of pairs to swap
 	indices_remaining = set(range(len(base_stack)))
 	pairs = []
@@ -200,6 +201,23 @@ def stack_rearrange(l, w=hospital_weights):
 		indices_remaining -= pair
 		pairs.append(pair)
 	# now swap the pairs
+	stack_rearr_cache.append(pairs)
+	# for pair in pairs:
+	# 	i,j = pair
+	# 	temp = base_stack[i]
+	# 	base_stack[i] = base_stack[j]
+	# 	base_stack[j] = temp
+	# # return the rearranged stack
+	# return base_stack
+
+for i in range(7):
+	stack_rearrange()
+
+def stack_rearrangement(l, w=hospital_weights):
+	global stack_rearr_cache, stack_with_weights
+	base_stack = stack_with_weights.copy()
+	pairs = random.choice(stack_rearr_cache)
+	pairs = random.sample(pairs, random.randint(1,3))
 	for pair in pairs:
 		i,j = pair
 		temp = base_stack[i]
@@ -207,11 +225,6 @@ def stack_rearrange(l, w=hospital_weights):
 		base_stack[j] = temp
 	# return the rearranged stack
 	return base_stack
-
-stack_rearr_cache = [stack_rearrange(stack, hospital_weights) for i in range(7)]
-def stack_rearrangement(l, w=hospital_weights):
-	global stack_rearr_cache
-	return random.choice(stack_rearr_cache)
 
 @Strategy(name="Mixed stacks")
 def mixed_stacks(l):
