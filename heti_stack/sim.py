@@ -16,6 +16,7 @@ from .base import *
 import matplotlib.pyplot as plt
 import numba
 import numpy as np
+import cupy as cp
 import pandas as pd
 
 plt.style.use("ggplot")
@@ -379,34 +380,33 @@ def accept(energy, new_energy, T):
 	if new_energy < energy:
 		return 1
 	else:
-		return np.exp((energy - new_energy)/T)
+		return cp.exp((energy - new_energy)/T)
 
 @numba.jit(fastmath=True,nopython=True)
 def swap_two(lst):
 	new_list = lst.copy()
 	app_len = len(lst)-1
-	a, b = np.random.choice(app_len, 2)
+	a, b = cp.random.choice(app_len, 2)
 	temp = new_list[b]
 	new_list[b] = new_list[a]
 	new_list[a] = temp
 	return new_list
 
-@numba.jit(fastmath=True,nopython=True)
 def cool_gpu(current_state_arr, pref_arr, capacity_arr, T, cool_rate, iterlimit):
 	temp = T
 	itercount = 0
-	unhappiness_log = np.empty((0,2),np.int64)
+	unhappiness_log = cp.empty((0,2),cp.int64)
 	min_unhappiness = POSITIVE_INFINITY
 	while temp >= 1e-8 and itercount < iterlimit:
 		next_state_arr = swap_two(current_state_arr)
-		u_current = np.sum(np.multiply(pref_arr, current_state_arr))
-		u_next = np.sum(np.multiply(pref_arr, next_state_arr))
-		next_over_capacity = (np.sum(next_state_arr,axis=0) > capacity_arr).any()
+		u_current = cp.sum(cp.multiply(pref_arr, current_state_arr))
+		u_next = cp.sum(cp.multiply(pref_arr, next_state_arr))
+		next_over_capacity = (cp.sum(next_state_arr,axis=0) > capacity_arr).any()
 		# if itercount < 10:
 		# 	print(current_state_arr, next_state_arr, pref_arr)
-		# 	print(np.sum(next_state_arr,axis=0), capacity_arr)
+		# 	print(cp.sum(next_state_arr,axis=0), capacity_arr)
 		# 	print(u_current, u_next)
-		if accept(u_current, u_next, temp) >= np.random.random() and not next_over_capacity:
+		if accept(u_current, u_next, temp) >= cp.random.random() and not next_over_capacity:
 			current_state_arr = next_state_arr
 			u_current = u_next
 		if u_current < min_unhappiness:
@@ -414,25 +414,25 @@ def cool_gpu(current_state_arr, pref_arr, capacity_arr, T, cool_rate, iterlimit)
 			min_unhappiness = u_current
 		temp *= 1 - cool_rate
 		itercount += 1
-		unhappiness_log = np.append(unhappiness_log, np.array([[u_current, min_unhappiness]],np.int64), axis=0)
+		unhappiness_log = cp.append(unhappiness_log, cp.array([[u_current, min_unhappiness]],cp.int64), axis=0)
 	return (temp, min_unhappiness, current_state_arr, best_state_arr, unhappiness_log)
 
 @numba.jit(fastmath=True,nopython=True)
 def step_gpu(current_state_arr, pref_arr, iterlimit, starting_unhappiness):
 	itercount = 0
-	unhappiness_log = np.empty((0,2),np.int64)
+	unhappiness_log = cp.empty((0,2),cp.int64)
 	min_unhappiness = starting_unhappiness
 	while itercount < iterlimit:
 		next_state_arr = swap_two(current_state_arr)
-		u_current, u_next = [np.sum(np.multiply(pref_arr, s)) for s in [current_state_arr, next_state_arr]]
-		if accept(u_current, u_next, temp) >= np.random.random():
+		u_current, u_next = [cp.sum(cp.multiply(pref_arr, s)) for s in [current_state_arr, next_state_arr]]
+		if accept(u_current, u_next, temp) >= cp.random.random():
 			current_state_arr = next_state_arr
 			u_current = u_next
 		if u_current < min_unhappiness:
 			best_state_arr = current_state_arr
 			min_unhappiness = u_current
 		itercount += 1
-		unhappiness_log = np.append(unhappiness_log, np.array([[u_current, min_unhappiness]],np.int64), axis=0)
+		unhappiness_log = cp.append(unhappiness_log, cp.array([[u_current, min_unhappiness]],cp.int64), axis=0)
 	return (min_unhappiness, current_state_arr, best_state_arr, unhappiness_log)
 
 # Simulated annealing based simulation
@@ -448,15 +448,15 @@ class AnnealSimulation(Simulation):
 		self._use_gpu = gpu # ok I know it says "gpu" but it's really just numba.jit, not cuda
 		self.best_state = None
 		self.current_state = None
-		self.best_state_arr = np.array([])
-		self.pref_arr = np.array([])
-		self.capacity_arr = np.array([])
-		self.current_state_arr = np.array([])
+		self.best_state_arr = cp.array([])
+		self.pref_arr = cp.array([])
+		self.capacity_arr = cp.array([])
+		self.current_state_arr = cp.array([])
 		self.temp = temp
 		self.cooling_rate = cool_rate
 		self.iterlimit = iterlimit
 		self.unhappiness_records = pd.DataFrame(columns=["current_unhappiness", "min_unhappiness"])
-		self.unhappiness_array = np.empty((0,2),dtype=int)
+		self.unhappiness_array = cp.empty((0,2),dtype=int)
 		super(AnnealSimulation, self).__init__(starting_strategy)
 	def initial_state(self):
 		for category in range(len(self.category_counts)):
@@ -476,11 +476,11 @@ class AnnealSimulation(Simulation):
 		self.min_unhappiness = min(self.min_unhappiness, self.current_unhappiness())
 		return self.current_state
 	def _gpu_translate(self):
-		self.current_state_arr = np.zeros((len(self.current_state), len(hospitals)),dtype=int)
+		self.current_state_arr = cp.zeros((len(self.current_state), len(hospitals)),dtype=int)
 		for a in range(len(self.current_state)):
 			self.current_state_arr[a,self.hospitals.index(self.current_state[a].allocation)] = 1
-		self.pref_arr = np.array([[a.preferences.index(b) for b in self.hospitals] for a in self.current_state])
-		self.capacity_arr = np.array([h.spots_remaining for h in self.hospitals])
+		self.pref_arr = cp.array([[a.preferences.index(b) for b in self.hospitals] for a in self.current_state])
+		self.capacity_arr = cp.array([h.spots_remaining for h in self.hospitals])
 		self.best_state_arr = self.current_state_arr
 	def _gpu_detranslate(self):
 		# bug: hospitals do not allocate
@@ -493,7 +493,7 @@ class AnnealSimulation(Simulation):
 		for hospital in self.hospitals:
 			hospital.empty()
 		for a in range(len(self.current_state_arr)):
-			current_one = np.where(self.current_state_arr[a] == 1)[0][0]
+			current_one = cp.where(self.current_state_arr[a] == 1)[0][0]
 			# do stuff
 			self.current_state[a].allocate(self.hospitals[current_one])
 		if (self.best_state_arr == self.current_state_arr).all():
@@ -550,7 +550,7 @@ class AnnealSimulation(Simulation):
 		self.min_unhappiness = min_unhappiness
 		self.current_state_arr = current_state_arr
 		self.best_state_arr = best_state_arr
-		self.unhappiness_array = np.append(self.unhappiness_array, unhappiness_log, axis=0)
+		self.unhappiness_array = cp.append(self.unhappiness_array, unhappiness_log, axis=0)
 		self._gpu_detranslate()
 	def step(self, iters):
 		"""Mainly for testing in the console - iterate the process a specified number of times to see
