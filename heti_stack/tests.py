@@ -34,8 +34,8 @@ class Test(object):
 	def plot(self, filter_f=None):
 		title_insert = " (filter by {0})".format(filter_function_names[filter_f.__name__].lower()) if filter_f else ""
 		filename_insert = "_filter_{0}".format(filter_f.__name__) if filter_f else ""
-		self.sim.plot_every(filter_f=filter_f, prepend=self.name+title_insert+": ", filename_pre=self.underscore_name+filename_insert)
 		self.sim.plot_all(filter_f=filter_f, prepend=self.name+title_insert+": ", filename_pre=self.underscore_name+filename_insert)
+		self.sim.plot_every(filter_f=filter_f, prepend=self.name+title_insert+": ", filename_pre=self.underscore_name+filename_insert)
 	def export(self, filter_f=None):
 		self.sim.export_results(self.underscore_name, filter_f=filter_f)
 	def sigtest(self, groups=None, filter_f=None):
