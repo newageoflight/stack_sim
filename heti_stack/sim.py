@@ -16,7 +16,6 @@ from .base import *
 import matplotlib.pyplot as plt
 import numba
 import numpy as np
-import cupy as cp
 import pandas as pd
 
 plt.style.use("ggplot")
